@@ -1,70 +1,35 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% I, the copyright holder of this work, release this work into the
-%% public domain. This applies worldwide. In some countries this may
-%% not be legally possible; if so: I grant anyone the right to use
-%% this work for any purpose, without any conditions, unless such
-%% conditions are required by law.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \documentclass[
-  digital,     %% The `digital` option enables the default options for the
-               %% digital version of a document. Replace with `printed`
-               %% to enable the default options for the printed version
-               %% of a document.
-%%  color,       %% Uncomment these lines (by removing the %% at the
-%%               %% beginning) to use color in the printed version of your
-%%               %% document
-  oneside,     %% The `oneside` option enables one-sided typesetting,
-               %% which is preferred if you are only going to submit a
-               %% digital version of your thesis. Replace with `twoside`
-               %% for double-sided typesetting if you are planning to
-               %% also print your thesis. For double-sided typesetting,
-               %% use at least 120 g/m² paper to prevent show-through.
-  nosansbold,  %% The `nosansbold` option prevents the use of the
-               %% sans-serif type face for bold text. Replace with
-               %% `sansbold` to use sans-serif type face for bold text.
-  nocolorbold, %% The `nocolorbold` option disables the usage of the
-               %% blue color for bold text, instead using black. Replace
-               %% with `colorbold` to use blue for bold text.
-  lof,         %% The `lof` option prints the List of Figures. Replace
-               %% with `nolof` to hide the List of Figures.
-  lot,         %% The `lot` option prints the List of Tables. Replace
-               %% with `nolot` to hide the List of Tables.
+  digital,
+  color,
+  oneside,
+  nosansbold,
+  nocolorbold,
+  lof,
+  lot
 ]{fithesis4}
-%% The following section sets up the locales used in the thesis.
-\usepackage[resetfonts]{cmap} %% We need to load the T2A font encoding
-\usepackage[T1,T2A]{fontenc}  %% to use the Cyrillic fonts with Russian texts.
+\usepackage[resetfonts]{cmap}
+\usepackage[T1,T2A]{fontenc}
 \usepackage[
-  main=english, %% By using `czech` or `slovak` as the main locale
-                %% instead of `english`, you can typeset the thesis
-                %% in either Czech or Slovak, respectively.
+  main=english,
   english, german, russian, czech, slovak %% The additional keys allow
-]{babel}        %% foreign texts to be typeset as follows:
-%%
-%%   \begin{otherlanguage}{german}  ... \end{otherlanguage}
-%%   \begin{otherlanguage}{russian} ... \end{otherlanguage}
-%%   \begin{otherlanguage}{czech}   ... \end{otherlanguage}
-%%   \begin{otherlanguage}{slovak}  ... \end{otherlanguage}
-%%
-%% For non-Latin scripts, it may be necessary to load additional
-%% fonts:
+]{babel}
 \usepackage{paratype}
 \def\textrussian#1{{\usefont{T2A}{PTSerif-TLF}{m}{rm}#1}}
-%%
-%% The following section sets up the metadata of the thesis.
 \thesissetup{
     date        = \the\year/\the\month/\the\day,
     university  = mu,
-    faculty     = fi,
+    faculty     = sci,
     type        = bc,
-    department  = Department of Machine Learning and Data Processing,
-    author      = Jane Doe,
-    gender      = f,
-    advisor     = {Prof. RNDr. John Smith, CSc.},
-    title       = {The Proof of P = NP},
-    TeXtitle    = {The Proof of $\mathsf{P}=\mathsf{NP}$},
-    keywords    = {keyword1, keyword2, ...},
-    TeXkeywords = {keyword1, keyword2, \ldots},
+    department  = Department of Physical Electronics,
+    author      = Tomáš Rottenberg,
+    gender      = m,
+    programme   = Nanotechnology,
+    field       = Physics,
+    advisor     = {Mgr. Pavel Ondračka, Ph.D.},
+    title       = {Machine learning-assisted atomistic modeling of amorphous materials},
+    TeXtitle    = {Machine learning-assisted atomistic modeling of amorphous materials},
+    keywords    = {machine learning, computational physics, atomistic modeling},
+    TeXkeywords = {machine learning, computational physics, atomistic modeling},
     abstract    = {%
       This is the abstract of my thesis, which can
 
@@ -76,8 +41,7 @@
       span multiple paragraphs.
     },
     bib         = example.bib,
-    %% Remove the following line to use the JVS 2018 faculty logo.
-    facultyLogo = fithesis-fi,
+    facultyLogo = fithesis-sci,
 }
 \usepackage{makeidx}      %% The `makeidx` package contains
 \makeindex                %% helper commands for index typesetting.
@@ -126,31 +90,6 @@
 Theses are rumoured to be \enquote{the capstones of education}, so
 I decided to write one of my own. If all goes well, I will soon
 have a diploma under my belt. Wish me luck!
-
-\begin{otherlanguage}{czech}
-Říká se, že závěrečné práce jsou \enquote{vyvrcholením studia}
-a tak jsem se rozhodl jednu také napsat. Pokud vše půjde podle
-plánu, odnesu si na konci semestru diplom. Držte mi palce!
-\end{otherlanguage}
-
-\begin{otherlanguage}{slovak}
-Hovorí sa, že záverečné práce sú \enquote{vyvrcholením štúdia}
-a tak som sa rozhodol jednu tiež napísať. Ak všetko pôjde podľa
-plánu, odnesiem si na konci semestra diplom. Držte mi palce!
-\end{otherlanguage}
-
-\begin{otherlanguage}{german}
-Man munkelt, dass die Dissertation \enquote{die Krönung der
-Ausbildung} ist. Deshalb habe ich mich beschlossen meine eigene
-zu schreiben. Wenn alles gut geht, bekomme ich bald ein Diplom.
-Wünsch mir Glück!
-\end{otherlanguage}
-
-\begin{otherlanguage}{russian}\textrussian{%
-Говорят, что тезис -- это \enquote{кульминация обучения}. Поэтому
-я и решил написать собственный тезис. Если всё сработает по плану,
-я скоро получу диплом. Желайте мне удачи!
-}\end{otherlanguage}
 
 \chapter{Using lightweight markup}
 \shorthandoff{-}
