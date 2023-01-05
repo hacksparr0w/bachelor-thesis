@@ -1,6 +1,6 @@
 # Machine learning-assisted atomistic modeling of amorphous materials
 
-This is the readmefile of my bachelor's thesis
+This is the readme file for my bachelor's thesis.
 
 ## Building
 
