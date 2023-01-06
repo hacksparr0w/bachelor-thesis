@@ -30,33 +30,25 @@
     TeXtitle    = {Machine learning-assisted atomistic modeling of amorphous materials},
     keywords    = {machine learning, computational physics, atomistic modeling},
     TeXkeywords = {machine learning, computational physics, atomistic modeling},
-    abstract    = {%
-      This is the abstract of my thesis, which can
-
-      span multiple paragraphs.
-    },
-    thanks      = {%
-      These are the acknowledgements for my thesis, which can
-
-      span multiple paragraphs.
-    },
-    bib         = example.bib,
+    abstract    = {\input{include/abstract}},
+    thanks      = {\input{include/acknowledgements}},
+    bib         = bib.bib,
     facultyLogo = fithesis-sci,
+    assignment  = ,
 }
-\usepackage{makeidx}      %% The `makeidx` package contains
-\makeindex                %% helper commands for index typesetting.
-\usepackage[acronym]{glossaries}          %% The `glossaries` package
-\renewcommand*\glspostdescription{\hfill} %% contains helper commands
-\loadglsentries{example-terms-abbrs.tex}  %% for typesetting glossaries
-\makenoidxglossaries                      %% and lists of abbreviations.
-%% These additional packages are used within the document:
-\usepackage{paralist} %% Compact list environments
-\usepackage{amsmath}  %% Mathematics
+\usepackage{makeidx}
+\makeindex
+\usepackage[acronym]{glossaries}
+\renewcommand*\glspostdescription{\hfill}
+\loadglsentries{abbrs.tex}
+\makenoidxglossaries
+\usepackage{paralist}
+\usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amsfonts}
-\usepackage{url}      %% Hyperlinks
-\usepackage{markdown} %% Lightweight markup
-\usepackage{listings} %% Source code highlighting
+\usepackage{url}
+\usepackage{markdown}
+\usepackage{listings}
 \lstset{
   basicstyle      = \ttfamily,
   identifierstyle = \color{black},
@@ -67,29 +59,13 @@
   commentstyle    = \itshape\color{magenta},
   breaklines      = true,
 }
-\usepackage{floatrow} %% Putting captions above tables
+\usepackage{floatrow}
 \floatsetup[table]{capposition=top}
-\usepackage[babel]{csquotes} %% Context-sensitive quotation marks
+\usepackage[babel]{csquotes}
 \begin{document}
-%% Uncomment the following lines (by removing the %% at the beginning)
-%% and to print out List of Abbreviations and/or Glossary in your
-%% document. Titles for these tables can be changed by replacing the
-%% titles `Abbreviations` and `Glossary`, respectively.
-%% \clearpage
-%% \printnoidxglossary[title={Abbreviations}, type=\acronymtype]
-%% \printnoidxglossary[title={Glossary}]
 
-%% The \chapter* command can be used to produce unnumbered chapters:
-\chapter*{Introduction}
-%% Unlike \chapter, \chapter* does not update the headings and does not
-%% enter the chapter to the table of contents. I we want correct
-%% headings and a table of contents entry, we must add them manually:
-\markright{\textsc{Introduction}}
-\addcontentsline{toc}{chapter}{Introduction}
+\input{include/introduction}
 
-Theses are rumoured to be \enquote{the capstones of education}, so
-I decided to write one of my own. If all goes well, I will soon
-have a diploma under my belt. Wish me luck!
 
 \chapter{Using lightweight markup}
 \shorthandoff{-}
