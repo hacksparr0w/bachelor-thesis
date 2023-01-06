@@ -1,6 +1,4 @@
-\chapter*{Introduction}
-\markright{\textsc{Introduction}}
-\addcontentsline{toc}{chapter}{Introduction}
+\chapter{Introduction}
 
 Molecular dynamics (MD) is a computer simulation method for calculating the
 physical movements of atoms and molecules. MD simulations work by numerically
@@ -11,3 +9,41 @@ force fields. MD is an invaluable tool used in many disciplines, including
 physics, chemistry, biology, and material science, as it enables running
 complex experiments virtually, examining their results on atomary scales,
 which might be unreachable even with costly laboratory equipment.
+
+The accuracy of MD simulations is largely dependent on its model for atomic
+interactions. There are two prominent approaches to modeling these
+interactions. The \textit{ab initio} calculations determine the electronic
+structure of a system from first principles using a quantum mechanical theory.
+\textit{Ab initio} molecular dynamics (AIMD) is considered to be highly
+accurate, however, due to treating the electronic degrees of freedom, its
+computational burden is significant, and its usage is generally limited to
+smaller systems with hundreads of atoms and time scales of
+$\pm 100 \, \mathrm{ps}$. Applications requiring larger cells and longer
+simulations are currently accessible only with empirical interatomic
+potentials, also called force fields (FFs). These models, while having much
+lower computational requirements, suffer from decreased precision and
+are not very transferable.
+
+In recent years, there's been a steady surge of breakthrough applications of
+machine learning (ML) and neural networks. From beating human experts in
+games like chess and go to almost perfectly solving the problem of protein
+folding, artificial intelligence seems to be an ideal fit for finding
+stochastic heuristics and patterns in complicated problems, given a large
+dataset of learning data. This wave of transition toward machine
+learning-based algorithms has affected even MD software packages and given
+rise to a very successful class of machine learning potentials and force
+fields.
+
+The goal of my thesis is to evaluate these machine learning potentials and
+demonstrate that they are capable of producing results that are on par with
+quantum mechanical methods while scaling in a linear manner with the size of a
+system. My application uses the DeePMD-kit code, which is an implementation of
+the Deep Potential Molecular Dynamics (DeePMD) protocol. Furthermore, the
+LAMMPS Molecular Dynamics Simulator was used to run the machine learning
+potentials on concrete molecular dynamics ensembles. Last but not least, the
+OpenMX simulator was used to provide quantum mechanical data for training and
+evaluating the neural network models.
+
+%
+% TODO: Briefly sum-up contents of individual chapters
+%
