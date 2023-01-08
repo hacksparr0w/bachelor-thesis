@@ -75,6 +75,81 @@ where atoms and molecules are treated as soft balls and their bonds are
 represented by elastic sticks. The laws of classical mechanics define the
 dynamics of the entire system.
 
+Each particle in an MD simulation has its own position vector
+$\mathbf{r}_i(t) = (x_i(t), y_i(t), z_i(t))$. A particle usually corresponds
+to an atom, although it may represent any simulable entity of interest that
+can be conveniently described by an interaction law. By Newton's second law
+the motion of each particle must obey the following relation
+
+\begin{equation}
+  \mathbf{F}_i = m_i \diff[2]{\mathbf{r}_i}{t},
+\end{equation}
+
+\noindent where $m_i$ is the mass of $i$-th particle and $\mathbf{F}_i$ is the
+force acting upon $i$-th particle. Interaction laws are usually specified by
+a potential function $U(\mathbf{r}_1, \dots, \mathbf{r}_N)$, which represents
+the potential energy of $N$ interacting particles as a function of their
+positions. Given the potential, the force acting upon $i$-th atom is
+determined by the gradient with respect to particle displacements
+
+\begin{equation}
+  \mathbf{F}_i = - \nabla_{\mathbf{r}_i} U(\mathbf{r}_1, \dots, \mathbf{r}_N)
+  = - \left(
+    \frac{\partial U}{\partial x_i},
+    \frac{\partial U}{\partial y_i},
+    \frac{\partial U}{\partial z_i}
+  \right).
+\end{equation}
+
+\noindent Let's briefly talk about the meaning and form of the potential $U$
+in MD simulations. Any quantum-chemistry textbook would insist, that in order
+to appropriately examine a behavior of molecule, we can't just look at its
+individual atoms. The quantum-mechanical lense reveals, that when atoms bond
+into molecules, their electron orbitals interact in complex ways, giving rise
+to non-trivial molecule orbitals. These electronic clouds that span multiple
+atoms then determine molecule's interactions with other particles. This paints
+molecules as a very complicated quantum systems, where electrons and nuclei
+are interacting together in an intricate manner. It turns out, however, that
+to a very good approximation, known as the Born–Oppenheimer adiabatic
+approximation and based on the difference in mass between nuclei and
+electrons, the electronic and nuclear problems can be separated. According to
+this approximation, we can presume that the electron clouds equilibrate
+quickly for each instanteneous configuration of the heavy nuclei. The nuclei
+then move in the field created by the average electron densities.
+This allows us to consider the concept of a potential energy surface, which
+controls the movement of the nuclei without taking explicit account of the
+electrons. Given the potential energy surface, we may use classical mechanics
+to follow the dynamics of the nuclei. Rather than solving the
+quantum-mechanical problem, we can solve a classic-mechanical problem, in
+which the effect of the electrons on nuclei is expressed by en empirical
+potential. It can be very challenging to identify a potential function that
+accurately represents an energy surfaces of a system, but doing so greatly
+simplifies the computational process. Atomic force field models and the
+classical MD are based on empirical potentials with a specific functional
+form, representing the physics and chemistry of the systems of
+interest. The following equation is an example of such a force field, used in
+biosystem simulations
+
+%
+% TODO: Include a brief discussion of MD limitations, scaling, etc.
+%
+
+\begin{equation}
+\begin{alignedat}{2}
+  U(\mathbf{r}_1, \dots, \mathbf{r}_N) = &
+  \sum_\text{bonds} \frac{a_i}{2} (l_i - l_{i0})^2
+  + \sum_\text{angles} \frac{b_i}{2} (\theta_i - \theta_{i0})^2 \\
+  &+ \sum_\text{torsions} \frac{c_i}{2} \left[
+    1 + \cos(n \omega_i - \gamma_i)
+  \right] \\
+  &+ \sum_\text{atom pairs} 4 \varepsilon_{ij} \left[
+    \left(\frac{\sigma_{ij}}{r_{ij}}\right)^{12}
+    - \left(\frac{\sigma_{ij}}{r_{ij}}\right)^{6}
+  \right] \\
+  &+ \sum_\text{atom pairs} k \frac{q_i q_j}{r_{ij}}.
+\end{alignedat}
+\end{equation}
+
 \subsection{\textit{Ab Initio} Methods}
 
 
