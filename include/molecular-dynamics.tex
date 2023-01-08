@@ -1,11 +1,90 @@
 \chapter{Molecular Dynamics}
 
+Molecular dynamics simulations is an umbrella term for a class of
+computational methods used to model and analyze the physical behavior of
+systems of atoms and molecules. MD allows one to monitor the full time
+evolution of a system, allowing for deep examination of the dynamics of
+atomic-level phenomena that cannot be observed directly.
+Computer simulations applied to condensed matter systems began their
+development as early as the 1950s, when two of the pillars of molecular
+simulation were introduced, namely the Monte Carlo (MC) sampling technique and
+the molecular dynamics method. In 1964, the first realistic MD simulation was
+developed by Rahman, who came up with a realistic model of liquid Argon.
+Rahman used the Lennard–Jones pair-wise additive potential and showed, that
+MD simulations with smooth potentials were possible.
+
+Around the same time, Verlet proposed a stable numerical integration
+algorithm that is still very popular in modern MD software. We will discuss
+the Verlet integration algorithm in further chapters of this thesis. Verlet
+also invented a time-saving algorithm, the Verlet neighbour list.
+
+A great leap forward in the MD methology happened in 1971, when Rahman and
+Stillinger published an MD study on modeling a realistic system of liquid
+water, a system composed of molecules, not just individual atoms. The
+significant results of their work prompted a multinational group of scientists
+centred around Berendsen at CECAM to try using MD simulations for examining
+biomolecules. The first MD simulation of a simple protein was due to Karplus
+and collaborators, and appeared shortly after, in 1977. In 2013, the Nobel
+Prize for Chemistry was awarded to Warshel, Levitt, and Karplus for their work
+on computer simulations in biochemistry, which was built upon the efforts of
+many researchers who had previously worked on simulating biomolecules.
+
+Another inportant development took place in 1980. In this year, Anderson
+published a paper that described how to extend MD to enable it to sample the
+isoenthalpic (constant pressure) ensemble. The standard molecular dynamics
+algorithm was designed to simulate the behavior of a system of particles at
+constant energy, or in the microcanonical ensemble, because the Newton's
+equations of motion conserve energy. It was not straightforward to modify the
+MD algorithm to sample systems under different, more experimentally relevant
+conditions. Andersen's extensions for sampling the isoenthalpic ensemble
+inspired the question of whether it was possible to use MD to sample the
+canonical ensemble as well. Nosé, building on Andersen's work, introduced a
+new variable that linked the kinetic energy of the atoms to the external
+temperature, resulting in dynamics that sample the desired ensemble. This
+approach is known as the Nosé–Hoover thermostat, which is often used in a
+modified form called the Hoover thermostat.
+
+In 1985, Car and Parrinello published a groundbreaking paper in Physical
+Review Letters that described a method for combining MD with density
+functional theory (DFT) calculations of electronic structure. This approach
+eliminated the need for a potential model, as energy, forces, and stress
+could be calculated directly from the electronic structure. The Car–Parrinello
+method allowed for the simulation of processes that involve bond formation or
+breaking and was the first to demonstrate that it is possible to combine
+finite temperature simulations with ground-state electronic structure
+calculations. This method also served as a bridge between the simulation
+community, which typically has a background in statistical mechanics, and the
+solid-state physics and quantum chemistry communities, which focus on
+electronic structure calculations at zero temperature.
+
+During the 1980s and 1990s, the use of molecular simulations in condensed
+matter research became more widespread, due in part to previous successes in
+this field and also to the increasing availability and power of computers.
+
+Modern MD methodology is frequently used to refine the three-dimensional
+structures of proteins and other large molecules, to study atomic-level
+phenomena that cannot be directly observed, such as thin-film growth and ion
+implantation, and to investigate the physical properties of nanotechnological
+devices that cannot yet be manufactured. In 2015, for example, MD simulation
+has been reported for pharmacophore development and drug design.
+
 \subsection{Classical Methods}
+
+The classical MD implementation uses the so-called "ball and sticks" model,
+where atoms and molecules are treated as soft balls and their bonds are
+represented by elastic sticks. The laws of classical mechanics define the
+dynamics of the entire system.
 
 \subsection{\textit{Ab Initio} Methods}
 
+
+
 \subsection{Density Functional Theory}
 
-\subsection{Machine Learning Interatomic Potentials}
+
+
+\subsection{Machine Learning}
+
+
 
 \subsection{Deep Potential Molecular Dynamics}
