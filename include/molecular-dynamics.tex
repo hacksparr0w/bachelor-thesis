@@ -150,6 +150,34 @@ biosystem simulations
 \end{alignedat}
 \end{equation}
 
+The covalent character of the system is defined by the first three terms of
+the system, where the summation indices run over all the bonds, angles and
+torsions. In contrast, the last two terms are only defined by atom pairs,
+with $q_i q_j$ being the product of their charges and $r_{ij} = |r_i - r_j|$
+is the distance between the two atoms in the pair. The first two terms give
+energies of deformations of the bond lengths $l_i$ and bond angles $\theta_i$
+from their respective equilibrium values $l_{i0}$ and $\theta_{i0}$ with force
+constants $a_i$ and $b_i$. These two terms model the correct chemical
+structure, but prevent more complicated chemical phenomena like bond breaking.
+Rotations around the chemical bond are described by the third therm, which is
+priodic with periodicity determined by $n$ and heights of rotational barriers
+defined by $c_i$. The forth term represents the van der Waals repulsive and
+attractive interatomic forces in the form of the Lennard–Jones 12-6 potential.
+The last term is the Coulomb electrostatic potential. Some effects due to
+specific environments can be accounted for by properly adjusting partial
+charges $q_i$ and effective value of the constant $k$ as well as the van der
+Waals parameters $\varepsilon_{ij}$ and $\sigma_{ij}$.
+
+We now have a full mathematical description of the problem at hand. Due to the
+many-body nature of the problem, it is out of question to solve it
+analytically, thus it has to be discretized and solved numerically with a
+computer. First, we need to specify the initial conditions of the system,
+that is, the initial positions $\mathbf{r}_{i0}$ and initial velocities
+$\mathbf{v}_{i0}$ of the particles in the system. Then we have to use a
+numerical integrator to continually make finite time interval steps and find
+the successive values of positions $\mathbf{r}_i(t)$ and velocities
+$\mathbf{v}_{i}(t)$ in the time evolution of the system.
+
 \subsection{\textit{Ab Initio} Methods}
 
 
