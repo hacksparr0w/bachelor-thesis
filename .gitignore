@@ -1,5 +1,11 @@
+__pycache__
 _markdown_*
 .miktex
+
+ml4md/dataset/amorphous
+ml4md/dataset/combined
+ml4md/dataset/crystalline
+ml4md/model
 
 *.aux
 *.bcf
