@@ -1,8 +1,10 @@
 import copy
 import json
 
+from pathlib import Path
+
 from _home import DATASET_DIR, MODEL_DIR
-from _utility import flatten, ls_files, unique
+from _utility import flatten, unique
 
 
 MODEL_INPUT_TEMPLATE = {
@@ -77,7 +79,7 @@ FITTING_NEURONS = (
 
 DEFAULT_DESCRIPTOR_NEURONS = DESCRIPTOR_NEURONS[1]
 DEFAULT_FITTING_NEURONS = FITTING_NEURONS[1]
-DEFAULT_SEED = 10
+DEFAULT_SEED = 260222622
 
 INPUT_MATRIX = unique(
         flatten([
@@ -109,8 +111,8 @@ def generate_model_input(
         descriptor_neurons,
         fitting_neurons,
         seed,
-        training_dataset_files,
-        validation_dataset_files
+        training_dataset_dirs,
+        validation_dataset_dirs
 ):
     input = copy.deepcopy(MODEL_INPUT_TEMPLATE)
 
@@ -121,11 +123,11 @@ def generate_model_input(
     input["model"]["fitting_net"]["seed"] = seed
 
     input["training"]["training_data"]["systems"] = list(
-        map(str, training_dataset_files)
+        map(str, training_dataset_dirs)
     )
 
     input["training"]["validation_data"]["systems"] = list(
-        map(str, validation_dataset_files)
+        map(str, validation_dataset_dirs)
     )
 
     return input
@@ -162,15 +164,28 @@ def generate_model(
     root_dir.mkdir(exist_ok=False)
 
     input_file = root_dir / "input.json"
-    training_dataset_files = ls_files(dataset_dir / "training")
-    validation_dataset_files = ls_files(dataset_dir / "validation")
+    training_dataset_dirs = map(
+        lambda d: (
+            Path("../..") /
+            (d / "training").relative_to(root_dir.parent.parent)
+        ),
+        dataset_dir.iterdir()
+    )
+
+    validation_dataset_dirs = map(
+        lambda d: (
+            Path("../..") /
+            (d / "validation").relative_to(root_dir.parent.parent)
+        ),
+        dataset_dir.iterdir()
+    )
 
     input = generate_model_input(
         descriptor_neurons,
         fitting_neurons,
         seed,
-        training_dataset_files,
-        validation_dataset_files
+        training_dataset_dirs,
+        validation_dataset_dirs
     )
 
     with input_file.open("w", encoding="utf-8") as stream:
