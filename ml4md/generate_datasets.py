@@ -59,8 +59,8 @@ def generate_dataset(data_file, root_dir, n=1, r=4):
     validation_data = data.sub_system(validation_data_indices)
     training_data = data.sub_system(training_data_indices)
 
-    validation_data.to_deepmd_npy(str(root_dir / "validation_data"))
-    training_data.to_deepmd_npy(str(root_dir / "training_data"))
+    validation_data.to_deepmd_npy(str(root_dir / "validation"))
+    training_data.to_deepmd_npy(str(root_dir / "training"))
 
     print(f"Created training dataset with {len(training_data)} frames.")
     print(f"Created validation dataset with {len(validation_data)} frames.")
