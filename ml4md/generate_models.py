@@ -50,7 +50,7 @@ MODEL_INPUT_TEMPLATE = {
             "batch_size": "auto",
             "numb_btch": 1
         },
-        "numb_steps": 2e6,
+        "numb_steps": int(2e6),
         "seed": 10,
         "disp_file": "l_curve.csv",
         "disp_freq": 1000,
