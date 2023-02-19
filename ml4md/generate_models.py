@@ -165,19 +165,13 @@ def generate_model(
 
     input_file = root_dir / "input.json"
     training_dataset_dirs = map(
-        lambda d: (
-            Path("../..") /
-            (d / "training").relative_to(root_dir.parent.parent)
-        ),
-        dataset_dir.iterdir()
+        lambda d: Path("../..") / d.relative_to(root_dir.parent.parent),
+        (dataset_dir / "training").iterdir()
     )
 
     validation_dataset_dirs = map(
-        lambda d: (
-            Path("../..") /
-            (d / "validation").relative_to(root_dir.parent.parent)
-        ),
-        dataset_dir.iterdir()
+        lambda d: Path("../..") / d.relative_to(root_dir.parent.parent),
+        (dataset_dir / "validation").iterdir()
     )
 
     input = generate_model_input(

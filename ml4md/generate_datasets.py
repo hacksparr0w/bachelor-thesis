@@ -2,79 +2,105 @@ import dpdata
 import numpy as np
 
 from _home import DATASET_DIR
-from _utility import flatten
 
 
-AMORPHOUS_DATA_FILES = (
-    "a-2.15.md",
-    "a-2.20.md",
-    "a-2.25.md",
-    "a-2.29.md",
-    "a-2.30.md",
-    "a-2.31.md",
-    "a-2.35.md",
-    "a-2.40.md"
+class DisjunctDatasetType:
+    TRAINING = "TRAINING"
+    VALIDATION = "VALIDATION"
+
+
+class DatasetType(DisjunctDatasetType):
+    UNIVERSAL = "UNIVERSAL"
+
+
+AMORPHOUS_DATASETS = (
+    ("a-2.15.md", DatasetType.TRAINING, 10),
+    ("a-2.20.md", DatasetType.TRAINING, 10),
+    ("a-2.25.md", DatasetType.VALIDATION, 10),
+    ("a-2.29.md", DatasetType.TRAINING, 10),
+    ("a-2.30.md", DatasetType.TRAINING, 10),
+    ("a-2.31.md", DatasetType.VALIDATION, 10),
+    ("a-2.35.md", DatasetType.TRAINING, 10),
+    ("a-2.40.md", DatasetType.TRAINING, 10)
 )
 
-CRYSTALLINE_DATA_FILES = (
-    "c-0.99.md",
-    "c-1.01.md",
-    "c-1.03.md"
+CRYSTALLINE_DATASETS = (
+    ("c-0.99.md", DatasetType.TRAINING, 5),
+    ("c-1.01.md", DatasetType.VALIDATION, 5),
+    ("c-1.03.md", DatasetType.TRAINING, 5)
 )
 
 DATASET_MATRIX = (
-    (
-        "amorphous",
-        [(DATASET_DIR / name, 10) for name in AMORPHOUS_DATA_FILES]
-    ),
-    (
-        "crystalline",
-        [(DATASET_DIR / name, 5) for name in CRYSTALLINE_DATA_FILES]
-    ),
-    (
-        "combined",
-        flatten([
-            [(DATASET_DIR / name, 10) for name in AMORPHOUS_DATA_FILES],
-            [(DATASET_DIR / name, 5) for name in CRYSTALLINE_DATA_FILES]
-        ])
-    )
+    ("amorphous", AMORPHOUS_DATASETS),
+    ("crystalline", CRYSTALLINE_DATASETS),
+    ("combined", [*AMORPHOUS_DATASETS, *CRYSTALLINE_DATASETS])
 )
 
 
-def generate_dataset(data_file, root_dir, n=1, r=4):
+def export_dataset(data, data_file, dataset_type, root_dir):
+    output_dir = None
+
+    if dataset_type == DisjunctDatasetType.TRAINING:
+        output_dir = root_dir / "training" / data_file.stem
+    else:
+        output_dir = root_dir / "validation" / data_file.stem
+
+    data.to_deepmd_npy(str(output_dir))
+
+    if dataset_type == DisjunctDatasetType.TRAINING:
+        print(f"Created training dataset with {len(data)} frames.")
+    else:
+        print(f"Created validation dataset with {len(data)} frames.")
+
+
+def generate_dataset(data_file, dataset_type, factor, root_dir):
     data = dpdata.LabeledSystem(str(data_file), fmt="vasp/outcar")
-    data = data.sub_system(range(0, len(data), n))
+    data = data.sub_system(range(0, len(data), factor))
 
-    validation_data_length = len(data) // r
-    validation_data_indices = np.random.choice(
-        len(data),
-        size=validation_data_length,
-        replace=False
-    )
+    if dataset_type == DatasetType.UNIVERSAL:
+        validation_data_length = len(data) // 4
+        validation_data_indices = np.random.choice(
+            len(data),
+            size=validation_data_length,
+            replace=False
+        )
 
-    training_data_indices = list(
-        set(range(len(data))) - set(validation_data_indices)
-    )
+        training_data_indices = list(
+            set(range(len(data))) - set(validation_data_indices)
+        )
 
-    validation_data = data.sub_system(validation_data_indices)
-    training_data = data.sub_system(training_data_indices)
+        validation_data = data.sub_system(validation_data_indices)
+        training_data = data.sub_system(training_data_indices)
 
-    validation_data.to_deepmd_npy(str(root_dir / "validation"))
-    training_data.to_deepmd_npy(str(root_dir / "training"))
+        export_dataset(
+            validation_data,
+            data_file,
+            DisjunctDatasetType.VALIDATION,
+            root_dir
+        )
 
-    print(f"Created training dataset with {len(training_data)} frames.")
-    print(f"Created validation dataset with {len(validation_data)} frames.")
+        export_dataset(
+            training_data,
+            data_file,
+            DisjunctDatasetType.TRAINING,
+            root_dir
+        )
+    else:
+        export_dataset(data, data_file, dataset_type, root_dir)
 
 
 def main():
-    for (name, specs) in DATASET_MATRIX:
-        dataset_dir = DATASET_DIR / name
+    for (dataset_name, entries) in DATASET_MATRIX:
+        root_dir = DATASET_DIR / dataset_name
+        root_dir.mkdir(exist_ok=False)
 
-        for data_file, n in specs:
-            root_dir = dataset_dir / data_file.stem
-            root_dir.mkdir(parents=True, exist_ok=False)
-
-            generate_dataset(data_file, root_dir, n)
+        for data_file_name, dataset_type, factor in entries:
+            generate_dataset(
+                DATASET_DIR / data_file_name,
+                dataset_type,
+                factor,
+                root_dir
+            )
 
 
 if __name__ == "__main__":
