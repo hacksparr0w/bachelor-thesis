@@ -161,9 +161,13 @@ def generate_model(
     )
 
     root_dir = MODEL_DIR / slug
-    root_dir.mkdir(exist_ok=False)
+    root_dir.mkdir(exist_ok=True)
 
     input_file = root_dir / "input.json"
+
+    if input_file.exists():
+        raise FileExistsError
+
     training_dataset_dirs = map(
         lambda d: Path("../..") / d.relative_to(root_dir.parent.parent),
         (dataset_dir / "training").iterdir()
@@ -187,7 +191,7 @@ def generate_model(
 
 
 def main():
-    MODEL_DIR.mkdir(exist_ok=False)
+    MODEL_DIR.mkdir(exist_ok=True)
 
     for entry in INPUT_MATRIX:
         generate_model(*entry)

@@ -46,27 +46,27 @@
   "training": {
     "training_data": {
       "systems": [
-        "..\\..\\dataset\\combined\\training\\a-2.15",
-        "..\\..\\dataset\\combined\\training\\a-2.20",
-        "..\\..\\dataset\\combined\\training\\a-2.29",
-        "..\\..\\dataset\\combined\\training\\a-2.30",
-        "..\\..\\dataset\\combined\\training\\a-2.35",
-        "..\\..\\dataset\\combined\\training\\a-2.40",
-        "..\\..\\dataset\\combined\\training\\c-0.99",
-        "..\\..\\dataset\\combined\\training\\c-1.03"
+        "../../dataset/combined/training/a-2.29",
+        "../../dataset/combined/training/a-2.40",
+        "../../dataset/combined/training/a-2.15",
+        "../../dataset/combined/training/a-2.20",
+        "../../dataset/combined/training/c-1.03",
+        "../../dataset/combined/training/a-2.35",
+        "../../dataset/combined/training/c-0.99",
+        "../../dataset/combined/training/a-2.30"
       ],
       "batch_size": "auto"
     },
     "validation_data": {
       "systems": [
-        "..\\..\\dataset\\combined\\validation\\a-2.25",
-        "..\\..\\dataset\\combined\\validation\\a-2.31",
-        "..\\..\\dataset\\combined\\validation\\c-1.01"
+        "../../dataset/combined/validation/a-2.31",
+        "../../dataset/combined/validation/a-2.25",
+        "../../dataset/combined/validation/c-1.01"
       ],
       "batch_size": "auto",
       "numb_btch": 1
     },
-    "numb_steps": 8000000,
+    "numb_steps": 2000000,
     "seed": 10,
     "disp_file": "l_curve.csv",
     "disp_freq": 1000,

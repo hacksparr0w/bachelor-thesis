@@ -191,3 +191,137 @@ $\mathbf{v}_{i}(t)$ in the time evolution of the system.
 
 
 \subsection{Deep Potential Molecular Dynamics}
+
+The Deep Potential Molecular Dynamics (DeepMD) \parencite{Zhang_2018} method
+uses neural networks for modeling many-body potentials and interatomic forces
+to drive classical molecular dynamics. The neural network architectures used
+by the DeepMD method are designed so that they preserve all the natural
+symmetries in the problem. These models are trained on \textit{ab initio} data
+and are capable of producing results that are essentially indistinguishable
+from the original data while scaling linearly with the system size.
+
+One of the most notable challenges in developing an efficient NN schema for
+molecular dynamics is devising an input format that would preserve the
+translational, rotational, and permutational symmetry of the system. The raw
+atomic coordinates from MD simulations cannot be used directly, as they do not
+exhibit these symmetries. Different ML models were proposed to address this
+problem. For example, the Behler--Parrinello neural network (BPNN)
+\parencite{PhysRevLett.98.146401} maps the coordinates onto a large set of
+two- and three-body symmetry functions. Another proposed model,
+gradient-domain machine learning (GDML)
+\parencite{doi:10.1126/sciadv.1603015}, maps the coordinates onto the
+eigenvalues of the Coulomb matrix. Both of these protocols are successful, but
+they are also needlessly complicated, with their use-cases being rather
+limited, as they do not come from a first-principles analysis of the modeling
+problem, and it is not straightforward to extend them beyond simple systems.
+The DeepMD methodology attempts to provide a more first principle-based
+approach to overcome the limitations associated with auxiliary quantities like
+the symmetry functions or the Coulomb matrix.
+
+Consider a system of $N$ atoms, where the coordinates of these atoms can be
+represented as a set of position vectors
+$\{\mathbf{R}_1, \dots, \mathbf{R}_N\}$, with each
+$\mathbf{R}_i \in \mathbb{R}^3$. DeepMD decomposes the total system energy $E$
+into a sum of energy contributions from individual atoms,
+\begin{equation}
+  E = \sum_i^N E_i,
+\end{equation}
+where $i$ is an index of an individual atom. Atomic energy $E_i$ is fully
+determined by the position of the $i$th atom and by the positions of its near
+neighbours,
+\begin{equation}
+  E_i = E_{s(i)}(\mathbf{R}_i, \{\mathbf{R}_j \mid j \in  N_{R_C}(i)\}),
+\end{equation}
+where $N_{R_C}(i)$ denotes the index set of the neighbour atoms of atom $i$
+within the cut-off radius $R_C$. $s(i)$ is the chemical species of atom $i$.
+For reasons discussed above, it is less than optimal to use the position
+vector data $\mathbf{R}_i, \{\mathbf{R}_j \mid j \in  N_{R_C}(i)\}$ when
+modeling the function $E_{s(i)}$ with DNN. Thus, the DeepMD method introduces
+a mapping from position vectors to "descriptors" of atomic chemical
+environment, that better capture the underlying symmetries.
+
+To construct the descriptor for atom $i$, we first calculate the relative
+positions of its neighbouring atoms,
+\begin{equation}
+  \mathbf{R}_{ij} = \mathbf{R}_j - \mathbf{R}_i.
+\end{equation}
+The coordinate of the relative position $R_{ij}$ under the lab reference frame
+$\{\mathbf{e}_x^0, \mathbf{e}_y^0, \mathbf{e}_z^0\}$ is denoted by
+$(x_{ij}^0, y_{ij}^0, z_{ij}^0)$, such that
+\begin{equation}
+  \mathbf{R}_{ij} = x_{ij}^0 \mathbf{e}_x^0 + y_{ij}^0 \mathbf{e}_y^0
+    + z_{ij}^0 \mathbf{e}_z^0.
+\end{equation}
+Both representations $\mathbf{R}_{ij}$ and $(x_{ij}^0, y_{ij}^0, z_{ij}^0)$
+preserve the translational symmetry. The rotational symmetry is captured by
+constructing a local frame of reference and using it to express the
+coordinates of neighbouring atoms. We first pick atoms with indices $a(i)$ and
+$b(i)$ from the neighbours $N_{R_C}(i)$ by certain user-specified rules. The
+local reference frame $\{\mathbf{e}_{i1}, \mathbf{e}_{i2}, \mathbf{e}_{i3} \}$
+of atom $i$ is then constructed by
+\begin{align}
+  \mathbf{e}_{i1} = \mathbf{e}(\mathbf{R}_{ia(i)}), \\
+  \mathbf{e}_{i2} = \mathbf{e}\left(
+    \mathbf{R}_{ib(i)} -
+    (\mathbf{R}_{i b(i)} \cdot \mathbf{e}_{i1}) \mathbf{e}_{i1}
+  \right), \\
+  \mathbf{e}_{i3} = \mathbf{e}_{i1} \times \mathbf{e}_{i2},
+\end{align}
+where $\mathbf{e}(\mathbf{R})$ denotes the normalized vector of $\mathbf{R}$,
+such that $\mathbf{e}(\mathbf{R}) = \mathbf{R} / |\mathbf{R}|$. The local
+coordinate $(x_{ij}, y_{ij}, z_{ij})$ is then calculated from the lab
+coordinate $(x_{ij}^0, y_{ij}^0, z_{ij}^0)$ through the transformation
+\begin{equation}
+  (x_{ij}, y_{ij}, z_{ij}) = (x_{ij}^0, y_{ij}^0, z_{ij}^0) \cdot
+    \mathcal{R}(\mathbf{R}_{i a(i)}, \mathbf{R}_{i b(i)}),
+\end{equation}
+where
+\begin{equation}
+  \mathcal{R}(\mathbf{R}_{i a(i)}, \mathbf{R}_{i b(i)}) =
+    [\mathbf{e}_{i1}, \mathbf{e}_{i2}, \mathbf{e}_{i3}]
+\end{equation}
+is the rotation matrix with the columns being the local reference frame
+vectors. The descriptive information of atom $i$ given by neighboring atom $j$
+is then obtained by using either both the radial and angular information or
+only the radial information
+\begin{equation}
+  \{D_{ij}\} = \begin{cases}
+    \left\{
+      \frac{1}{R_{ij}},
+      \frac{x_{ij}}{R_{ij}},
+      \frac{y_{ij}}{R_{ij}},
+      \frac{z_{ij}}{R_{ij}}
+    \right\}, & \text{full information;} \\
+    \left\{\frac{1}{R_{ij}}\right\}, & \text{radial-only information.}
+  \end{cases}
+\end{equation}
+The order of the neighbour indices $j$ in $\{D_{ij}\}$ is fixed by sorting
+them first by their chemical species and then, within each chemical species,
+according to their inverse distances to the atom $i$, i.e., $1/R_{ij}$. The
+permutational symmetry is naturally preserved in this way. This is the full
+procedure for constructing the mapping from atomic positions to descriptors,
+which is denoted by
+\begin{equation}
+  \mathbf{D}_i = \mathbf{D}_i(
+    \mathbf{R}_i, \{\mathbf{R}_j \mid j \in  N_{R_C}(i)\}
+  ).
+\end{equation}
+The descriptors $\mathbf{D}_i$ preserve the translational, rotational, and
+permutational symmetries and are passed to a DNN to evaluate the atomic
+energies. This process can be mathematically expressed as
+\begin{equation}
+  E_{s(i)} = \mathcal{N}_{s(i)}(\mathbf{D}_{i}),
+\end{equation}
+The DNN used by DeepMD method is a feed forward neural network with multiple
+hidden layers, where each layer transforms the input data $\mathbf{d}_i^{p-1}$
+from the previous layer into $\mathbf{d}_i^{p}$ and passes them as an input
+to the next layer. The transformation consists of a linear and a non-linear
+step, i.e.
+\begin{equation}
+  \mathbf{d}_{i}^{p} = \varphi \left(
+    \mathbf{W}_{s(i)}^p \mathbf{d}_i^{p-1} + \mathbf{b}^p_{s(i)}
+  \right),
+\end{equation}
+where $\varphi$ represents the non-linear function and $\mathbf{W}_{s(i)}^p$
+and $\mathbf{b}^p_{s(i)}$ are free parameters of the linear transformation to
+be optimize by the training process.
