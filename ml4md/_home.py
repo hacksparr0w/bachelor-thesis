@@ -29,7 +29,7 @@ def list_models() -> list[Model]:
 
         with config_file.open(encoding="utf-8") as stream:
             config = json.load(stream)
-            model = Model(root_dir, model_file, config)
+            model = Model(root_dir, model_file, evaluation_file, config)
 
             models.append(model)
 
