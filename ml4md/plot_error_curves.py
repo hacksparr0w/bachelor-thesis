@@ -109,8 +109,8 @@ def main():
                 showgrid=False,
                 linewidth=1,
                 linecolor="black",
-                mirror=True,
-                ticks="outside",
+                mirror="allticks",
+                ticks="inside",
                 showline=True
             ),
             yaxis=dict(
@@ -118,8 +118,8 @@ def main():
                 showgrid=False,
                 linewidth=1,
                 linecolor="black",
-                mirror=True,
-                ticks="outside",
+                mirror="allticks",
+                ticks="inside",
                 showline=True
             ),
             xaxis_title="Parameters",
@@ -139,8 +139,8 @@ def main():
                 showgrid=False,
                 linewidth=1,
                 linecolor="black",
-                mirror=True,
-                ticks="outside",
+                mirror="allticks",
+                ticks="inside",
                 showline=True
             ),
             yaxis=dict(
@@ -148,8 +148,8 @@ def main():
                 showgrid=False,
                 linewidth=1,
                 linecolor="black",
-                mirror=True,
-                ticks="outside",
+                mirror="allticks",
+                ticks="inside",
                 showline=True
             ),
             xaxis_title="Parameters",
@@ -252,8 +252,8 @@ def main():
                 showgrid=False,
                 linewidth=1,
                 linecolor="black",
-                mirror=True,
-                ticks="outside",
+                mirror="allticks",
+                ticks="inside",
                 showline=True
             ),
             yaxis=dict(
@@ -261,8 +261,8 @@ def main():
                 showgrid=False,
                 linewidth=1,
                 linecolor="black",
-                mirror=True,
-                ticks="outside",
+                mirror="allticks",
+                ticks="inside",
                 showline=True
             ),
             xaxis_title="Parameters",
@@ -282,8 +282,8 @@ def main():
                 showgrid=False,
                 linewidth=1,
                 linecolor="black",
-                mirror=True,
-                ticks="outside",
+                mirror="allticks",
+                ticks="inside",
                 showline=True
             ),
             yaxis=dict(
@@ -291,8 +291,8 @@ def main():
                 showgrid=False,
                 linewidth=1,
                 linecolor="black",
-                mirror=True,
-                ticks="outside",
+                mirror="allticks",
+                ticks="inside",
                 showline=True
             ),
             xaxis_title="Parameters",
@@ -312,7 +312,7 @@ def main():
 
         fitting_force_figure.write_image(
             output_dir / "fitting_force_error_evaluation.jpg",
-            scale=8   
+            scale=8
         )
 
 

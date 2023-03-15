@@ -27,6 +27,9 @@ def main():
     output_dir = Path(args[0]).resolve()
 
     for model in _home.list_models():
+        if not model.l_curve_file.exists():
+            continue
+
         data = np.genfromtxt(model.l_curve_file)
 
         energy_l_curve_output_file = (
@@ -94,8 +97,8 @@ def plot_l_cuve(data, variant, output_file, savgol_window=40, subplots=False):
         showgrid=False,
         linewidth=1,
         linecolor="black",
-        mirror=True,
-        ticks="outside",
+        mirror="allticks",
+        ticks="inside",
         showline=True,
         exponentformat="e"
     )
@@ -112,8 +115,8 @@ def plot_l_cuve(data, variant, output_file, savgol_window=40, subplots=False):
         showgrid=False,
         linewidth=1,
         linecolor="black",
-        mirror=True,
-        ticks="outside",
+        mirror="allticks",
+        ticks="inside",
         showline=True,
         row=1 if subplots else None,
         col=1 if subplots else None
@@ -126,8 +129,8 @@ def plot_l_cuve(data, variant, output_file, savgol_window=40, subplots=False):
             showgrid=False,
             linewidth=1,
             linecolor="black",
-            mirror=True,
-            ticks="outside",
+            mirror="allticks",
+            ticks="inside",
             showline=True,
             row=2,
             col=1
