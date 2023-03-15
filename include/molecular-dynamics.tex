@@ -324,4 +324,37 @@ step, i.e.
 \end{equation}
 where $\varphi$ represents the non-linear function and $\mathbf{W}_{s(i)}^p$
 and $\mathbf{b}^p_{s(i)}$ are free parameters of the linear transformation to
-be optimize by the training process.
+be optimize by the training process. In order to determine the unknown
+parameters ${\mathbf{W}{s}^p, \mathbf{b}s^p}$ of the linear transformation, a
+loss function $L$ is minimized during the training process. This loss
+function is calculated by taking a weighted sum of mean square errors of the
+predictions made by the DNN. Specifically, the loss function
+$L(p\epsilon, p_f, p\xi)$ is defined as follows:
+\begin{equation}
+  L(p_\epsilon, p_f, p_\xi) = \frac{p_\epsilon}{N} \Delta E^2 +
+  \frac{p_f}{3N} \sum_i |\Delta \mathbf{F}_i|^2
+  + \frac{p_\xi}{9N} ||\Delta \Xi||^2,
+\end{equation}
+where $\Delta E$, $\Delta \mathbf{F}_i$ and $\Delta \Xi$ denote root mean
+square (RMS) error in energy, force, and virial, respectively. The weights
+$p_\epsilon$, $p_f$ and $p_\xi$ are varying during the learning process. Their
+dependence on the learning step $t$ is defined as
+\begin{equation}
+  p(t) = p^\text{limit} \left[1 - \frac{r_l(t)}{r_l^0}\right]
+  + p^\text{start} \left[\frac{r_l(t)}{r_l^0}\right],
+\end{equation}
+where $r_l(t)$ and $r_l^0$ are the learning rate at training step $t$ and the
+learning rate ate the beginning, respectively. The prefactors $p^\text{limit}$
+and $p^\text{start}$ are specified by the user configuration. It is easy to
+observe that as the learning process starts the factor $\frac{r_l(t)}{r_l^0}$
+tends to $1$ and thus the value of $p(t)$ tends to $p^\text{start}$. When the
+learning process ends, the factor $1 - \frac{r_l(t)}{r_l^0}$ tends to $1$ and
+thus the value of $p(t)$ tends to $p^\text{limit}$. By tuning these
+parameters a user can precisely specify what physical properties of the system
+should the model be learning to predict at different stages of the learning
+process. The learning rate $r_l(t)$ function is in our case given by
+\begin{equation}
+  r_l(t) = r_l^0 \times d_r^{t/d_s},
+\end{equation}
+where $d_r$ and $d_s$ are the decay rate and decay steps, respectively. The
+decay rate $d_r$ is required to be less than 1.

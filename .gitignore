@@ -15,7 +15,6 @@ ml4md/dataset/crystalline
 *.log
 *.lot
 *.toc
-*.pdf
 *.markdown.in
 *.markdown.lua
 *.markdown.out
