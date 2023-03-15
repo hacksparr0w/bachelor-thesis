@@ -41,7 +41,7 @@ def evaluate_model(model: Model):
     training_config = model.config["training"]
 
     training_system_dir = (
-        model.root_dir / training_config["training_data"]["systems"][0]
+        model.root_dir / training_config["training_data"]["systems"][1]
     )
 
     validation_system_dir = (
