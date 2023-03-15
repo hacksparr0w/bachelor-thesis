@@ -71,7 +71,7 @@ def main():
                 x=x,
                 y=validation_energy_rmse,
                 line=dict(width=1.5, color=color),
-                name=name
+                name=f"{name}, validation"
             )
         )
 
@@ -80,8 +80,7 @@ def main():
                 x=x,
                 y=training_energy_rmse,
                 line=dict(width=1.5, dash="dash", color=color),
-                name=name,
-                showlegend=False
+                name=f"{name}, training",
             )
         )
 
@@ -90,7 +89,7 @@ def main():
                 x=x,
                 y=validation_force_rmse,
                 line=dict(width=1.5, color=color),
-                name=name
+                name=f"{name}, validation"
             )
         )
 
@@ -99,8 +98,7 @@ def main():
                 x=x,
                 y=training_force_rmse,
                 line=dict(width=1.5, dash="dash", color=color),
-                name=name,
-                showlegend=False
+                name=f"{name}, training"
             )
         )
 
@@ -127,7 +125,7 @@ def main():
             xaxis_title="Parameters",
             legend=dict(
                 x=.05,
-                y=.25,
+                y=.2,
                 traceorder="normal",
                 bordercolor="#000",
                 borderwidth=1
@@ -156,8 +154,8 @@ def main():
             ),
             xaxis_title="Parameters",
             legend=dict(
-                x=.05,
-                y=.25,
+                x=.6,
+                y=.5,
                 traceorder="normal",
                 bordercolor="#000",
                 borderwidth=1
@@ -216,7 +214,7 @@ def main():
                 x=x,
                 y=validation_energy_rmse,
                 line=dict(width=1.5, color=color),
-                name=name
+                name=f"{name}, validation"
             )
         )
 
@@ -225,8 +223,7 @@ def main():
                 x=x,
                 y=training_energy_rmse,
                 line=dict(width=1.5, dash="dash", color=color),
-                name=name,
-                showlegend=False
+                name=f"{name}, training",
             )
         )
 
@@ -235,7 +232,7 @@ def main():
                 x=x,
                 y=validation_force_rmse,
                 line=dict(width=1.5, color=color),
-                name=name
+                name=f"{name}, validation"
             )
         )
 
@@ -244,8 +241,7 @@ def main():
                 x=x,
                 y=training_force_rmse,
                 line=dict(width=1.5, dash="dash", color=color),
-                name=name,
-                showlegend=False
+                name=f"{name}, training"
             )
         )
 
@@ -271,8 +267,8 @@ def main():
             ),
             xaxis_title="Parameters",
             legend=dict(
-                x=.05,
-                y=.95,
+                x=.02,
+                y=.98,
                 traceorder="normal",
                 bordercolor="#000",
                 borderwidth=1
@@ -301,8 +297,8 @@ def main():
             ),
             xaxis_title="Parameters",
             legend=dict(
-                x=.05,
-                y=.25,
+                x=.65,
+                y=.5,
                 traceorder="normal",
                 bordercolor="#000",
                 borderwidth=1
