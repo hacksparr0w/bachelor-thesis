@@ -80,18 +80,15 @@ $\mathbf{r}_i(t) = (x_i(t), y_i(t), z_i(t))$. A particle usually corresponds
 to an atom, although it may represent any simulable entity of interest that
 can be conveniently described by an interaction law. By Newton's second law
 the motion of each particle must obey the following relation
-
 \begin{equation}
   \mathbf{F}_i = m_i \diff[2]{\mathbf{r}_i}{t},
 \end{equation}
-
-\noindent where $m_i$ is the mass of $i$-th particle and $\mathbf{F}_i$ is the
+where $m_i$ is the mass of $i$-th particle and $\mathbf{F}_i$ is the
 force acting upon $i$-th particle. Interaction laws are usually specified by
 a potential function $U(\mathbf{r}_1, \dots, \mathbf{r}_N)$, which represents
 the potential energy of $N$ interacting particles as a function of their
 positions. Given the potential, the force acting upon $i$-th atom is
 determined by the gradient with respect to particle displacements
-
 \begin{equation}
   \mathbf{F}_i = - \nabla_{\mathbf{r}_i} U(\mathbf{r}_1, \dots, \mathbf{r}_N)
   = - \left(
@@ -101,7 +98,7 @@ determined by the gradient with respect to particle displacements
   \right).
 \end{equation}
 
-\noindent Let's briefly talk about the meaning and form of the potential $U$
+Let's briefly talk about the meaning and form of the potential $U$
 in MD simulations. Any quantum-chemistry textbook would insist, that in order
 to appropriately examine a behavior of molecule, we can't just look at its
 individual atoms. The quantum-mechanical lense reveals, that when atoms bond
@@ -149,7 +146,6 @@ biosystem simulations
   &+ \sum_\text{atom pairs} k \frac{q_i q_j}{r_{ij}}.
 \end{alignedat}
 \end{equation}
-
 The covalent character of the system is defined by the first three terms of
 the system, where the summation indices run over all the bonds, angles and
 torsions. In contrast, the last two terms are only defined by atom pairs,
@@ -176,15 +172,88 @@ that is, the initial positions $\mathbf{r}_{i0}$ and initial velocities
 $\mathbf{v}_{i0}$ of the particles in the system. Then we have to use a
 numerical integrator to continually make finite time interval steps and find
 the successive values of positions $\mathbf{r}_i(t)$ and velocities
-$\mathbf{v}_{i}(t)$ in the time evolution of the system.
+$\mathbf{v}_{i}(t)$ in the time evolution of the system. A very popular
+numerical integration algorithm is the Verlet algorithm, which gained its
+popularity for MD simulations mainly due to its simplicity and stability.
+The fundamental equation for this algorithm can be obtained from the Taylor
+series expansions of the position vector $\mathbf{r}_i(t)$; the full equation
+reads
+\begin{equation}
+  \mathbf{r}_i (t + \Delta t) \doteq 2 \mathbf{r}_i(t)
+    - \mathbf{r}_i(t - \Delta t) + \frac{\mathbf{F}_i(t)}{m_i} \Delta t^2
+  \label{eq:verlet}
+\end{equation}
+Equation \eqref{eq:verlet} is accurate up to terms of the fourth power in
+$\Delta t$. Velocities can be calculated from the positions or using
+alternative leapfrog or velocity Verlet schemes. Precise trajectories
+correspond to the scenario where the integration step size approaches
+infinitesimally small values. However, it is preferable to utilize larger time
+steps in order to sample larger trajectories. In practical applications, the
+time step $\Delta t$ is dictated by the fast motions present within the
+simulation.
 
 \subsection{\textit{Ab Initio} Methods}
-
-
+In classical molecular dynamics, the forces acting on the atoms are derived
+from a potential energy function, which is usually based on empirical or
+semi-empirical force fields. These force fields are parameterized using
+experimental data or quantum mechanical calculations, and they provide an
+approximate description of the interactions between atoms. Classical molecular
+dynamics is generally not very accurate because it relies on approximations
+and empirical parameters and can't account for dynamical events and quantum
+effects such as changes in chemical bonding, the presence of important
+noncovalent intermediates and tunnelling of protons or electrons. The changes
+in bonding and the existence of intermediates can be accounted for using
+first-principles (or \textit{ab initio}) MD. \textit{Ab initio} molecular
+dynamics (AIMD) is generally more accurate than classical molecular dynamics
+because it directly calculates the electronic structure of the system. This
+makes it suitable for studying systems where electronic structure plays a
+critical role. AIMD is much more computationally expensive, which limits its
+applicability to relatively small systems and short timescales. The forces and
+electronic structure are determined by solving the Schrödinger equation,
+typically using methods from quantum physics, such as the Hartree-Fock method,
+density functional theory (DFT), or other wavefunction-based methods.
 
 \subsection{Density Functional Theory}
+Over the last three decades, density functional theory has emerged as the
+leading approach for conducting quantum mechanical simulations of periodic
+systems. Recently, it has gained popularity among quantum chemists and has
+become extensively employed for simulating energy surfaces in molecular
+systems.
 
+Simulating an atomic system from first principles means solving the quantum
+many-body problem. If we have $N$ nuclei, we are dealing with a problem of
+$N + ZN$ electromagnetically interacting particles. The Hamiltonian of such
+problem is
+\begin{equation}
+\begin{alignedat}{2}
+  \hat H = & - \frac{\hbar^2}{2} \sum_i \frac{\nabla^2_{\mathbf{R}_i}}{M_i}
+  - \frac{\hbar^2}{2} \sum_i \frac{\nabla^2_{\mathbf{r}_i}}{m_e} \\
+  & - \frac{1}{4 \pi \varepsilon_0} \sum_{ij} \frac{e^2 Z_i}{|\mathbf{R}_i - \mathbf{r}_j|}
+  + \frac{1}{8 \pi \varepsilon_0} \sum_{i\neq j} \frac{e^2}{|\mathbf{r}_i - \mathbf{r}_j|} \\
+  & + \frac{1}{8 \pi \varepsilon_0} \sum_{i \neq j} \frac{e^2 Z_i Z_j}{|\mathbf{R}_i - \mathbf{R}_j|}.
+\end{alignedat}
+\end{equation}
+The mass of the nucleus at $\mathbf{R}_i$ is $M_i$, the electrons hamve mass
+$m_e$ and are at $\mathbf{r}_i$. The first term is the kinetic energy operator
+for the nuclei, the second for the electrons. The last three terms describe
+the Coulomb interaction between electrons and nuclei, between electrons and
+other electrons, and between nuclei and other nuclei. It is out of question
+to solve this problem exactly, therefore we have to introduce some
+approximations, leadin to the formulation of DFT.
 
+Firstly, we observe that the nuclei are much heavier and consequently move
+much slower than the electrons. This observation justifies rewriting the
+Hamiltonian such that
+\begin{equation}
+  \hat H = \hat T + \hat V + \hat V_\mathrm{ext}.
+\end{equation}
+Now $\hat T$ represents only the kinetic energy of the electron gas, as this
+approximation assumes the nuclei are effectively frozen at their positions.
+The term $\hat V$ now represents the electron-electron interaction only. The
+last term $\hat V_\mathrm{ext}$ is due to the potential energy of the
+electrons in the (now external) potential of the nuclei. System-specific
+information is now entirely given by the term $\hat V_\mathrm{ext}$. This
+approximation is called the The Born--Oppenheimer approximation.
 
 \subsection{Machine Learning}
 
