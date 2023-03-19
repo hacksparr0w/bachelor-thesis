@@ -218,7 +218,9 @@ Over the last three decades, density functional theory has emerged as the
 leading approach for conducting quantum mechanical simulations of periodic
 systems. Recently, it has gained popularity among quantum chemists and has
 become extensively employed for simulating energy surfaces in molecular
-systems.
+systems. While its origins can be traced back to the early 1930s, DFT was
+formally established in 1964 through two theorems developed by Hohenberg and
+Kohn.
 
 Simulating an atomic system from first principles means solving the quantum
 many-body problem. If we have $N$ nuclei, we are dealing with a problem of
@@ -245,6 +247,7 @@ Firstly, we observe that the nuclei are much heavier and consequently move
 much slower than the electrons. This observation justifies rewriting the
 Hamiltonian such that
 \begin{equation}
+  \label{eq:bo-hamiltonian}
   \hat H = \hat T + \hat V + \hat V_\mathrm{ext}.
 \end{equation}
 Now $\hat T$ represents only the kinetic energy of the electron gas, as this
@@ -255,9 +258,40 @@ electrons in the (now external) potential of the nuclei. System-specific
 information is now entirely given by the term $\hat V_\mathrm{ext}$. This
 approximation is called the The Born--Oppenheimer approximation.
 
+The quantum many body problem obtained after the first approximation is much
+simpler than the original one, but still far too difficult to solve. To reduce
+the equation \eqref{eq:bo-hamiltonian} further, we introduce the two
+Hohenberg–-Kohn theorems.
+
+\begin{enumerate}
+  \item \textit{There is a one-to-one correspondence between the ground-state
+  density $\rho(\mathbf{r})$ of a many-electron system (atom, molecule, solid)
+  and the external potential $V_\mathrm{ext}$. An immediate consequence is
+  that the ground-state expectation value of any observable $\hat O$ is a
+  unique functional of the exact ground-state electron density}
+  \begin{equation}
+    \mel{\Psi}{\hat O}{\Psi} = O[\rho].
+  \end{equation}
+
+  \item \textit{For $\hat O$ being the hamiltonian $\hat H$, the ground-state
+  total energy functional $H[\rho] \equiv E_{V_\mathrm{ext}}[\rho]$ is of the
+  form}
+  \begin{equation}
+  \begin{alignedat}{2}
+    E_{V_\mathrm{ext}}[\rho]
+    &= \mel{\Psi}{\hat T + \hat V}{\Psi}
+    + \mel{\Psi}{\hat V_\mathrm{ext}}{\Psi} \\
+    &= F_{HK}[\rho] +
+    \int \rho(\mathbf{r}) V_\mathrm{ext}(\mathbf{r}) \, \mathrm{d}\mathbf{r},
+  \end{alignedat}
+  \end{equation}
+  \textit{where the Hohenberg-Kohn density functional $F_{HK}[\rho]$ is
+  universal for any many-electron system. $E_{V_\mathrm{ext}}[\rho]$ reaches its
+  minimal value (equal to the ground-state total energy) for the ground-state
+  density corresponding to $V_\mathrm{ext}$.}
+\end{enumerate}
+
 \subsection{Machine Learning}
-
-
 
 \subsection{Deep Potential Molecular Dynamics}
 
