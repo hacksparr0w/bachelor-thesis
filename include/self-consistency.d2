@@ -1,0 +1,66 @@
+start -> input -> calculate_vs -> calculate_h -> solve_h -> construct_rho -> compare -> stop
+
+compare -> input
+
+style: {
+  font-size: 50
+}
+
+start: {
+  shape: oval
+  label: "Start"
+  equation: |latex
+    \\Huge{\\text{guess $\\rho_0(\\mathbf{r})$}}
+  |
+}
+
+input: {
+  label: ""
+  equation: |latex
+    \\Huge{\\text{input: $\\rho_{n-1}(\\mathbf{r})$}}
+  |
+}
+
+calculate_vs: {
+  label: ""
+  equation: |latex
+    \\Huge\\text{calculate $V_H$ and $V_{xc}$}
+  |
+}
+
+calculate_h: {
+  label: ""
+  equation: |latex
+    \\Huge\\text{calculate $H_{KSn}$}
+  |
+}
+
+solve_h: {
+  label: ""
+  equation: |latex
+    \\Huge\\text{solve $H_{KSn} \\phi_{n} = \\varepsilon_{n} \\phi_n$}
+  |
+}
+
+construct_rho: {
+  label: ""
+  equation: |latex
+    \\Huge\\text{construct $\\rho_n(\\mathbf{r})$ from $\\phi_n$}
+  |
+}
+
+compare: {
+  shape: parallelogram
+  label: "Compare"
+  equation: |latex
+    \\Huge\\rho_n(\\mathbf{r}) \\stackrel{?}{=} \\rho_{n - 1}(\\mathbf{r})
+  |
+}
+
+stop: {
+  shape: oval
+  label: "Stop"
+  equation: |latex
+    \\Huge\\text{$\\rho_n(\\mathbf{r})$ is self-consistent density}
+  |
+}

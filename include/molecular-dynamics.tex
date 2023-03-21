@@ -403,8 +403,25 @@ solving conventional Schrödinger equation for system of $N$ interacting
 electrons, which would require us to resolve a complex system of coupled
 differential equations. It is important to note, however, that the
 single-particle wave functions $\phi_i(\mathbf{r})$ are not the wave functions
-of electrons and they do not have any physical meaning. Only the resultant
-ground-state density $\rho(\mathbf{r})$ is physically relevant.
+of electrons and they do not have any physical meaning -- they are only
+mathematical artifacts. Only the resultant ground-state density
+$\rho(\mathbf{r})$ is physically relevant.
+
+Both the Hartree operator $V_H$ and the exchange-correlation operator $V_{xc}$
+depend on the density $\rho(\mathbf{r})$, which in turn depends on the
+$\phi_i$ which are being searched. However, we can't write down and solve the
+equations for $\phi_i$, until we know the density $\rho(\mathbf{r})$. This
+chicken and egg scenario is known as the self-consistency problem and requires
+an iterative procedure with an initial guess of the density function to escape
+from this paradox.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=6.3cm]{image/self_consistency}
+  \end{center}
+  \caption{The logo of \acrlong{MU} at 6.3\,cm}
+  \label{fig:mulogo1}
+\end{figure}
 
 \subsection{Machine Learning}
 
