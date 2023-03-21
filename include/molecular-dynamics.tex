@@ -283,6 +283,7 @@ Hohenberg–-Kohn theorems.
     + \mel{\Psi}{\hat V_\mathrm{ext}}{\Psi} \\
     &= F_{HK}[\rho] +
     \int \rho(\mathbf{r}) V_\mathrm{ext}(\mathbf{r}) \, \mathrm{d}\mathbf{r},
+    \label{eq:hk-2}
   \end{alignedat}
   \end{equation}
   \textit{where the Hohenberg-Kohn density functional $F_{HK}[\rho]$ is
@@ -290,6 +291,120 @@ Hohenberg–-Kohn theorems.
   minimal value (equal to the ground-state total energy) for the ground-state
   density corresponding to $V_\mathrm{ext}$.}
 \end{enumerate}
+
+Let's pause and ponder the meaning of these theorems for a bit. Each
+many-electron system has a unique potential, and each system as a whole is
+represented by a unique ground-state many particle wave function, as governed
+by the hamiltonian \eqref{eq:bo-hamiltonian} and the Schrödinger equation.
+From this wavefunction, we can obtain the corresponding electron density using
+the density operator $\hat \rho$ which is defined as
+\begin{equation}
+  \hat \rho(\mathbf{r}) = \sum_i^N \delta(\mathbf{r}_i - \mathbf{r}).
+\end{equation}
+The first theorem of Hohenberg–-Kohn tells us, that there exists a one-to-one
+correspondence between the ground-state density and the external potential.
+The density contains as much information as the wave function does, meaning
+all observables can be retrieved from the density only and can be written as
+functionals of the density.
+
+The equation \label{eq:hk-2} suggests, that the energy contribution from the
+external potential can easily be calculated, given the density function
+$\rho(\mathbf{r})$. An explicit expression for $F_{HK}$ is not known,
+however, since the term is not dependent on the information of the nuclei and
+their position, it is a universal functional for any many-electron system and
+can be found. Moreover, the second theorem states that the ground-state
+density $\rho$ corresponding to the external potential
+$V_\mathrm{ext}(\mathbf{r})$ minimizes the total energy functional
+$E_{V_\mathrm{ext}}[\rho]$, which allows us to use the variational principle
+of Rayleigh--Ritz in order to find the ground-state density.
+
+Noting once again, that the the Hohenberg--Kohn functional $F_{HK}$ is only
+dependent on the electron structur and not on the structure of the nuclei, we
+can now proceed with finding an expression for $F_{HK}$. There exist several
+options for defining the energy of the electron many-body system. The exact
+solution is simply
+\begin{equation}
+  E_e = T + V,
+\end{equation}
+where $T$ and $V$ are the exact kinetic and electron-electron potential energy
+functionals. The Hartree--Fock solution is defined as
+\begin{equation}
+  E_{HF} = T_0 + \underbrace{(V_H + V_x)}_V,
+\end{equation}
+where $T_0$ is the functional for the kinetic energy of a non-interacting
+electron gas, $V_H$ stands for Hartree contribution and $V_x$ for exchange
+contribution. There's also the Hartree solution, which lacks the exchange
+contribution
+\begin{equation}
+  E_H = T0 + V_H.
+\end{equation}
+We use this solution as a definition for the exchange energy
+\begin{equation}
+  V_x = E_{HF} - E_H = V - V_H.
+\end{equation}
+We define the correlation energy as the difference between the
+exact solution and the Hartree--Fock solution
+\begin{equation}
+  V_c = E_e - E_{HF} = T - T_0.
+\end{equation}
+We can now rewrite the Hohenberg--Kohn functional
+\begin{equation}
+\begin{alignedat}{2}
+  F_{HK} &= T + V + T_0 - T_0 \\
+  &= T_0 + V + \underbrace{(T - T_0)}_{V_c} \\
+  &= T_0 + V + V_c + V_H - V_H \\
+  &= T_0 + V_H + V_c + \underbrace{(V - V_H)}_{V_x} \\
+  &= T_0 + V_H + \underbrace{(V_x + V_c)}_{V_{xc}}.
+\end{alignedat}
+\end{equation}
+The term $V_{xc}$ is called the exchange--correlation energy functional. We
+can write the energy functional explicitly as
+\begin{equation}
+  E_{V_\mathrm{ext}}[\rho] = T_0[\rho] + V_H[\rho] + V_{xc}[\rho]
+  + V_{ext}[\rho].
+\end{equation}
+The rewritten energy functional can be interpreted as an energy functional of
+a non-interacting classical electron gas, subject to the potential due to the
+nuclei and to the potential due to exchange and correlation effects. This is
+how the Kohn--Sham Hamiltonian is defined
+\begin{equation}
+\begin{alignedat}{2}
+  \hat H_{KS} &= \hat T_0 + \hat V_H + \hat V_{xc} + \hat V_{ext} \\
+  &= -\frac{\hbar^2}{2 m_e} \nabla_i^2
+  + \frac{e^2}{4 \pi \varepsilon_0} \int
+  \frac{\rho(\mathbf{r})}{|\mathbf{r} - \mathbf{r}_i|} \, \mathrm{d}\mathbf{r}
+  + \hat V_{xc} + \hat V_{ext}.
+\end{alignedat}
+\end{equation}
+The exchange-correlation potential is given by the functional derivative
+\begin{equation}
+  \hat V_{xc} = \frac{\delta V_{xc}[\rho]}{\delta \rho}.
+\end{equation}
+The theorem of Kohn and Sham can now be formulated as follows:
+\begin{displayquote}
+  \textit{
+    The exact ground-state density $\rho(\mathbf{r})$ of an N-electron system
+    is
+  }
+  \begin{equation}
+    \rho(\mathbf{r}) = \sum_{i=1}^N \phi_i(\mathbf{r})^* \phi_i(\mathbf{r}),
+  \end{equation}
+  \textit{
+    where the single-particle wave functions $\phi_i(\mathbf{r})$ are the $N$
+    lowest-energy solutions of the Kohn-Sham equation
+  }
+  \begin{equation}
+    \hat H_{KS} \phi_i = \varepsilon_i \phi_i.
+  \end{equation}
+\end{displayquote}
+This theorem enables us to recover the ground-state density by solving $N$
+Schrödinger-like equations for non-interacting single particles as opposed to
+solving conventional Schrödinger equation for system of $N$ interacting
+electrons, which would require us to resolve a complex system of coupled
+differential equations. It is important to note, however, that the
+single-particle wave functions $\phi_i(\mathbf{r})$ are not the wave functions
+of electrons and they do not have any physical meaning. Only the resultant
+ground-state density $\rho(\mathbf{r})$ is physically relevant.
 
 \subsection{Machine Learning}
 
