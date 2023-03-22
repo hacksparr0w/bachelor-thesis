@@ -2,27 +2,33 @@ start -> input -> calculate_vs -> calculate_h -> solve_h -> construct_rho -> com
 
 compare -> input
 
-style: {
-  font-size: 50
-}
-
 start: {
   shape: oval
   label: "Start"
+  style: {
+    fill: white
+    font-size: 46
+  }
   equation: |latex
-    \\Huge{\\text{guess $\\rho_0(\\mathbf{r})$}}
+    \\Huge\\text{guess $\\rho_0(\\mathbf{r})$}
   |
 }
 
 input: {
   label: ""
+  style: {
+    fill: white
+  }
   equation: |latex
-    \\Huge{\\text{input: $\\rho_{n-1}(\\mathbf{r})$}}
+    \\Huge\\text{input: $\\rho_{n-1}(\\mathbf{r})$}
   |
 }
 
 calculate_vs: {
   label: ""
+  style: {
+    fill: white
+  }
   equation: |latex
     \\Huge\\text{calculate $V_H$ and $V_{xc}$}
   |
@@ -30,6 +36,9 @@ calculate_vs: {
 
 calculate_h: {
   label: ""
+  style: {
+    fill: white
+  }
   equation: |latex
     \\Huge\\text{calculate $H_{KSn}$}
   |
@@ -37,6 +46,9 @@ calculate_h: {
 
 solve_h: {
   label: ""
+  style: {
+    fill: white
+  }
   equation: |latex
     \\Huge\\text{solve $H_{KSn} \\phi_{n} = \\varepsilon_{n} \\phi_n$}
   |
@@ -44,6 +56,9 @@ solve_h: {
 
 construct_rho: {
   label: ""
+  style: {
+    fill: white
+  }
   equation: |latex
     \\Huge\\text{construct $\\rho_n(\\mathbf{r})$ from $\\phi_n$}
   |
@@ -52,6 +67,10 @@ construct_rho: {
 compare: {
   shape: parallelogram
   label: "Compare"
+  style: {
+    font-size: 46
+    fill: white
+  }
   equation: |latex
     \\Huge\\rho_n(\\mathbf{r}) \\stackrel{?}{=} \\rho_{n - 1}(\\mathbf{r})
   |
@@ -60,6 +79,10 @@ compare: {
 stop: {
   shape: oval
   label: "Stop"
+  style: {
+    font-size: 46
+    fill: white
+  }
   equation: |latex
     \\Huge\\text{$\\rho_n(\\mathbf{r})$ is self-consistent density}
   |

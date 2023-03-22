@@ -126,11 +126,6 @@ classical MD are based on empirical potentials with a specific functional
 form, representing the physics and chemistry of the systems of
 interest. The following equation is an example of such a force field, used in
 biosystem simulations
-
-%
-% TODO: Include a brief discussion of MD limitations, scaling, etc.
-%
-
 \begin{equation}
 \begin{alignedat}{2}
   U(\mathbf{r}_1, \dots, \mathbf{r}_N) = &
@@ -413,17 +408,30 @@ $\phi_i$ which are being searched. However, we can't write down and solve the
 equations for $\phi_i$, until we know the density $\rho(\mathbf{r})$. This
 chicken and egg scenario is known as the self-consistency problem and requires
 an iterative procedure with an initial guess of the density function to escape
-from this paradox.
+from this paradox. The process is further described in figure
+\ref{fig:self-consistency}.
 
 \begin{figure}
   \begin{center}
-    \includegraphics[width=6.3cm]{image/self_consistency}
+    \includegraphics[width=7.3cm]{image/self_consistency}
   \end{center}
-  \caption{The logo of \acrlong{MU} at 6.3\,cm}
-  \label{fig:mulogo1}
+  \caption{Flowchart for solving the self-consistent DFT problem.}
+  \label{fig:self-consistency}
 \end{figure}
 
 \subsection{Machine Learning}
+
+Until recently, classical molecular dynamics simulations based on empirical
+force fields and \textit{ab initio} calculations were the only available
+methods in computational physicists' toolbox. However, the rapid advent of
+machine learning and artificial intelligence algorithms drastically changed
+the landscape of physical simulations. When trained on large datasets of
+atomic configurations and corresponding potential energies and forces,
+ML models can reproduce the original data accurately, while still retaining
+the linearly scaling computational cost of classical MD simulations. Although
+ML methods are often quite data hungry, their accuracy, scalability, and
+transferability make them a very attractive alternative for various MD
+applications.
 
 \subsection{Deep Potential Molecular Dynamics}
 
