@@ -6,6 +6,8 @@ ml4md/dataset/amorphous
 ml4md/dataset/combined
 ml4md/dataset/crystalline
 
+log.lammps
+
 *.aux
 *.bcf
 *.bbl
@@ -20,3 +22,4 @@ ml4md/dataset/crystalline
 *.markdown.out
 *.run.xml
 *.out
+*.dump
