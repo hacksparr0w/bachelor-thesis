@@ -94,16 +94,17 @@ def main():
             linecolor="black",
             mirror="allticks",
             ticks="inside",
-            showline=True
+            showline=True,
+            zeroline=False
         ),
         legend=dict(
-            x=.66,
+            x=.60,
             y=.96,
             traceorder="normal",
             bordercolor="#000",
             borderwidth=1
         ),
-        xaxis_title=r"$V \, [\mathrm{Å}]$",
+        xaxis_title=r"$V \, [\mathrm{Å}^3]$",
         yaxis_title=r"$E \, [\mathrm{eV}/\mathrm{atom}]$"
     )
 
