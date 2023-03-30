@@ -71,16 +71,40 @@ def main():
             go.Scatter(
                 x=v_p,
                 y=e_p,
-                mode="lines",
-                marker_color=color,
+                line=dict(width=1.5, color=color),
                 name=f"{eos_fit.eos.title()} fit"
             )
         )
 
     figure.update_layout(
         title=data.title,
+        font_color="#000",
+        plot_bgcolor="#fff",
+        xaxis=dict(
+            showgrid=False,
+            linewidth=1,
+            linecolor="black",
+            mirror="allticks",
+            ticks="inside",
+            showline=True
+        ),
+        yaxis=dict(
+            showgrid=False,
+            linewidth=1,
+            linecolor="black",
+            mirror="allticks",
+            ticks="inside",
+            showline=True
+        ),
+        legend=dict(
+            x=.66,
+            y=.96,
+            traceorder="normal",
+            bordercolor="#000",
+            borderwidth=1
+        ),
         xaxis_title=r"$V \, [\mathrm{Å}]$",
-        yaxis_title=r"$E \, [\mathrm{eV}]$"
+        yaxis_title=r"$E \, [\mathrm{eV}/\mathrm{atom}]$"
     )
 
     figure.write_image(sys.stdout.buffer, format="jpg")
