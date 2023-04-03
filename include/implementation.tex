@@ -1,7 +1,78 @@
-\chapter{Implementation}
+\chapter{Implementation and Methodology}
 
-\subsection{LAMMPS}
+The implementation of the DeepMD protocol employed in this thesis is based on
+the DeepMD-kit software suite \cite{Wang_DeePMD-kit_A_deep_2018}. DeepMD-kit
+uses TensorFlow \cite{tensorflow2015-whitepaper} to provide an efficient and
+flexible toolkit for utilizing the DeepMD scheme. DeepMD-kit comes with an
+interface to the LAMMPS classical molecular dynamics code \cite{LAMMPS},
+which was used in this work for computing all the material properties with the
+trained machine learning models. The models were trained on MD data generated
+with OpenMX, a DFT-based nanoscale material simulations software
+\footnote{
+    See \url{https://www.openmx-square.org/}.
+}. The Python programming language
+\footnote{
+    See \url{https://www.python.org/}.
+} alongside with its multitude of scientific computation packages was used for
+building the training and evaluation infrastructure. All of the code needed to
+reproduce the results presented in this thesis is available online
+\footnote{
+    See \url{https://github.com/hacksparr0w/bachelor-thesis}
+}.
 
-\subsection{DeePMD-kit}
+\section{Preparing the DFT Datasets}
 
-\subsection{Active Learning}
+As already stated, all DFT trajectories were calculated using OpenMX. Since
+the computation resources available for this work were quite limited, we
+choose to only work with simple systems of carbon, as they do not exhibit any
+complicated quantum mechanical effects and thus should be easier to model and
+train on. To see how well the models perform on wide variety of learning data,
+three distinct datasets were prepared -- an amorphous carbon dataset, a
+crystalline carbon dataset, and a mixed dataset containing both the amorphous
+and the crystalline frames. Each dataset contains a selection of frames taken
+from OpenMX simulations of carbon systems with distinct volumes. After the
+simulation frames were generated, they were further distilled down as to not
+include frames that were too similar to each other. This was done simply by
+removing frames that were too close to each other in terms of their time step. 
+The detailed parameters for each used dataset are listed in table
+\ref{tab:datasets}.
+
+%%
+%% TODO: Elaborate on the carbon system parameters (no. atoms, box size, etc.)
+%%
+
+\begin{table}
+  \begin{tabularx}{\textwidth}{lllll}
+    \toprule
+    \multicolumn{1}{c}{} & \multicolumn{2}{c}{Training} & \multicolumn{2}{c}{Validation} \\
+    Dataset & Samples & Frames & Samples & Frames \\
+    \midrule
+    Crystalline & c-0.99 & 200 & c-1.01 & 200 \\
+     & c-1.03 & 200 & & \\
+    \midrule
+    Amorphous & a-2.15 & 150 & a-2.25 & 150 \\
+     & a-2.20 & 150 & a-2.31 & 150 \\
+     & a-2.29 & 150 & & \\
+     & a-2.30 & 150 & & \\
+     & a-2.35 & 150 & & \\
+     & a-2.40 & 150 & & \\
+    \midrule
+    Combined & c-0.99 & 200 & c-1.01 & 200 \\
+     & c-1.03 & 200 & & \\
+     & a-2.15 & 150 & a-2.25 & 150 \\
+     & a-2.20 & 150 & a-2.31 & 150 \\
+     & a-2.29 & 150 & & \\
+     & a-2.30 & 150 & & \\
+     & a-2.35 & 150 & & \\
+     & a-2.40 & 150 & & \\
+    \bottomrule
+  \end{tabularx}
+  \caption{The parameters used for the DFT datasets.}
+  \label{tab:datasets}
+\end{table}
+
+%%
+%% TODO: Include relevant OpenMX configuration here.
+%%
+
+\section{Choosing the DNN Hyperparameters}

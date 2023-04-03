@@ -68,7 +68,7 @@ implantation, and to investigate the physical properties of nanotechnological
 devices that cannot yet be manufactured. In 2015, for example, MD simulation
 has been reported for pharmacophore development and drug design.
 
-\subsection{Classical Methods}
+\section{Classical Methods}
 
 The classical MD implementation uses the so-called "ball and sticks" model,
 where atoms and molecules are treated as soft balls and their bonds are
@@ -187,7 +187,7 @@ steps in order to sample larger trajectories. In practical applications, the
 time step $\Delta t$ is dictated by the fast motions present within the
 simulation.
 
-\subsection{\textit{Ab Initio} Methods}
+\section{\textit{Ab Initio} Methods}
 In classical molecular dynamics, the forces acting on the atoms are derived
 from a potential energy function, which is usually based on empirical or
 semi-empirical force fields. These force fields are parameterized using
@@ -208,7 +208,7 @@ electronic structure are determined by solving the Schrödinger equation,
 typically using methods from quantum physics, such as the Hartree-Fock method,
 density functional theory (DFT), or other wavefunction-based methods.
 
-\subsection{Density Functional Theory}
+\section{Density Functional Theory}
 Over the last three decades, density functional theory has emerged as the
 leading approach for conducting quantum mechanical simulations of periodic
 systems. Recently, it has gained popularity among quantum chemists and has
@@ -413,13 +413,13 @@ from this paradox. The process is further described in figure
 
 \begin{figure}
   \begin{center}
-    \includegraphics[width=7.3cm]{image/self_consistency}
+    \includegraphics[width=7.3cm]{asset/self_consistency}
   \end{center}
   \caption{Flowchart for solving the self-consistent DFT problem.}
   \label{fig:self-consistency}
 \end{figure}
 
-\subsection{Machine Learning}
+\section{Machine Learning}
 
 Until recently, classical molecular dynamics simulations based on empirical
 force fields and \textit{ab initio} calculations were the only available
@@ -433,7 +433,7 @@ ML methods are often quite data hungry, their accuracy, scalability, and
 transferability make them a very attractive alternative for various MD
 applications.
 
-\subsection{Deep Potential Molecular Dynamics}
+\section{Deep Potential Molecular Dynamics}
 
 The Deep Potential Molecular Dynamics (DeepMD) \parencite{Zhang_2018} method
 uses neural networks for modeling many-body potentials and interatomic forces
