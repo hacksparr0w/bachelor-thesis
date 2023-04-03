@@ -9,10 +9,10 @@ which was used in this work for computing all the material properties with the
 trained machine learning models. The models were trained on MD data generated
 with OpenMX, a DFT-based nanoscale material simulations software
 \footnote{
-    See \url{https://www.openmx-square.org/}.
+    See \url{https://www.openmx-square.org/}
 }. The Python programming language
 \footnote{
-    See \url{https://www.python.org/}.
+    See \url{https://www.python.org/}
 } alongside with its multitude of scientific computation packages was used for
 building the training and evaluation infrastructure. All of the code needed to
 reproduce the results presented in this thesis is available online
@@ -24,13 +24,13 @@ reproduce the results presented in this thesis is available online
 
 As already stated, all DFT trajectories were calculated using OpenMX. Since
 the computation resources available for this work were quite limited, we
-choose to only work with simple systems of carbon, as they do not exhibit any
+choose to only work with simple systems of silicon, as they do not exhibit any
 complicated quantum mechanical effects and thus should be easier to model and
 train on. To see how well the models perform on wide variety of learning data,
-three distinct datasets were prepared -- an amorphous carbon dataset, a
-crystalline carbon dataset, and a mixed dataset containing both the amorphous
+three distinct datasets were prepared -- an amorphous silicon dataset, a
+crystalline silicon dataset, and a mixed dataset containing both the amorphous
 and the crystalline frames. Each dataset contains a selection of frames taken
-from OpenMX simulations of carbon systems with distinct volumes. After the
+from OpenMX simulations of silicon systems with distinct volumes. After the
 simulation frames were generated, they were further distilled down as to not
 include frames that were too similar to each other. This was done simply by
 removing frames that were too close to each other in terms of their time step. 
@@ -38,7 +38,7 @@ The detailed parameters for each used dataset are listed in table
 \ref{tab:datasets}.
 
 %%
-%% TODO: Elaborate on the carbon system parameters (no. atoms, box size, etc.)
+%% TODO: Elaborate on the silicon system parameters (no. atoms, box size, etc.)
 %%
 
 \begin{table}
@@ -76,3 +76,122 @@ The detailed parameters for each used dataset are listed in table
 %%
 
 \section{Choosing the DNN Hyperparameters}
+
+DeepMD provides a bright pallete of hyperparameters that can be used to
+fine-tune the behavior of a DNN. The following is an exceprt from a sample DNN
+training input:
+
+\shorthandoff{-}
+\begin{markdown*}{%
+  hybrid,
+  definitionLists,
+  footnotes,
+  inlineFootnotes,
+  hashEnumerators,
+  fencedCode,
+  citations,
+  citationNbsps,
+  pipeTables,
+  tableCaptions,
+}
+```
+{
+  "model": {
+    "descriptor": {
+      "type": "se_e2_a",
+      "sel": [70],
+      "rcut_smth": 1.8,
+      "rcut": 6.0,
+      "neuron": [5, 10, 20],
+      "resnet_dt": false,
+      "seed": 260222622
+    },
+    "fitting_net": {
+      "neuron": [20, 20, 20],
+      "resnet_dt": true,
+      "seed": 260222622
+    }
+  },
+  "learning_rate": {
+    "type":"exp",
+    "decay_steps": 20000,
+    "start_lr": 0.001,
+    "stop_lr": 1e-08
+  },
+  "loss": {
+    "type": "ener",
+    "start_pref_e": 1,
+    "limit_pref_e": 500,
+    "start_pref_f": 1000,
+    "limit_pref_f": 10,
+    "start_pref_v": 0,
+    "limit_pref_v": 0
+  },
+  "training": {
+    "numb_steps": 2000000,
+    "seed": 10
+  }
+}
+```
+\end{markdown*}
+\shorthandon{-}
+\noindent Let's briefly discuss the most import configuration parameters and
+their effect on the training and inference processes.
+
+The \texttt{model} configuration section defines the architecture details of
+a DNN. As per the definition in \eqref{eq:dnn}, the neural network is simply a
+function of descriptors that predicts an energy value. The DeepMD
+protocol implements this function as two separate neural networks,
+where one is called the descriptor network and is defined by the
+\texttt{model.descriptor} configuration section and the other is called the
+fitting network and is defined by the \texttt{model.fitting\_net}
+configuration section. The descriptor network is fed with the descriptor data
+as specified by the \texttt{model.descriptor.type} option, which makes it
+possible to control whether the network uses the full radial and angular
+information as per \eqref{eq:descriptor}. All of the models trained in this
+work use the full radial and angular information, so the
+\texttt{model.descriptor.type} option is always set to \texttt{se\_e2\_a}.
+The \texttt{model.descriptor.sel} option determines how many neighboring atoms
+for a given atom type (indices correspond to the indices of the
+\texttt{model.descriptor.type} option) are used for inference. The ideal value
+for this option can be determined empirically from the training data using the
+\texttt{dp neighbor-stat} utility that comes with the DeepMD-kit software.
+This value was kept constant for all models in this work. The cutoff radius
+specified by the \texttt{model.descriptor.rcut} and
+\texttt{model.descriptor.rcut\_smth} options limits the radius of the local
+environment constructed for each atom. The neighbours filtered with the
+\texttt{model.descriptor.sel} option must be within the cutoff radius, which
+is measured in \AA. One of the most important hyperparameters that have
+perhaps the most significant effect on the quality of the model inference are
+the \texttt{model.descriptor.neuron} and \texttt{model.fitting\_net.neuron}
+options. These options specify the number of layers and number of neurons in
+each layer of the neural network. One of the difficulties of using deep neural
+networks is coming up with a good heuristics for driving the decisions on the
+apropriate network atchitectures. A great portion of
+\autoref{chap:results-and-evaluation} focuses on choosing and evaluating
+various network architectures. When training the models, it is important to
+choose a random seed that is used by the internal pseudo-random number
+generator to initialize the weights and biases of the neural network. This is
+very important for two reasons. Firstly, we can ensure reproducibility of
+training results by using the same seeds. Secondly, we can use multiple
+models with different seeds and calculate inference uncertainties based on
+their inference results, which will differ the more the uncertain the models
+are. Comparison of models with different seeds is also discussed in later
+chapters.
+
+Another important configuration section is the \texttt{learning\_rate}
+section. It implements the learning rate function as per
+\eqref{eq:learning-rate}. The values of this configuration were optimized to
+go along with the empirically chosen number of training steps
+(the \texttt{training.numb\_steps} option) and do not differ on a per-model
+basis.
+
+Last but not least, the \texttt{loss} configuration section defines the
+behavior of the loss function by varying the loss prefactors defined in
+\eqref{eq:loss-weight}. In our case, the loss function is set so that it
+aggressively optimizes for the force predictions at the beginning of the
+training process and then gradually shifts the focus to the energy
+predictions.
+
+The whole training matrix of models used in this work is available in table
+\ref{tab:training-matrix}.

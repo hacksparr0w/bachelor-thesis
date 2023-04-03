@@ -537,6 +537,7 @@ only the radial information
     \right\}, & \text{full information;} \\
     \left\{\frac{1}{R_{ij}}\right\}, & \text{radial-only information.}
   \end{cases}
+  \label{eq:descriptor}
 \end{equation}
 The order of the neighbour indices $j$ in $\{D_{ij}\}$ is fixed by sorting
 them first by their chemical species and then, within each chemical species,
@@ -554,6 +555,7 @@ permutational symmetries and are passed to a DNN to evaluate the atomic
 energies. This process can be mathematically expressed as
 \begin{equation}
   E_{s(i)} = \mathcal{N}_{s(i)}(\mathbf{D}_{i}),
+  \label{eq:dnn}
 \end{equation}
 The DNN used by DeepMD method is a feed forward neural network with multiple
 hidden layers, where each layer transforms the input data $\mathbf{d}_i^{p-1}$
@@ -585,6 +587,7 @@ dependence on the learning step $t$ is defined as
 \begin{equation}
   p(t) = p^\text{limit} \left[1 - \frac{r_l(t)}{r_l^0}\right]
   + p^\text{start} \left[\frac{r_l(t)}{r_l^0}\right],
+  \label{eq:loss-weight}
 \end{equation}
 where $r_l(t)$ and $r_l^0$ are the learning rate at training step $t$ and the
 learning rate ate the beginning, respectively. The prefactors $p^\text{limit}$
@@ -597,7 +600,8 @@ parameters a user can precisely specify what physical properties of the system
 should the model be learning to predict at different stages of the learning
 process. The learning rate $r_l(t)$ function is in our case given by
 \begin{equation}
-  r_l(t) = r_l^0 \times d_r^{t/d_s},
+  r_l(t) = r_l^0 \cdot d_r^{t/d_s},
+  \label{eq:learning-rate}
 \end{equation}
 where $d_r$ and $d_s$ are the decay rate and decay steps, respectively. The
 decay rate $d_r$ is required to be less than 1.
