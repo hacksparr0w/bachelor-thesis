@@ -194,4 +194,36 @@ training process and then gradually shifts the focus to the energy
 predictions.
 
 The whole training matrix of models used in this work is available in table
-\ref{tab:training-matrix}.
+\ref{tab:models}.
+
+\begin{table}
+  \begin{tabularx}{\textwidth}{llll}
+    \toprule
+    Dataset & Descriptor Neurons & Fitting Neurons & Seed \\
+    \midrule
+    Amorphous & [5, 10, 20] & [20, 20, 20] & 260222622 \\
+     & [10, 20, 40] & [10, 10, 10] & 260222622 \\
+     & & [20, 20, 20] & 260222622 \\
+     & & [50, 50, 50] & 260222622 \\
+     & & [75, 75, 75] & 260222622 \\
+     & [25, 50, 100] & [20, 20, 20] & 260222622 \\
+    \midrule
+    Crystalline & [5, 10, 20] & [20, 20, 20] & 260222622 \\
+     & [10, 20, 40] & [10, 10, 10] & 260222622 \\
+     & & [20, 20, 20] & 260222622 \\
+     & & & 537693349 \\
+     & & & 836424474 \\
+     & & [50, 50, 50] & 260222622 \\
+     & & [75, 75, 75] & 260222622 \\
+     & [25, 50, 100] & [20, 20, 20] & 260222622 \\
+    \bottomrule
+    Combined & [5, 10, 20] & [20, 20, 20] & 260222622 \\
+     & [10, 20, 40] & [10, 10, 10] & 260222622 \\
+     & & [20, 20, 20] & 260222622 \\
+     & & [50, 50, 50] & 260222622 \\
+     & & [75, 75, 75] & 260222622 \\
+     & [25, 50, 100] & [20, 20, 20] & 260222622 \\
+  \end{tabularx}
+  \caption{The table of all trained models with their heyperparameters.}
+  \label{tab:models}
+\end{table}
