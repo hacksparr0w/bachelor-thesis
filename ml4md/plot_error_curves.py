@@ -129,7 +129,8 @@ def main():
                 traceorder="normal",
                 bordercolor="#000",
                 borderwidth=1
-            )
+            ),
+            margin=dict(l=1, r=1, b=1, t=1)
         )
 
         descriptor_force_figure.update_layout(
@@ -159,7 +160,8 @@ def main():
                 traceorder="normal",
                 bordercolor="#000",
                 borderwidth=1
-            )
+            ),
+            margin=dict(l=1, r=1, b=1, t=1)
         )
 
         descriptor_energy_figure.write_image(
@@ -272,7 +274,8 @@ def main():
                 traceorder="normal",
                 bordercolor="#000",
                 borderwidth=1
-            )
+            ),
+            margin=dict(l=1, r=1, b=1, t=1)
         )
 
         fitting_force_figure.update_layout(
@@ -302,7 +305,8 @@ def main():
                 traceorder="normal",
                 bordercolor="#000",
                 borderwidth=1
-            )
+            ),
+            margin=dict(l=1, r=1, b=1, t=1)
         )
 
         fitting_energy_figure.write_image(
