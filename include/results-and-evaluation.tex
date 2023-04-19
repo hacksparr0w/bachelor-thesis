@@ -3,7 +3,42 @@
 
 \section{DFT Data Convergence}
 
+The DFT data was generated using [3, 3, 3] K-Grid and energy cutoff of
+$250 \, \mathrm{eV}$. We can clearly see from the energy cutoff convergence
+plot (figure \ref{fig:dft_energy_cutoff_convergence}) that the energy errors
+due to numerical approximation are on the order of $10^{-2} \, \mathrm{eV}$
+the force errors due to numerical approximation are on the order of
+$10^{-5} \, \mathrm{eV}/\text{\AA}$. The K-Point convergence plot
+(figure \ref{fig:dft_kpoint_convergence}) shows that the energy errors due to
+numerical approximation are on the order of $10^{-3} \, \mathrm{eV}$ and the
+force errors due to numerical approximation are on the order of
+$10^{-4} \, \mathrm{eV}/\text{\AA}$. This means that our DNN model should
+ideally give energy predictions with an error of order
+$10^{-2} \, \mathrm{eV}$ and force predictions with an error of order
+$10^{-4} \, \mathrm{eV}/\text{\AA}$. Errors above these magnitudes are most
+likely not caused by the numerical approximations of the DFT data and the
+accuracy of the simulation algorithms chosen. It's also very important to note
+that the average forces are very close to zero.
 
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{
+      asset/cutoff_convergence.jpg
+    }
+  \end{center}
+  \caption{Energy cutoff convergence test for the DFT training data.}
+  \label{fig:dft_energy_cutoff_convergence}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{
+      asset/kpoint_convergence.jpg
+    }
+  \end{center}
+  \caption{K-Point convergence test for the DFT training data.}
+  \label{fig:dft_kpoint_convergence}
+\end{figure}
 
 \section{Training Results}
 
@@ -65,9 +100,6 @@ the discussed effects in the error evaluation plots for descriptor neurons
 and fitting neurons (figures \ref{fig:descriptor_energy_error_evaluation} and
 \ref{fig:fitting_energy_error_evaluation} respectively).
 
-%%
-%% TODO: Discuss force errors
-%%
 
 \begin{figure}
   \begin{center}
