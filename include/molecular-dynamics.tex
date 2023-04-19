@@ -184,7 +184,7 @@ alternative leapfrog or velocity Verlet schemes. Precise trajectories
 correspond to the scenario where the integration step size approaches
 infinitesimally small values. However, it is preferable to utilize larger time
 steps in order to sample larger trajectories. In practical applications, the
-time step $\Delta t$ is dictated by the fast motions present within the
+time step $\Delta t$ is dictated by the fastest motions present within the
 simulation.
 
 \section{\textit{Ab Initio} Methods}
@@ -196,7 +196,7 @@ approximate description of the interactions between atoms. Classical molecular
 dynamics is generally not very accurate because it relies on approximations
 and empirical parameters and can't account for dynamical events and quantum
 effects such as changes in chemical bonding, the presence of important
-noncovalent intermediates and tunnelling of protons or electrons. The changes
+noncovalent intermediates. The changes
 in bonding and the existence of intermediates can be accounted for using
 first-principles (or \textit{ab initio}) MD. \textit{Ab initio} molecular
 dynamics (AIMD) is generally more accurate than classical molecular dynamics
@@ -204,21 +204,21 @@ because it directly calculates the electronic structure of the system. This
 makes it suitable for studying systems where electronic structure plays a
 critical role. AIMD is much more computationally expensive, which limits its
 applicability to relatively small systems and short timescales. The forces and
-electronic structure are determined by solving the Schrödinger equation,
-typically using methods from quantum physics, such as the Hartree-Fock method,
-density functional theory (DFT), or other wavefunction-based methods.
+electronic structure are determined by applying quantum mechanical methods,
+such as the Hartree-Fock method, density functional theory (DFT), or other
+wavefunction-based methods.
 
 \section{Density Functional Theory}
 Over the last three decades, density functional theory has emerged as the
 leading approach for conducting quantum mechanical simulations of periodic
-systems. Recently, it has gained popularity among quantum chemists and has
-become extensively employed for simulating energy surfaces in molecular
+systems. Over the years, it has gained popularity among quantum chemists and
+has become extensively employed for simulating energy surfaces in molecular
 systems. While its origins can be traced back to the early 1930s, DFT was
 formally established in 1964 through two theorems developed by Hohenberg and
 Kohn.
 
 Simulating an atomic system from first principles means solving the quantum
-many-body problem. If we have $N$ nuclei, we are dealing with a problem of
+many-body problem. If we have $N$ atoms, we are dealing with a problem of
 $N + ZN$ electromagnetically interacting particles. The Hamiltonian of such
 problem is
 \begin{equation}
@@ -230,13 +230,15 @@ problem is
   & + \frac{1}{8 \pi \varepsilon_0} \sum_{i \neq j} \frac{e^2 Z_i Z_j}{|\mathbf{R}_i - \mathbf{R}_j|}.
 \end{alignedat}
 \end{equation}
-The mass of the nucleus at $\mathbf{R}_i$ is $M_i$, the electrons hamve mass
+The mass of the nucleus at $\mathbf{R}_i$ is $M_i$, the electrons have mass
 $m_e$ and are at $\mathbf{r}_i$. The first term is the kinetic energy operator
 for the nuclei, the second for the electrons. The last three terms describe
 the Coulomb interaction between electrons and nuclei, between electrons and
-other electrons, and between nuclei and other nuclei. It is out of question
-to solve this problem exactly, therefore we have to introduce some
-approximations, leadin to the formulation of DFT.
+other electrons, and between nuclei and other nuclei. In more general sense,
+we should also include terms describing quantum effects, such as spin, and 
+exchange, but we will not consider them here. It is out of question to solve
+this problem exactly, therefore we have to introduce some approximations,
+leading to the formulation of DFT.
 
 Firstly, we observe that the nuclei are much heavier and consequently move
 much slower than the electrons. This observation justifies rewriting the
@@ -256,7 +258,7 @@ approximation is called the The Born--Oppenheimer approximation.
 The quantum many body problem obtained after the first approximation is much
 simpler than the original one, but still far too difficult to solve. To reduce
 the equation \eqref{eq:bo-hamiltonian} further, we introduce the two
-Hohenberg–-Kohn theorems.
+Hohenberg--Kohn theorems.
 
 \begin{enumerate}
   \item \textit{There is a one-to-one correspondence between the ground-state
@@ -268,7 +270,7 @@ Hohenberg–-Kohn theorems.
     \mel{\Psi}{\hat O}{\Psi} = O[\rho].
   \end{equation}
 
-  \item \textit{For $\hat O$ being the hamiltonian $\hat H$, the ground-state
+  \item \textit{For $\hat O$ being the Hamiltonian $\hat H$, the ground-state
   total energy functional $H[\rho] \equiv E_{V_\mathrm{ext}}[\rho]$ is of the
   form}
   \begin{equation}
@@ -276,7 +278,7 @@ Hohenberg–-Kohn theorems.
     E_{V_\mathrm{ext}}[\rho]
     &= \mel{\Psi}{\hat T + \hat V}{\Psi}
     + \mel{\Psi}{\hat V_\mathrm{ext}}{\Psi} \\
-    &= F_{HK}[\rho] +
+    &= F_\mathrm{HK}[\rho] +
     \int \rho(\mathbf{r}) V_\mathrm{ext}(\mathbf{r}) \, \mathrm{d}\mathbf{r},
     \label{eq:hk-2}
   \end{alignedat}
@@ -287,10 +289,10 @@ Hohenberg–-Kohn theorems.
   density corresponding to $V_\mathrm{ext}$.}
 \end{enumerate}
 
-Let's pause and ponder the meaning of these theorems for a bit. Each
+Let us explore the importance of these theorems for solving our problem. Each
 many-electron system has a unique potential, and each system as a whole is
 represented by a unique ground-state many particle wave function, as governed
-by the hamiltonian \eqref{eq:bo-hamiltonian} and the Schrödinger equation.
+by the Hamiltonian \eqref{eq:bo-hamiltonian} and the Schrödinger equation.
 From this wavefunction, we can obtain the corresponding electron density using
 the density operator $\hat \rho$ which is defined as
 \begin{equation}
@@ -304,7 +306,7 @@ functionals of the density.
 
 The equation \label{eq:hk-2} suggests, that the energy contribution from the
 external potential can easily be calculated, given the density function
-$\rho(\mathbf{r})$. An explicit expression for $F_{HK}$ is not known,
+$\rho(\mathbf{r})$. An explicit expression for $F_\mathrm{HK}$ is not known,
 however, since the term is not dependent on the information of the nuclei and
 their position, it is a universal functional for any many-electron system and
 can be found. Moreover, the second theorem states that the ground-state
@@ -313,11 +315,11 @@ $V_\mathrm{ext}(\mathbf{r})$ minimizes the total energy functional
 $E_{V_\mathrm{ext}}[\rho]$, which allows us to use the variational principle
 of Rayleigh--Ritz in order to find the ground-state density.
 
-Noting once again, that the the Hohenberg--Kohn functional $F_{HK}$ is only
-dependent on the electron structur and not on the structure of the nuclei, we
-can now proceed with finding an expression for $F_{HK}$. There exist several
-options for defining the energy of the electron many-body system. The exact
-solution is simply
+Noting once again, that the the Hohenberg--Kohn functional $F_\textrm{HK}$ is
+only dependent on the electron structur and not on the structure of the
+nuclei, we can now proceed with finding an expression for $F_\textrm{HK}$.
+There exist several options for defining the energy of the electron many-body
+system. The exact solution is simply
 \begin{equation}
   E_e = T + V,
 \end{equation}
@@ -348,14 +350,14 @@ We can now rewrite the Hohenberg--Kohn functional
   F_{HK} &= T + V + T_0 - T_0 \\
   &= T_0 + V + \underbrace{(T - T_0)}_{V_c} \\
   &= T_0 + V + V_c + V_H - V_H \\
-  &= T_0 + V_H + V_c + \underbrace{(V - V_H)}_{V_x} \\
-  &= T_0 + V_H + \underbrace{(V_x + V_c)}_{V_{xc}}.
+  &= T_0 + V_H + V_c + \underbrace{(V - V_H)}_{V_\mathrm{x}} \\
+  &= T_0 + V_H + \underbrace{(V_\mathrm{x} + V_\mathrm{c})}_{V_\mathrm{xc}}.
 \end{alignedat}
 \end{equation}
-The term $V_{xc}$ is called the exchange--correlation energy functional. We
-can write the energy functional explicitly as
+The term $V_\mathrm{xc}$ is called the exchange--correlation energy
+functional. We can write the energy functional explicitly as
 \begin{equation}
-  E_{V_\mathrm{ext}}[\rho] = T_0[\rho] + V_H[\rho] + V_{xc}[\rho]
+  E_{V_\mathrm{ext}}[\rho] = T_0[\rho] + V_H[\rho] + V_\mathrm{xc}[\rho]
   + V_{ext}[\rho].
 \end{equation}
 The rewritten energy functional can be interpreted as an energy functional of
@@ -364,16 +366,17 @@ nuclei and to the potential due to exchange and correlation effects. This is
 how the Kohn--Sham Hamiltonian is defined
 \begin{equation}
 \begin{alignedat}{2}
-  \hat H_{KS} &= \hat T_0 + \hat V_H + \hat V_{xc} + \hat V_{ext} \\
+  \hat H_{KS} &= \hat T_0 + \hat V_H + \hat V_\mathrm{xc} +
+  \hat V_\mathrm{ext} \\
   &= -\frac{\hbar^2}{2 m_e} \nabla_i^2
   + \frac{e^2}{4 \pi \varepsilon_0} \int
   \frac{\rho(\mathbf{r})}{|\mathbf{r} - \mathbf{r}_i|} \, \mathrm{d}\mathbf{r}
-  + \hat V_{xc} + \hat V_{ext}.
+  + \hat V_\mathrm{xc} + \hat V_{ext}.
 \end{alignedat}
 \end{equation}
 The exchange-correlation potential is given by the functional derivative
 \begin{equation}
-  \hat V_{xc} = \frac{\delta V_{xc}[\rho]}{\delta \rho}.
+  \hat V_\mathrm{xc} = \frac{\delta V_\mathrm{xc}[\rho]}{\delta \rho}.
 \end{equation}
 The theorem of Kohn and Sham can now be formulated as follows:
 \begin{displayquote}
@@ -382,7 +385,7 @@ The theorem of Kohn and Sham can now be formulated as follows:
     is
   }
   \begin{equation}
-    \rho(\mathbf{r}) = \sum_{i=1}^N \phi_i(\mathbf{r})^* \phi_i(\mathbf{r}),
+    \rho(\mathbf{r}) = \sum_{i=1}^N \phi^*_i(\mathbf{r}) \phi_i(\mathbf{r}),
   \end{equation}
   \textit{
     where the single-particle wave functions $\phi_i(\mathbf{r})$ are the $N$
@@ -402,10 +405,11 @@ of electrons and they do not have any physical meaning -- they are only
 mathematical artifacts. Only the resultant ground-state density
 $\rho(\mathbf{r})$ is physically relevant.
 
-Both the Hartree operator $V_H$ and the exchange-correlation operator $V_{xc}$
+Both the Hartree operator $V_H$ and the exchange-correlation operator
+$V_\mathrm{xc}$
 depend on the density $\rho(\mathbf{r})$, which in turn depends on the
-$\phi_i$ which are being searched. However, we can't write down and solve the
-equations for $\phi_i$, until we know the density $\rho(\mathbf{r})$. This
+$\phi_i$ which are being searched. However, we can not write down and solve
+the equations for $\phi_i$, until we know the density $\rho(\mathbf{r})$. This
 chicken and egg scenario is known as the self-consistency problem and requires
 an iterative procedure with an initial guess of the density function to escape
 from this paradox. The process is further described in figure
@@ -429,7 +433,7 @@ the landscape of physical simulations. When trained on large datasets of
 atomic configurations and corresponding potential energies and forces,
 ML models can reproduce the original data accurately, while still retaining
 the linearly scaling computational cost of classical MD simulations. Although
-ML methods are often quite data hungry, their accuracy, scalability, and
+ML methods are often quite data-demanding, their accuracy, scalability, and
 transferability make them a very attractive alternative for various MD
 applications.
 
@@ -574,7 +578,7 @@ parameters ${\mathbf{W}{s}^p, \mathbf{b}s^p}$ of the linear transformation, a
 loss function $L$ is minimized during the training process. This loss
 function is calculated by taking a weighted sum of mean square errors of the
 predictions made by the DNN. Specifically, the loss function
-$L(p\epsilon, p_f, p\xi)$ is defined as follows:
+$L(p_\epsilon, p_f, p_\xi)$ is defined as follows:
 \begin{equation}
   L(p_\epsilon, p_f, p_\xi) = \frac{p_\epsilon}{N} \Delta E^2 +
   \frac{p_f}{3N} \sum_i |\Delta \mathbf{F}_i|^2

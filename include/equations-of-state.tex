@@ -68,7 +68,7 @@ length can be expressed using the Eulerian finite strain as
   \frac{x_0}{x} = \sqrt{1 - 2\varepsilon_{E2}}.
 \end{equation}
 We can use this equation to also express the ratio of the pre-compression
-volume and the post-compression volume as
+volume $V_0$ and the post-compression $V$ volume as
 \begin{equation}
   \frac{V_0}{V} = \left(\frac{x_0}{x}\right)^3 =
   \left(1 - 2 \varepsilon_{E2}\right)^{\frac{3}{2}}.
@@ -87,10 +87,12 @@ positive, we define $f_{E2}$ as
   \right].
   \label{eq:finite-strain}
 \end{equation}
-The first law of thermodynamics in terms of Helmholtz free energy is given by
+The first law of thermodynamics in terms of Helmholtz free energy $F$ is
+given by
 \begin{equation}
-  \mathrm{d}F = - S \mathrm{d}T - p \mathrm{d}V.
+  \mathrm{d}F = - S \mathrm{d}T - p \mathrm{d}V,
 \end{equation}
+where $S$ is the entropy of the system and $p$ is the pressure of the system.
 We can simply derive an expression for pressure of isothermal system as
 \begin{equation}
   p = - \left(\frac{\partial F}{\partial V}\right)_T.
@@ -166,3 +168,11 @@ the form
     \right\}
   \right].}
 \end{equation}
+The internal energy, $E(V)$, is found by integration of the pressure
+\begin{equation}\scriptsize{
+  E(V) = E_0 + \frac{9 V_0 B_{T_0}}{16} \left\{
+    \left[\left(\frac{V_0}{V}\right)^{2/3} - 1\right] B_{T_0}' +
+    \left[\left(\frac{V_0}{V}\right)^{2/3} - 1\right]^2
+    \left[6 - 4 \left(\frac{V_0}{V}\right)^{2/3}\right]
+  \right\}.
+}\end{equation}
