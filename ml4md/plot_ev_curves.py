@@ -53,7 +53,7 @@ def main():
         color = next(colors)
         values = np.array(ev_curve.values)
         eos_fit = ev_curve.eos_fit
-        v, e = values[:,0], values[:,1]
+        v, e = values[:,0], values[:,1] * 1e3
         v_p = np.linspace(np.min(v), np.max(v), 100)
         e_p = eos_fit.f(v_p)
 
@@ -105,7 +105,8 @@ def main():
             borderwidth=1
         ),
         xaxis_title=r"$V \, [\mathrm{Å}^3]$",
-        yaxis_title=r"$E \, [\mathrm{eV}/\mathrm{atom}]$"
+        yaxis_title=r"$E \, [\mathrm{meV}/\mathrm{atom}]$",
+        margin=dict(l=1, r=1, b=1, t=1)
     )
 
     figure.write_image(sys.stdout.buffer, format="jpg")
