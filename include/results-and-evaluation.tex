@@ -3,20 +3,22 @@
 
 \section{DFT Data Convergence}
 
-The DFT data was generated using [3, 3, 3] K-Grid and energy cutoff of
-$250 \, \mathrm{eV}$. We can clearly see from the energy cutoff convergence
-plot (figure \ref{fig:dft_energy_cutoff_convergence}) that the energy errors
-due to numerical approximation are on the order of $10^{-2} \, \mathrm{eV}$
-the force errors due to numerical approximation are on the order of
-$10^{-5} \, \mathrm{eV}/\text{\AA}$. The K-Point convergence plot
-(figure \ref{fig:dft_kpoint_convergence}) shows that the energy errors due to
-numerical approximation are on the order of $10^{-3} \, \mathrm{eV}$ and the
-force errors due to numerical approximation are on the order of
-$10^{-4} \, \mathrm{eV}/\text{\AA}$. This means that our DNN model should
-ideally give energy predictions with an error of order
-$10^{-2} \, \mathrm{eV}$ and force predictions with an error of order
-$10^{-4} \, \mathrm{eV}/\text{\AA}$. Errors above these magnitudes are most
-likely not caused by the numerical approximations of the DFT data and the
+The DFT data was generated using 100 atoms on [3, 3, 3] K-Grid (27 K-points)
+and energy cutoff of $250 \, \mathrm{eV}$. We can clearly see from the energy
+cutoff convergence plot (figure \ref{fig:dft_energy_cutoff_convergence}) that
+the energy errors due to numerical approximation are on the order of
+$100 \, \mathrm{meV}$, dividing by the number of atoms, we get an error of
+an order of $1 \, \mathrm{meV}$. The force errors due to numerical
+approximation are on the order of $10^{-5} \, \mathrm{eV}/\text{\AA}$. The
+K-Point convergence plot (figure \ref{fig:dft_kpoint_convergence}) shows that
+the energy errors due to numerical approximation are on the order of
+$1 \, \mathrm{meV}$, dividing by the number of atoms, we get an error of an
+order of $10^{-2} \, \mathrm{meV}$. The force errors due to numerical
+approximation are on the order of $10^{-4} \, \mathrm{eV}/\text{\AA}$. This
+means that our DNN model should ideally give energy predictions with an error
+of order $10^{-1} \, \mathrm{meV}$ and force predictions with an error of
+order $10^{-4} \, \mathrm{eV}/\text{\AA}$. Errors above these magnitudes are
+most likely not caused by the numerical approximations of the DFT data and the
 accuracy of the simulation algorithms chosen. It's also very important to note
 that the average forces are very close to zero.
 
@@ -45,13 +47,13 @@ that the average forces are very close to zero.
 All models were trained on dual AMD EPYC 7H12 64-Core processor machine.
 Although such specs look impressive, the underlying training algorithms used
 by DeepMD-kit seemd to not be optimized for CPU training and the whole process
-would could probably be greatly accelerated by training on GPUs. DeepMD-kit
-allows to fine-tune the training process by adjusting the runtime parameters
-\texttt{OMP\_NUM\_THREADS}, \texttt{TF\_INTRA\_OP\_PARALLELISM\_THREADS}, and
-\texttt{TF\_INTER\_OP\_PARALLELISM\_THREADS}. Despite running many empirical
-tests to arrive at the optimal values for these parameters, the training
-process did not speed up significantly. The training sessions took about
-$12.01 \, \mathrm{h}$ for the larger models and about $8.29 \, \mathrm{h}$ for
+could probably be greatly accelerated by training on GPUs. DeepMD-kit allows
+to fine-tune the training process by adjusting the runtime parameters
+\texttt{OMP\_NUM\_THREADS}, \texttt{TF\_INTRA\_OP\_PARALLELISM\_THREADS},
+\linebreak and \texttt{TF\_INTER\_OP\_PARALLELISM\_THREADS}. Despite running
+many empirical tests to arrive at the optimal values for these parameters, the
+training process did not speed up significantly. The training sessions took
+about $12 \, \mathrm{h}$ for the larger models and about $8 \, \mathrm{h}$ for
 the smaller models.
 
 A typical descending learning curve was observed for models trained on the
@@ -74,32 +76,42 @@ error with increasing number of fitting neurons can also be observed in the
 error evaluation plot for fitting neurons (figure
 \ref{fig:fitting_energy_error_evaluation}). Both of these effects are much
 more pronounced for the crystalline dataset, where data scarcity is a
-significant concern. Althoug, the crystalline system should be the simplest to
-model, the shortage of data plays a major role here, which can be observed in
-the learning curves architectures and in the energy error evaluation plots.
+significant concern. Although, the crystalline system should be the simplest
+to model, the shortage of data plays a major role here, which can be observed
+in the learning curves and in the energy error evaluation plots.
 The predictions for the crystalline system get outstandingly better when
 increasing the number of descriptor neurons from $[5, 10, 20]$ (figure
 \ref{fig:crystalline_5,10,20d_20,20,20f_260222622s-learning-curves}) to
 $[25, 50, 100]$ (figure
 \ref{fig:crystalline_25,50,100d_20,20,20f_260222622s-learning-curves}). This
 might have several reasons. First, the higher number of descriptor neurons
-make the model more flexible and more unlikely to overfit on low data volumes.
-The second reason might be that the higher number of descriptor neurons allows
-the model to better capture the underlying structure of the sillicon system,
-since this effect is observable for the amorphous and combined systems as
-well. While the number of descriptor neurons correlates positively with
-inference quality, the opposite is true for the number of fitting neurons.
-When increasing fitting neurons from $[10, 10, 10]$
+make the model more flexible and more unlikely to underfit on low data
+volumes. The second reason might be that the higher number of descriptor
+neurons allows the model to better capture the underlying structure of the
+sillicon system, since this effect is observable for the amorphous and
+combined systems as well. While the number of descriptor neurons correlates
+positively with inference quality, the opposite is true for the number of
+fitting neurons. When increasing fitting neurons from $[10, 10, 10]$
 (figure \ref{fig:crystalline_10,20,40d_10,10,10f_260222622s-learning-curves})
 to $[75, 75, 75]$
 (figure \ref{fig:crystalline_10,20,40d_75,75,75f_260222622s-learning-curves})
 we observe the energy error increases, and the dissonance of training error
 and validation error broadens. In this case, the model architecute is too
-complex and underfits on the small sample of training data. We can also see
+complex and overfits on the small sample of training data. We can also see
 the discussed effects in the error evaluation plots for descriptor neurons
 and fitting neurons (figures \ref{fig:descriptor_energy_error_evaluation} and
 \ref{fig:fitting_energy_error_evaluation} respectively).
 
+The force errors in all of the learning curves seem to converge relatively
+quickly for all of the training sessions. Further training steps don't seem to
+significantly improve the prediction quality and may even lead to worse
+predictions. This is most likely due to the fact that the forces are very
+close to zero for most of the training data, and the models are able to learn
+the small deviations from zero very quickly. The increase in force error over
+time is caused by the fact that the weights of the objective function are
+initially set to prioritize the force error over the energy error and then
+gradually shift towards prioritizing energy error over force error, as already
+discussed.
 
 \begin{figure}
   \begin{center}
@@ -203,3 +215,5 @@ and fitting neurons (figures \ref{fig:descriptor_energy_error_evaluation} and
 \end{figure}
 
 \section{Inference Results}
+
+We've usde the models 
