@@ -27,7 +27,18 @@ class InputData:
 def shift_ev_curve(ev_curve):
     values = np.array(ev_curve.values)
     values[:,1] -= np.min(values[:,1])
-    params = {**ev_curve.eos_fit.params, "E0": 0}
+    values[:,1] *= 1e3
+    params = {
+        **ev_curve.eos_fit.params,
+        "E0": 0
+    }
+
+    if "B0" in ev_curve.eos_fit.params:
+        params["B0"] = ev_curve.eos_fit.params["B0"] * 1e3
+
+    if "B" in ev_curve.eos_fit.params:
+        params["B"] = ev_curve.eos_fit.params["B"] * 1e3
+
     eos_fit = replace(ev_curve.eos_fit, params=params)
     shifted = replace(ev_curve, values=values.tolist(), eos_fit=eos_fit)
 
@@ -53,7 +64,7 @@ def main():
         color = next(colors)
         values = np.array(ev_curve.values)
         eos_fit = ev_curve.eos_fit
-        v, e = values[:,0], values[:,1] * 1e3
+        v, e = values[:,0], values[:,1]
         v_p = np.linspace(np.min(v), np.max(v), 100)
         e_p = eos_fit.f(v_p)
 
