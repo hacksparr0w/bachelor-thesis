@@ -231,6 +231,19 @@ The whole training matrix of models used in this work is available in table
 
 \section{Computing Material Properties}
 
-%%
-%% TODO: Write something about the methods used to compute material properties
-%%
+This work focuses not only on the training of the DNN models, but also on
+evaluation of their inference performance. To evaluate the inference
+performance, we chose to compute the relaxation volume $V_0$ and the bulk
+modulus $B_{T_0}$ \eqref{eqn:bulk-modulus} of both crystalline and amorphous
+Si structures.
+
+To calculate these material properties, we use LAMMPS with the trained models
+to perform a series of simulations and then fit the measured data to the
+Birch--Murnaghan EOS \eqref{eqn:birch-murnaghan-energy} model. The LAMMPS
+input scripts used for the simulations are available in the mentioned
+repository.
+
+To estimate the measurement uncertainty of the computed material properties,
+we compute the properties using multiple models with same architectures but
+different seeds and then calculate the mean and standard deviation of the
+results.

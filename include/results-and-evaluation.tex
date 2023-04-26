@@ -216,4 +216,26 @@ discussed.
 
 \section{Inference Results}
 
-We've usde the models 
+The models \texttt{crystalline\_10,20,40d\_20,20,20f\_260222622s},\linebreak
+\texttt{crystalline\_10,20,40d\_20,20,20f\_537693349s},\linebreak and
+\texttt{crystalline\_10,20,40d\_20,20,20f\_836424474s} were used to calculate
+relaxation volume and bulk modulus for the Si diamond crystalline structure
+(cubic $\mathrm{F}\bar{\mathrm{d}}\mathrm{3m}$ space group). The inference
+data with the fitted EOS models are shown below (figure
+\ref{fig:crystalline_inference}). The calculated value for the relaxation
+volume was $V_0 = 20.52 \pm 0.03$ \AA$^3$ and the calculated value for the
+bulk modulus was
+$B_{T_0} = 0.72 \pm 0.08 \, \mathrm{eV} \cdot \text{\AA}^{-3}$. Reference
+materials for quantum mechanical calculations of the same structure give
+values of $V_0 = 20.45617$ \AA$^3$ and
+$B_{T_0} = 0.6121 \, \mathrm{eV} \cdot \text{\AA}^{-3}$\cite{osti_1190959}.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{
+      asset/crystalline_ev_curves.jpg
+    }
+  \end{center}
+  \caption{Inference results for the Si diamond crystalline structure.}
+  \label{fig:crystalline_inference}
+\end{figure}
