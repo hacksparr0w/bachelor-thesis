@@ -1,0 +1,1 @@
+MD_DEEPMD_MODEL=./ml4md/model/amorphous_25,50,100d_20,20,20f_260222622s/frozen_model.pb MD_TARGET_TEMPERATURE=1000 MD_VOLUME_SCALE=0.99 lmp < ./ml4md/minimize_amorphous_structure.lmp

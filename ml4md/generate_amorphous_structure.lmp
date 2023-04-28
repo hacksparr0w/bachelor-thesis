@@ -1,4 +1,4 @@
-variable num_atoms getenv "NUM_ATOMS"
+variable num_atoms getenv "MD_NUM_ATOMS"
 
 units metal
 atom_style atomic
@@ -36,7 +36,10 @@ fix 2 all nvt temp 4000 1 0.01
 run 5000
 
 unfix 2
+
+velocity all set 0 0 0
+
 min_style cg
 minimize 1e-10 1e-10 1000 10000
 
-write_dump all xyz amorphous.xyz
+write_data amorphous_structure.dat
