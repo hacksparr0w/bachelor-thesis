@@ -1,0 +1,49 @@
+variable num_atoms getenv "NUM_ATOMS"
+
+units metal
+atom_style atomic
+boundary p p p
+
+kim init &
+  Sim_LAMMPS_ModifiedTersoff_PurjaPunMishin_2017_Si__SM_184524061456_000 &
+  metal
+
+variable atomic_mass equal 1.66053907e-27
+variable silicon_atom_weight equal 28.0855
+variable silicon_density equal 2.329002
+
+variable box_volume equal &
+  (${num_atoms} * ${silicon_atom_weight} * ${atomic_mass} * 1e3) / (${silicon_density} / 1e24)
+
+variable box_size equal ${box_volume}^(1/3)
+
+region box block 0 ${sim_box_size} 0 ${sim_box_size} 0 ${sim_box_size}
+create_box 1 box
+create_atoms 1 random ${num_atoms} 31415 box
+
+kim interactions Si
+neigh_modify every 1 check yes
+mass 1 ${silicon_atom_weight}
+
+velocity all create 0 87287 mom yes rot yes dist gaussian
+fix 1 all nvt temp 0 4000 0.01
+timestep 0.001
+
+thermo 100
+thermo_style custom step temp pe etotal press
+dump 1 all custom 100 heating.lammpstrj id type x y z
+run 5000
+
+unfix 1
+fix 2 all nvt temp 4000 0 0.01
+run 5000
+
+unfix 2
+min_style cg
+minimize 1e-10 1e-10 1000 10000
+
+undump 1
+dump 2 all custom 100 minimized_cooled.lammpstrj id type x y z
+run 0
+
+write_restart amorphous.restart
