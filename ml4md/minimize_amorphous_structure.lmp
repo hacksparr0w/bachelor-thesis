@@ -1,0 +1,41 @@
+variable target_temperature getenv "MD_TARGET_TEMPERATURE"
+variable volume_scale getenv "MD_VOLUME_SCALE"
+variable model getenv "MD_DEEPMD_MODEL"
+
+units metal
+atom_style atomic
+boundary p p p
+
+variable size_scale equals ${volume_scale}^(1/3)
+
+read_dump amorphous_structure.xyz 0 x y z box yes
+
+pair_style deepmd ${model}
+pair_coeff * *
+neigh_modify every 1 check yes
+mass 1 28.08
+
+velocity all create ${target_temperature} 87287 mom yes rot yes dist gaussian
+fix 1 all nvt temp ${target_temperature} ${target_temperature} 0.01
+timestep 0.001
+
+thermo 100
+thermo_style custom step temp pe etotal press
+run 5000
+unfix 1
+
+fix 2 all nve
+fix 3 all deform 10 &
+  x scale ${size_scale} &
+  y scale ${size_scale} &
+  z scale ${size_scale} &
+  remap x &
+  remap v &
+  units box
+
+run 5000
+
+unfix 3
+
+min_style cg
+minimize 1e-10 1e-10 1000 10000
