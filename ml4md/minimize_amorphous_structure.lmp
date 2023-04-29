@@ -34,7 +34,8 @@ fix 3 all deform 10 &
 
 run 5000
 
+unfix 2
 unfix 3
 
 min_style cg
-minimize 1e-15 1e-15 1000 10000
+minimize 1e-15 1e-15 10000 100000
