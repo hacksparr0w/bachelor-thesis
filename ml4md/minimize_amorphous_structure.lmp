@@ -15,16 +15,20 @@ pair_coeff * *
 neigh_modify every 1 check yes
 mass 1 28.08
 
-fix 1 all nvt temp 1 ${target_temperature} 0.01
+compute atom_potential_energy all pe/atom
+compute total_potential_energy all reduce sum c_atom_potential_energy
+
+fix 1 all nvt temp 1e-10 ${target_temperature} 0.01
 timestep 0.001
 
-thermo 100
-thermo_style custom step temp pe etotal press vol
-run 5000
+thermo 10
+thermo_style custom step lx ly lz press pxx pyy pzz c_total_potential_energy
+
+run 10000
 unfix 1
 
 fix 2 all nve
-fix 3 all deform 10 &
+fix 3 all deform 100 &
   x scale ${size_scale} &
   y scale ${size_scale} &
   z scale ${size_scale} &
@@ -32,10 +36,17 @@ fix 3 all deform 10 &
   remap v &
   units box
 
-run 5000
+run 10000
 
-unfix 2
 unfix 3
 
-min_style cg
-minimize 1e-15 1e-15 10000 100000
+run 10000
+
+variable total_potential_energy equal "c_total_potential_energy"
+variable total_atoms equal "count(all)"
+variable cohesive_energy equal "v_total_potential_energy / v_total_atoms"
+variable final_volume equal "vol / v_total_atoms"
+
+print "Total energy (eV) = ${total_potential_energy}"
+print "Cohesive energy (eV) = ${cohesive_energy}"
+print "Final volume (angstrom^3) = ${final_volume}"

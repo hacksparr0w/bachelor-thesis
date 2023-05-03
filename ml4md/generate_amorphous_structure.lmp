@@ -23,19 +23,17 @@ kim interactions Si
 neigh_modify every 1 check yes
 mass 1 ${silicon_atom_weight}
 
-velocity all create 0 87287 mom yes rot yes dist gaussian
-fix 1 all nvt temp 1 4000 0.01
+velocity all create 4000 87287 mom yes rot yes dist gaussian
 timestep 0.001
-
 thermo 100
 thermo_style custom step temp pe etotal press
-run 5000
+
+run 10000
+
+fix 1 all nvt temp 4000 1e-10 0.01
+run 10000
 
 unfix 1
-fix 2 all nvt temp 4000 1 0.01
-run 5000
-
-unfix 2
 
 velocity all set 0 0 0
 
