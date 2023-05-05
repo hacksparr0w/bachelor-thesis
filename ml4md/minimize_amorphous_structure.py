@@ -1,6 +1,7 @@
 import json
 import multiprocessing
 import os
+import psutil
 import re
 import shutil
 import subprocess
@@ -15,7 +16,8 @@ from dacite import from_dict
 
 import _home
 
-
+PARALELLISM = psutil.cpu_count(logical=False)
+PROCESSES = psutil.cpu_count() / PARALELLISM
 LMP_EXECUTABLE = "lmp"
 MPI_EXECUTABLE = "mpirun"
 LMP_SCRIPT_FILE = Path(__file__).parent / "minimize_amorphous_structure.lmp"
@@ -54,7 +56,7 @@ def simulate(volume_scale, target_t, model_file, mpi_support):
     command = []
 
     if mpi_support:
-        command.extend([MPI_EXECUTABLE, "-np", "12"])
+        command.extend([MPI_EXECUTABLE, "-np", str(PARALELLISM)])
 
     command.extend([LMP_EXECUTABLE, "-in", LMP_SCRIPT_FILE])
 
@@ -93,7 +95,7 @@ def main():
 
     values = None
 
-    with multiprocessing.Pool(2) as pool:
+    with multiprocessing.Pool(PROCESSES) as pool:
         values = pool.map(simulate_wrapper, args)
 
     output = OutputData(values)

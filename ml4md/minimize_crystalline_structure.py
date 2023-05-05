@@ -47,6 +47,8 @@ def main():
     model_file = _home.find_model(data.model).model_file
     values = []
 
+    print("asdf")
+
     for volume_scale in np.linspace(0.94, 1.06, 20):
         a_final = round(a_initial * volume_scale ** (1 / 3), 3)
 
@@ -63,6 +65,7 @@ def main():
         cohesive_energy_match = COHESIVE_ENERGY_PATTERN.search(output)
 
         if not final_volume_match or not cohesive_energy_match:
+            print(output)
             raise RuntimeError
 
         final_volume = float(final_volume_match.group(1))
