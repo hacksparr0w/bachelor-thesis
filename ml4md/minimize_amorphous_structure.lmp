@@ -6,29 +6,32 @@ units metal
 atom_style atomic
 boundary p p p
 
+# kim init &
+#   Sim_LAMMPS_ModifiedTersoff_PurjaPunMishin_2017_Si__SM_184524061456_000 &
+#   metal
+
 variable size_scale equal ${volume_scale}^(1/3)
 
 read_data ml4md/amorphous_structure.dat
+
+# kim interactions Si
+# neigh_modify every 1 check yes
+# mass 1 28.0855
 
 pair_style deepmd ${model}
 pair_coeff * *
 neigh_modify every 1 check yes
 mass 1 28.08
 
+timestep 0.001
+
 compute atom_potential_energy all pe/atom
 compute total_potential_energy all reduce sum c_atom_potential_energy
-
-fix 1 all nvt temp 1e-10 ${target_temperature} 0.01
-timestep 0.001
 
 thermo 10
 thermo_style custom step lx ly lz press pxx pyy pzz c_total_potential_energy
 
-run 10000
-unfix 1
-
-fix 2 all nve
-fix 3 all deform 100 &
+fix 1 all deform 1 &
   x scale ${size_scale} &
   y scale ${size_scale} &
   z scale ${size_scale} &
@@ -36,13 +39,16 @@ fix 3 all deform 100 &
   remap v &
   units box
 
+run 100
+unfix 1
+
+fix 2 all nvt temp ${target_temperature} ${target_temperature} 100
 run 10000
 
-unfix 3
-
+fix 3 all ave/time 1000 10 10000 c_total_potential_energy
 run 10000
 
-variable total_potential_energy equal "c_total_potential_energy"
+variable total_potential_energy equal "f_3"
 variable total_atoms equal "count(all)"
 variable cohesive_energy equal "v_total_potential_energy / v_total_atoms"
 variable final_volume equal "vol / v_total_atoms"
@@ -50,3 +56,6 @@ variable final_volume equal "vol / v_total_atoms"
 print "Total energy (eV) = ${total_potential_energy}"
 print "Cohesive energy (eV) = ${cohesive_energy}"
 print "Final volume (angstrom^3) = ${final_volume}"
+
+unfix 2
+unfix 3

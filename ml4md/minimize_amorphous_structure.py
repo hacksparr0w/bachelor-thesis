@@ -1,6 +1,8 @@
 import json
+import multiprocessing
 import os
 import re
+import shutil
 import subprocess
 import sys
 
@@ -15,6 +17,7 @@ import _home
 
 
 LMP_EXECUTABLE = "lmp"
+MPI_EXECUTABLE = "mpirun"
 LMP_SCRIPT_FILE = Path(__file__).parent / "minimize_amorphous_structure.lmp"
 COHESIVE_ENERGY_PATTERN = re.compile(
     r"Cohesive energy \(eV\) = ([+-]?([0-9]*[.])?[0-9]+)"
@@ -40,32 +43,58 @@ def run(command, env=None):
     return subprocess.run(command, capture_output=True, env=env)
 
 
+def simulate(volume_scale, target_t, model_file, mpi_support):
+    env = {
+        **os.environ,
+        "MD_TARGET_TEMPERATURE": str(target_t),
+        "MD_VOLUME_SCALE": str(volume_scale),
+        "MD_DEEPMD_MODEL": str(model_file)
+    }
+    
+    command = []
+
+    if mpi_support:
+        command.extend([MPI_EXECUTABLE, "-np", "12"])
+
+    command.extend([LMP_EXECUTABLE, "-in", LMP_SCRIPT_FILE])
+
+    process = run(command, env=env)
+    output = process.stdout.decode()
+    final_volume_match = FINAL_VOLUME_PATTERN.search(output)
+    cohesive_energy_match = COHESIVE_ENERGY_PATTERN.search(output)
+
+    if not final_volume_match or not cohesive_energy_match:
+        print(output, file=sys.stderr)
+        raise RuntimeError
+
+    final_volume = float(final_volume_match.group(1))
+    cohesive_energy = float(cohesive_energy_match.group(1))
+
+    print(final_volume, cohesive_energy, file=sys.stderr)
+
+    return final_volume, cohesive_energy
+
+
+def simulate_wrapper(args):
+    return simulate(*args)
+
+
 def main():
     data = from_dict(data_class=InputData, data=json.load(sys.stdin))
 
     model_file = _home.find_model(data.model).model_file
     values = []
+    mpi_support = shutil.which(MPI_EXECUTABLE) is not None
+    volume_scales = np.linspace(0.90, 1.10, 20)
+    args = map(
+        lambda scale: (scale, data.target_t, model_file, mpi_support),
+        volume_scales
+    )
 
-    for volume_scale in np.linspace(0.90, 1.10, 20):
-        env = {
-            **os.environ,
-            "MD_TARGET_TEMPERATURE": str(data.target_t),
-            "MD_VOLUME_SCALE": str(volume_scale),
-            "MD_DEEPMD_MODEL": str(model_file)
-        }
+    values = None
 
-        process = run([LMP_EXECUTABLE, "-in", LMP_SCRIPT_FILE], env=env)
-        output = process.stdout.decode()
-        final_volume_match = FINAL_VOLUME_PATTERN.search(output)
-        cohesive_energy_match = COHESIVE_ENERGY_PATTERN.search(output)
-
-        if not final_volume_match or not cohesive_energy_match:
-            raise RuntimeError
-
-        final_volume = float(final_volume_match.group(1))
-        cohesive_energy = float(cohesive_energy_match.group(1))
-
-        values.append((final_volume, cohesive_energy))
+    with multiprocessing.Pool(2) as pool:
+        values = pool.map(simulate_wrapper, args)
 
     output = OutputData(values)
     json.dump(asdict(output), sys.stdout, indent=2)

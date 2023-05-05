@@ -23,7 +23,7 @@ kim interactions Si
 neigh_modify every 1 check yes
 mass 1 ${silicon_atom_weight}
 
-velocity all create 4000 87287 mom yes rot yes dist gaussian
+velocity all create 4000 32222 mom yes rot yes dist gaussian
 timestep 0.001
 thermo 100
 thermo_style custom step temp pe etotal press
@@ -40,4 +40,4 @@ velocity all set 0 0 0
 min_style cg
 minimize 1e-10 1e-10 1000 10000
 
-write_data amorphous_structure.dat
+write_data ./ml4md/amorphous_structure.dat
