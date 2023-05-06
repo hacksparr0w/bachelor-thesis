@@ -9,6 +9,7 @@ import sys
 
 from dataclasses import asdict, dataclass
 from pathlib import Path
+from typing import Optional
 
 import numpy as np
 
@@ -16,8 +17,9 @@ from dacite import from_dict
 
 import _home
 
+
 PARALELLISM = psutil.cpu_count(logical=False)
-PROCESSES = psutil.cpu_count() / PARALELLISM
+PROCESSES = psutil.cpu_count() // PARALELLISM
 LMP_EXECUTABLE = "lmp"
 MPI_EXECUTABLE = "mpirun"
 LMP_SCRIPT_FILE = Path(__file__).parent / "minimize_amorphous_structure.lmp"
@@ -32,7 +34,9 @@ FINAL_VOLUME_PATTERN = re.compile(
 
 @dataclass
 class InputData:
-    model: str
+    potential_type: str
+    structure_data_file: str
+    deepmd_model: Optional[str]
     target_t: float
 
 
@@ -45,14 +49,25 @@ def run(command, env=None):
     return subprocess.run(command, capture_output=True, env=env)
 
 
-def simulate(volume_scale, target_t, model_file, mpi_support):
+def simulate(
+        potential_type,
+        structure_data_file,
+        volume_scale,
+        target_t,
+        deepmd_model_file,
+        mpi_support
+):
     env = {
         **os.environ,
+        "MD_POTENTIAL_TYPE": potential_type,
+        "MD_STRUCTURE_DATA_FILE": str(structure_data_file),
         "MD_TARGET_TEMPERATURE": str(target_t),
-        "MD_VOLUME_SCALE": str(volume_scale),
-        "MD_DEEPMD_MODEL": str(model_file)
+        "MD_VOLUME_SCALE": str(volume_scale)
     }
-    
+
+    if deepmd_model_file:
+        env["MD_DEEPMD_MODEL_FILE"] = str(deepmd_model_file)
+
     command = []
 
     if mpi_support:
@@ -84,12 +99,23 @@ def simulate_wrapper(args):
 def main():
     data = from_dict(data_class=InputData, data=json.load(sys.stdin))
 
-    model_file = _home.find_model(data.model).model_file
+    deepmd_model_file = (
+        _home.find_model(data.deepmd_model).model_file
+        if data.deepmd_model else None
+    )
+
     values = []
     mpi_support = shutil.which(MPI_EXECUTABLE) is not None
     volume_scales = np.linspace(0.90, 1.10, 20)
     args = map(
-        lambda scale: (scale, data.target_t, model_file, mpi_support),
+        lambda scale: (
+            data.potential_type,
+            data.structure_data_file,
+            scale,
+            data.target_t,
+            deepmd_model_file,
+            mpi_support
+        ),
         volume_scales
     )
 

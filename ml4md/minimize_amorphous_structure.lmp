@@ -1,27 +1,28 @@
+variable potential_type getenv "MD_POTENTIAL_TYPE"
+variable structure_data_file getenv "MD_STRUCTURE_DATA_FILE"
 variable target_temperature getenv "MD_TARGET_TEMPERATURE"
 variable volume_scale getenv "MD_VOLUME_SCALE"
-variable model getenv "MD_DEEPMD_MODEL"
+variable deepmd_model_file getenv "MD_DEEPMD_MODEL_FILE"
 
 units metal
 atom_style atomic
 boundary p p p
 
-# kim init &
-#   Sim_LAMMPS_ModifiedTersoff_PurjaPunMishin_2017_Si__SM_184524061456_000 &
-#   metal
+if "${potential_type} == KIM" then &
+  "kim init Sim_LAMMPS_ModifiedTersoff_PurjaPunMishin_2017_Si__SM_184524061456_000 metal"
 
 variable size_scale equal ${volume_scale}^(1/3)
 
-read_data ml4md/amorphous_structure.dat
+read_data ${structure_data_file}
 
-# kim interactions Si
-# neigh_modify every 1 check yes
-# mass 1 28.0855
+if "${potential_type} == KIM" then &
+  "kim interactions Si" &
+else &
+  "pair_style deepmd ${deepmd_model_file}" &
+  "pair_coeff * *"
 
-pair_style deepmd ${model}
-pair_coeff * *
 neigh_modify every 1 check yes
-mass 1 28.08
+mass 1 28.0855
 
 timestep 0.001
 

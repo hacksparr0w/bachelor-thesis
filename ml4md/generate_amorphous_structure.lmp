@@ -1,4 +1,5 @@
 variable num_atoms getenv "MD_NUM_ATOMS"
+variable output_file getenv "MD_OUTPUT_FILE"
 
 units metal
 atom_style atomic
@@ -23,21 +24,23 @@ kim interactions Si
 neigh_modify every 1 check yes
 mass 1 ${silicon_atom_weight}
 
-velocity all create 4000 32222 mom yes rot yes dist gaussian
+# velocity all create 4000 32222 mom yes rot yes dist gaussian
+
 timestep 0.001
 thermo 100
 thermo_style custom step temp pe etotal press
 
+fix 1 all nvt temp 4000 4000 0.01
 run 10000
-
-fix 1 all nvt temp 4000 1e-10 0.01
-run 10000
-
 unfix 1
+
+fix 2 all nvt temp 4000 1e-10 0.01
+run 10000
+unfix 2
 
 velocity all set 0 0 0
 
 min_style cg
 minimize 1e-10 1e-10 1000 10000
 
-write_data ./ml4md/amorphous_structure.dat
+write_data ${output_file}
