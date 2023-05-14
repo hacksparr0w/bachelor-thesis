@@ -4,6 +4,8 @@ variable target_temperature getenv "MD_TARGET_TEMPERATURE"
 variable volume_scale getenv "MD_VOLUME_SCALE"
 variable deepmd_model_file getenv "MD_DEEPMD_MODEL_FILE"
 
+log minimize_amorphous_structure_${target_temperature}k_${volume_scale}.log
+
 units metal
 atom_style atomic
 boundary p p p
@@ -24,13 +26,13 @@ else &
 neigh_modify every 1 check yes
 mass 1 28.0855
 
-timestep 0.001
+timestep 0.0005
 
 compute atom_potential_energy all pe/atom
 compute total_potential_energy all reduce sum c_atom_potential_energy
 
 thermo 10
-thermo_style custom step lx ly lz press pxx pyy pzz c_total_potential_energy
+thermo_style custom step temp lx ly lz press pxx pyy pzz c_total_potential_energy c_thermo_pe
 
 fix 1 all deform 1 &
   x scale ${size_scale} &
@@ -40,14 +42,13 @@ fix 1 all deform 1 &
   remap v &
   units box
 
-run 100
+run 100000
 unfix 1
 
-fix 2 all nvt temp ${target_temperature} ${target_temperature} 100
-run 10000
-
-fix 3 all ave/time 1000 10 10000 c_total_potential_energy
-run 10000
+velocity all create ${target_temperature} 32222 mom yes rot yes dist gaussian
+fix 2 all nvt temp ${target_temperature} ${target_temperature} $(80.0 * dt)
+fix 3 all ave/time 100 1000 100000 c_total_potential_energy
+run 100000
 
 variable total_potential_energy equal "f_3"
 variable total_atoms equal "count(all)"

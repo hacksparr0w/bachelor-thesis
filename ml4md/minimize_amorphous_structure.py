@@ -106,7 +106,7 @@ def main():
 
     values = []
     mpi_support = shutil.which(MPI_EXECUTABLE) is not None
-    volume_scales = np.linspace(0.90, 1.10, 20)
+    volume_scales = np.linspace(0.90, 1.10, 30)
     args = map(
         lambda scale: (
             data.potential_type,
