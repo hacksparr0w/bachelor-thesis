@@ -37,7 +37,7 @@ run 1000000
 unfix 1
 
 fix 2 all npt temp 4000 1e-10 $(100.0 * dt) iso 0 0 $(1000.0 * dt)
-run 10000000
+run 50000000
 unfix 2
 
 velocity all set 0 0 0
