@@ -58,7 +58,7 @@ def main():
     v_0 = np.array(v_0)
     b_0 = np.array(b_0)
     alpha = [
-        (((v_0[i+1] - v_0[i]) * 100) / (t[i+1] - t[i])) / (((v_0[i+1] - v_0[i]) * 100) / 2)
+        (((v_0[i+1] - v_0[i])) / (t[i+1] - t[i])) / (((v_0[i+1] + v_0[i])) / 2)
         for i in range(len(v_0) - 1)
     ]
     alpha = np.array(alpha)
@@ -108,6 +108,7 @@ def main():
 
     fig.update_yaxes(
         title_text="$B_0 [\mathrm{GPa}]$",
+        exponentformat="e",
         showgrid=False,
         linewidth=1,
         linecolor="black",
@@ -120,6 +121,7 @@ def main():
 
     fig.update_yaxes(
         title_text="$\\alpha_\mathrm{V} \, [\mathrm{K}^{-1}]$",
+        exponentformat="e",
         showgrid=False,
         linewidth=1,
         linecolor="black",
@@ -127,7 +129,8 @@ def main():
         ticks="inside",
         showline=True,
         row=2,
-        col=1
+        col=1,
+        zeroline=False
     )
 
     fig.update_layout(
