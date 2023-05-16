@@ -94,8 +94,8 @@ def main():
             bordercolor="#000",
             borderwidth=1
         ),
-        xaxis_title=r"$V \, [\mathrm{Å}^3]$",
-        yaxis_title=r"$E \, [\mathrm{meV}/\mathrm{atom}]$",
+        xaxis_title=r"$V \, [\mathrm{Å}^3/\mathrm{atom}]$",
+        yaxis_title=r"$E \, [\mathrm{eV}/\mathrm{atom}]$",
         margin=dict(l=1, r=1, b=1, t=1)
     )
 
