@@ -57,17 +57,20 @@ def main():
     t = np.array(t)
     v_0 = np.array(v_0)
     b_0 = np.array(b_0)
+
     alpha = [
         (((v_0[i+1] - v_0[i])) / (t[i+1] - t[i])) / (((v_0[i+1] + v_0[i])) / 2)
         for i in range(len(v_0) - 1)
     ]
     alpha = np.array(alpha)
 
+    t2 = np.array([((t[i + 1] + t[i]) / 2) for i in range(len(t) - 1)])
+
     fig = plotly.subplots.make_subplots(
         rows=2,
         cols=1,
-        shared_xaxes=True,
-        vertical_spacing=0.1
+        vertical_spacing=0.1,
+        shared_xaxes=True
     )
 
     fig.add_trace(
@@ -82,7 +85,7 @@ def main():
 
     fig.add_trace(
         go.Scatter(
-            x=t,
+            x=t2,
             y=alpha,
             mode="markers"
         ),
@@ -101,13 +104,13 @@ def main():
     )
 
     fig.update_xaxes(
-        title_text="$T [\mathrm{K}]$",
+        title_text="$T \, [\mathrm{K}]$",
         col=1,
         row=2
     )
 
     fig.update_yaxes(
-        title_text="$B_0 [\mathrm{GPa}]$",
+        title_text="$B_0 \, [\mathrm{GPa}]$",
         exponentformat="e",
         showgrid=False,
         linewidth=1,
