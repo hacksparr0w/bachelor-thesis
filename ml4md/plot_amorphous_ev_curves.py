@@ -37,6 +37,9 @@ def main():
     figure = go.Figure()
 
     for ev_curve in ev_curves:
+        if ev_curve.hidden:
+            continue
+
         color = next(colors)
         values = np.array(ev_curve.values)
         eos_fit = ev_curve.eos_fit

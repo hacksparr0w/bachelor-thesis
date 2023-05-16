@@ -8,6 +8,7 @@ from eos import EosFit
 
 @dataclass
 class EvCurve:
+    hidden: Optional[bool]
     values: list[tuple[float, float]]
     eos_fit: EosFit
     label: Optional[str] = None
