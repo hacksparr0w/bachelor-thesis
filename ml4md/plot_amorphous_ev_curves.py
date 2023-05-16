@@ -85,8 +85,8 @@ def main():
             zeroline=False
         ),
         legend=dict(
-            x=.60,
-            y=.96,
+            x=.70,
+            y=.98,
             traceorder="normal",
             bordercolor="#000",
             borderwidth=1
