@@ -44,7 +44,7 @@ def plot_l_cuves(data, output_file, savgol_window=40):
             "y_2": savgol_filter(data[:,4] * 1e3, savgol_window, 5),
             "training_color": px.colors.qualitative.Plotly[0],
             "validation_color": px.colors.qualitative.Plotly[1],
-            "y_title_text": "$E_\\text{RMSE} \, [\\text{meV}/\\text{atom}]$"
+            "y_title_text": "$\large{\large{E_\\text{RMSE} \, [\\text{meV}/\\text{atom}]}}$"
         },
         "force": {
             "x": data[:,0],
@@ -52,7 +52,7 @@ def plot_l_cuves(data, output_file, savgol_window=40):
             "y_2": savgol_filter(data[:,6], savgol_window, 5),
             "training_color": px.colors.qualitative.Plotly[2],
             "validation_color": px.colors.qualitative.Plotly[3],
-            "y_title_text": "$F_\\text{RMSE} [\\text{eV}/\\text{Å}]$"
+            "y_title_text": "$\large{\large{F_\\text{RMSE} [\\text{eV}/\\text{Å}]}}$"
         }
     }
 
@@ -118,7 +118,7 @@ def plot_l_cuves(data, output_file, savgol_window=40):
     )
 
     fig.update_xaxes(
-        title_text="$\\text{Step}$",
+        title_text="$\large{\\text{Step}$}",
         col=1,
         row=2
     )

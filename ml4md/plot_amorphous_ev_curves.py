@@ -62,12 +62,13 @@ def main():
                 x=v_p,
                 y=e_p,
                 line=dict(width=1.5, color=color),
-                name=f"{eos_fit.eos.title()} fit"
+                showlegend=False
             )
         )
 
     figure.update_layout(
         title=data.title,
+        font_size=19,
         font_color="#000",
         plot_bgcolor="#fff",
         xaxis=dict(
@@ -94,8 +95,8 @@ def main():
             bordercolor="#000",
             borderwidth=1
         ),
-        xaxis_title=r"$V \, [\mathrm{Å}^3/\mathrm{atom}]$",
-        yaxis_title=r"$E \, [\mathrm{eV}/\mathrm{atom}]$",
+        xaxis_title=r"$\large{V \, [\mathrm{Å}^3/\mathrm{atom}]}$",
+        yaxis_title=r"$\large{E \, [\mathrm{eV}/\mathrm{atom}]}$",
         margin=dict(l=1, r=1, b=1, t=1)
     )
 
