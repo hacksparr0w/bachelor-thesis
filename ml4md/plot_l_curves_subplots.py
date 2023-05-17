@@ -151,10 +151,11 @@ def plot_l_cuves(data, output_file, savgol_window=40):
 
     fig.update_layout(
         font_color="#000",
+        font_size=18,
         plot_bgcolor="#fff",
         legend=dict(
             x=.015,
-            y=.24,
+            y=.165,
             traceorder="normal",
             bordercolor="#000",
             borderwidth=1,
