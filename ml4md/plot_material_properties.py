@@ -66,6 +66,15 @@ def main():
 
     t2 = np.array([((t[i + 1] + t[i]) / 2) for i in range(len(t) - 1)])
 
+
+    print("b0", file=sys.stderr)
+    print(t, file=sys.stderr)
+    print(b_0, file=sys.stderr)
+
+    print("alpha", file=sys.stderr)
+    print(t2, file=sys.stderr)
+    print(alpha, file=sys.stderr)
+
     fig = plotly.subplots.make_subplots(
         rows=2,
         cols=1,
@@ -104,13 +113,13 @@ def main():
     )
 
     fig.update_xaxes(
-        title_text="$T \, [\mathrm{K}]$",
+        title_text="$\large{T \, [\mathrm{K}]}$",
         col=1,
         row=2
     )
 
     fig.update_yaxes(
-        title_text="$B_0 \, [\mathrm{GPa}]$",
+        title_text="$\large{B_0 \, [\mathrm{GPa}]}$",
         exponentformat="e",
         showgrid=False,
         linewidth=1,
@@ -123,7 +132,7 @@ def main():
     )
 
     fig.update_yaxes(
-        title_text="$\\alpha_\mathrm{V} \, [\mathrm{K}^{-1}]$",
+        title_text="$\large{\\alpha_\mathrm{V} \, [\mathrm{K}^{-1}]}$",
         exponentformat="e",
         showgrid=False,
         linewidth=1,
@@ -137,6 +146,7 @@ def main():
     )
 
     fig.update_layout(
+        font_size=19,
         font_color="#000",
         plot_bgcolor="#fff",
         showlegend=False,
