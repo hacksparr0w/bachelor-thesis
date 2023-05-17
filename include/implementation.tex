@@ -235,7 +235,13 @@ This work focuses not only on the training of the DNN models, but also on
 evaluation of their inference performance. To evaluate the inference
 performance, we chose to compute the relaxation volume $V_0$ and the bulk
 modulus $B_{T_0}$ \eqref{eqn:bulk-modulus} of both crystalline and amorphous
-Si structures.
+Si structures. The volumetric thermal expansion coefficient $\alpha_V$ was
+also computed in the case of amorphous Si. It is defined as
+\begin{equation}
+  \alpha_V = \frac{1}{V} \left( \frac{\partial V}{\partial T} \right)_p,
+\end{equation}
+where $V$ is the volume of the system, $T$ is the temperature and $p$ is the
+pressure.
 
 To calculate these material properties, we use LAMMPS with the trained models
 to perform a series of simulations and then fit the measured data to the

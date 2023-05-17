@@ -229,6 +229,23 @@ $B_{T_0} = 0.72 \pm 0.08 \, \mathrm{eV} \cdot \text{\AA}^{-3}$. Reference
 materials for quantum mechanical calculations of the same structure give
 values of $V_0 = 20.45617$ \AA$^3$ and
 $B_{T_0} = 0.6121 \, \mathrm{eV} \cdot \text{\AA}^{-3}$\cite{osti_1190959}.
+Although the calculated values are not exactly in concordance with the
+reference values, they are very close and their relative errors are
+only $\sim 0.3\%$ for the relaxation volume and $\sim 17 \%$ for the bulk
+modulus. The values may differ firstly due to the different methodology and
+configuration used for the qunatum mechanical calculations of the reference
+and secondly due to the fact that the used models did not have enough training
+data to converge exactly. Nonetheless, the results are very promising and show
+that the models are able to predict the properties of the crystalline silicon
+structure. This indicates a proper choice of the DNN hyperparameters.
+
+Comparing the inference results of the three models, it can be seen from the
+figure \ref{fig:crystalline_inference} that the models give very similar
+results near the equilibrium volume and start diverging significantly as more
+strain is applied and the models are forced to extrapolate for unknown
+conditions not seen in the learning data. To enhance the inference results,
+more training data could be added for the volumes where the models diverge the
+most.
 
 \begin{figure}
   \begin{center}
@@ -239,3 +256,83 @@ $B_{T_0} = 0.6121 \, \mathrm{eV} \cdot \text{\AA}^{-3}$\cite{osti_1190959}.
   \caption{Inference results for the Si diamond crystalline structure.}
   \label{fig:crystalline_inference}
 \end{figure}
+
+Next, the model \texttt{amorphous\_10,20,40d\_50,50,50f\_260222622s} was used
+to calculate bulk modulus $B_0$ and volume thermal expansion coefficient
+$\alpha_{V}$ for an amorphous silicon structure composed of 100 atoms with
+density $\rho = 2.329002 \, \mathrm{g} \cdot \mathrm{cm}^{-3}$ at
+$T = 0 \, \mathrm{K}$. These material properties were computed by fitting
+the Birch--Murnaghan EOS model to EV curves calculated by the DNN at various
+temperatures. The results are shown in figure \ref{fig:amorphous_inference}.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{
+      asset/amorphous_ev_curves.jpg
+    }
+  \end{center}
+  \caption{Inference results for the Si amorphous structure at various
+  temperatures.}
+  \label{fig:amorphous_inference}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=.8\textwidth]{
+      asset/amorphous_properties.jpg
+    }
+  \end{center}
+  \caption{The dependence of the bulk modulus $B_0$ and volumetric thermal
+  expansion coefficient $\alpha_V$ on temperature $T$ for the amorphous
+  silicon structure.}
+  \label{fig:amorphous_properties}
+\end{figure}
+
+Experimental values of the Young modulus $E$ and the Poisson's ratio $\nu$ for
+polysilicon material are $\sim 170 \, \mathrm{GPa}$ and $\sim 0.22$, 
+respectively \cite{Freund_Suresh_2003}. The relation between the bulk
+modulus $B_0$, the Young modulus $E$, and the Poisson's ratio $\nu$ for an
+isotropic material is
+\begin{equation}
+  B_0 = \frac{E}{3(1 - \nu)}.
+\end{equation}
+Using this formula, we can calculate the bulk modulus of polysilicon $B_0$ to
+be $\sim 73 \, \mathrm{GPa}$. The modeled bulk modulus $B_0$ for the amorphous
+silicon used in this work is
+$\sim 94 \, \mathrm{GPa}$ at $T = 200 \, \mathrm{K}$,
+$\sim 91 \, \mathrm{GPa}$ at $T = 300 \, \mathrm{K}$,
+$\sim 94 \, \mathrm{GPa}$ at $T = 400 \, \mathrm{K}$,
+and $\sim 78 \, \mathrm{GPa}$ at $T = 800 \, \mathrm{K}$.
+
+The linear expansion coefficient $\beta$ for an amorphous Si is experimentally
+measured to be $\sim 3.6 \cdot 10^{-6} \, \mathrm{K}^{-1}$ at
+$T = 318.15 \, \mathrm{K}$, $\sim 3.0 \cdot 10^{-6} \, \mathrm{K}^{-1}$ at
+$T = 418.15 \, \mathrm{K}$ \cite{TAKIMOTO2002314}. The relation between the
+linear expansion coefficient $\beta$ and the volumetric expansion coefficient
+$\alpha_V$ is
+\begin{equation}
+  \alpha_V = 3 \cdot \beta.
+\end{equation}
+Converting these values of linear expansion coefficient $\beta$ to the
+volumetric expansion coefficient $\alpha_V$ we get
+$\sim 1.1 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at $T = 318.15 \, \mathrm{K}$ and
+$\sim 0.9 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at $T = 418.15 \, \mathrm{K}$.
+Our models arrived at values for $\alpha_V$ to be
+$\sim 4.3 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at
+$T = 350 \, \mathrm{K}$, $\sim 2.8 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at
+$T = 450 \, \mathrm{K}$.
+
+The inference results for the bulk modulus $B_0$ and the volumetric thermal
+expansion coefficient $\alpha_V$ are slightly worse than the results for the
+crystalline silicon structure as their highest relative errors are
+$\sim 29 \%$ and $\sim 30 \%$, respectively. This error is however just a
+ballpark estimate as the experimental values for the amorphous silicon are
+obtained for vastly different conditions than the ones calculated in this
+work and even the materials used in the experiments are not exactly the same.
+The calculated values are the more uncertain the higher the temperature is,
+as can be clearly seen from the noise in the EV curves for higher temperatures
+in figure \ref{fig:amorphous_inference}. This is expected, as the molecular
+dynamics is more complicated at higher temperatures and the DNN models are
+forced to extrapolate more. The results are nonetheless very promising and
+show that the models are able to predict the properties of the amorphous
+silicon structure.
