@@ -103,7 +103,7 @@ def main():
         )
 
         descriptor_energy_figure.update_layout(
-            font_size=18,
+            font_size=19,
             font_color="#000",
             plot_bgcolor="#fff",
             xaxis=dict(
@@ -115,7 +115,7 @@ def main():
                 showline=True
             ),
             yaxis=dict(
-                title="$E_\\text{RMSE} \, [\mathrm{meV}/\mathrm{atom}]$",
+                title="$\large{E_\\text{RMSE} \, [\mathrm{meV}/\mathrm{atom}]}$",
                 showgrid=False,
                 linewidth=1,
                 linecolor="black",
@@ -123,7 +123,7 @@ def main():
                 ticks="inside",
                 showline=True
             ),
-            xaxis_title="$\\text{Parameters}$",
+            xaxis_title="$\large{\\text{Parameters}}$",
             legend=dict(
                 x=.05,
                 y=.2,
@@ -135,7 +135,7 @@ def main():
         )
 
         descriptor_force_figure.update_layout(
-            font_size=18,
+            font_size=19,
             font_color="#000",
             plot_bgcolor="#fff",
             xaxis=dict(
@@ -147,7 +147,7 @@ def main():
                 showline=True
             ),
             yaxis=dict(
-                title="$F_\\text{RMSE} \, [\mathrm{eV}/\mathrm{Å}]$",
+                title="$\large{F_\\text{RMSE} \, [\mathrm{eV}/\mathrm{Å}]}$",
                 showgrid=False,
                 linewidth=1,
                 linecolor="black",
@@ -155,7 +155,7 @@ def main():
                 ticks="inside",
                 showline=True
             ),
-            xaxis_title="$\\text{Parameters}$",
+            xaxis_title="$\large{\\text{Parameters}}$",
             legend=dict(
                 x=.6,
                 y=.5,
@@ -250,7 +250,7 @@ def main():
         )
 
         fitting_energy_figure.update_layout(
-            font_size=18,
+            font_size=19,
             font_color="#000",
             plot_bgcolor="#fff",
             xaxis=dict(
@@ -262,7 +262,7 @@ def main():
                 showline=True
             ),
             yaxis=dict(
-                title="$E_\\text{RMSE} \, [\mathrm{meV}/\mathrm{atom}]$",
+                title="$\large{E_\\text{RMSE} \, [\mathrm{meV}/\mathrm{atom}]}$",
                 showgrid=False,
                 linewidth=1,
                 linecolor="black",
@@ -270,7 +270,7 @@ def main():
                 ticks="inside",
                 showline=True
             ),
-            xaxis_title="$\\text{Parameters}$",
+            xaxis_title="$\large{\\text{Parameters}}$",
             legend=dict(
                 x=.02,
                 y=.98,
@@ -282,7 +282,7 @@ def main():
         )
 
         fitting_force_figure.update_layout(
-            font_size=18,
+            font_size=19,
             font_color="#000",
             plot_bgcolor="#fff",
             xaxis=dict(
@@ -294,7 +294,7 @@ def main():
                 showline=True
             ),
             yaxis=dict(
-                title="$F_\\text{RMSE} \, [\mathrm{eV}/\mathrm{Å}]$",
+                title="$\large{F_\\text{RMSE} \, [\mathrm{eV}/\mathrm{Å}]}$",
                 showgrid=False,
                 linewidth=1,
                 linecolor="black",
@@ -302,7 +302,7 @@ def main():
                 ticks="inside",
                 showline=True
             ),
-            xaxis_title="$\\text{Parameters}$",
+            xaxis_title="$\large{\\text{Parameters}}$",
             legend=dict(
                 x=.65,
                 y=.5,
