@@ -82,13 +82,13 @@ def plot(energy_data, force_data, output_file):
     )
 
     fig.update_xaxes(
-        title_text="Enegy Cutoff [Ry]",
+        title_text="$\\text{Enegy Cutoff} \, [\mathrm{Ry}]$",
         col=1,
         row=2
     )
 
     fig.update_yaxes(
-        title_text="Total Energy [eV]",
+        title_text="$\\text{Total Energy} \, [\mathrm{eV}]$",
         tickformat=".5f",
         showgrid=False,
         linewidth=1,
@@ -101,7 +101,7 @@ def plot(energy_data, force_data, output_file):
     )
 
     fig.update_yaxes(
-        title_text="Average force [ev/Å]",
+        title_text="$\\text{Average force} \, [\mathrm{ev}/\mathrm{Å}]$",
         showgrid=False,
         linewidth=1,
         linecolor="black",
@@ -114,6 +114,7 @@ def plot(energy_data, force_data, output_file):
 
     fig.update_layout(
         font_color="#000",
+        font_size=18,
         plot_bgcolor="#fff",
         margin=dict(l=1, r=1, b=1, t=1)
     )

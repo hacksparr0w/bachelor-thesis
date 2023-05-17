@@ -90,6 +90,7 @@ def main():
     figure.update_layout(
         title=data.title,
         font_color="#000",
+        font_size=18,
         plot_bgcolor="#fff",
         xaxis=dict(
             showgrid=False,
