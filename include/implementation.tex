@@ -225,7 +225,7 @@ The whole training matrix of models used in this work is available in table
      & & [75, 75, 75] & 260222622 \\
      & [25, 50, 100] & [20, 20, 20] & 260222622 \\
   \end{tabularx}
-  \caption{The table of all trained models with their heyperparameters.}
+  \caption{The table of all trained models with their hyperparameters.}
   \label{tab:models}
 \end{table}
 
@@ -245,11 +245,31 @@ pressure.
 
 To calculate these material properties, we use LAMMPS with the trained models
 to perform a series of simulations and then fit the measured data to the
-Birch--Murnaghan EOS \eqref{eqn:birch-murnaghan-energy} model. The LAMMPS
-input scripts used for the simulations are available in the mentioned
-repository.
+Birch--Murnaghan EOS \eqref{eqn:birch-murnaghan-energy} model. For the
+crystalline Si materials, we initialize a LAMMPS simulation with a diamond Si
+supercell with a side length of $543 \, \mathrm{\AA}$ and a lattice constant
+of $5.43 \, \mathrm{\AA}$. We then perform a deformation under the NVE
+ensemble within 500 simulation steps and let LAMMPS minimize the energy of the
+resultant configuration. A default timestep of $0.001 \, \mathrm{ps}$ is used
+in this case. The amorphous Si materials are generated using the melt-quench
+method. In this scenario, we randomly generate 100 Si atoms in a cubic box so
+that the density of the system is $2.33 \, \mathrm{g/cm^3}$. We then heat the
+system up to $4000 \, \mathrm{K}$ using the NPT ensemble with a constant
+pressure of $0 \, \mathrm{Pa}$ in $1 \cdot 10^{6}$ steps. The same ensemble is
+then used to cool the system down to $0 \, \mathrm{K}$ in $50 \cdot 10^{6}$
+steps. It is of the utmost importance to use a sufficiently large number of
+steps to ensure that the system is properly equilibrated and can be used in
+further simulations. The timestep in this case is set to
+$0.0005 \, \mathrm{ps}$. To compute the material properties, we then perform a
+very similar simulation to the one used for crystalline Si, but we use the NVT
+ensemble instead of the NVE ensemble to get the system to a desired
+temperature. The LAMMPS input scripts used for the simulations are available
+in the mentioned repository.
 
 To estimate the measurement uncertainty of the computed material properties,
 we compute the properties using multiple models with same architectures but
 different seeds and then calculate the mean and standard deviation of the
-results.
+results. This was done only for the crystalline Si models, where the material
+properties were computed at $0 \, \mathrm{K}$. Material properties of
+amorphous Si were computed at various different temperatures and it would be
+too time consuming to compute them using multiple models.
