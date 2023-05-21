@@ -34,8 +34,15 @@ def main():
     )
 
     ev_curves = data.ev_curves
+    ref_data = np.genfromtxt(
+        "asset/takimoto_a_si_beta.csv",
+        skip_header=1,
+        delimiter=","
+    )
 
-    colors = iter(px.colors.qualitative.Plotly)
+    ref_t, ref_beta = ref_data[:,0], ref_data[:,1]
+    ref_t += 273.15
+    ref_alpha = ref_beta * 3
 
     t = []
     v_0 = []
@@ -86,7 +93,8 @@ def main():
         go.Scatter(
             x=t,
             y=b_0,
-            mode="markers"
+            mode="markers",
+            showlegend=False
         ),
         row=1,
         col=1
@@ -96,7 +104,19 @@ def main():
         go.Scatter(
             x=t2,
             y=alpha,
-            mode="markers"
+            mode="markers",
+            name="DeepMD calculations"
+        ),
+        row=2,
+        col=1
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=ref_t,
+            y=ref_alpha,
+            mode="markers",
+            name="Takimoto et al. (2002)"
         ),
         row=2,
         col=1
@@ -149,7 +169,13 @@ def main():
         font_size=19,
         font_color="#000",
         plot_bgcolor="#fff",
-        showlegend=False,
+        legend=dict(
+            x=.015,
+            y=.27,
+            traceorder="normal",
+            bordercolor="#000",
+            borderwidth=1
+        ),
         margin=dict(l=1, r=1, b=1, t=1)
     )
 

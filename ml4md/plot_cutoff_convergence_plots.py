@@ -46,7 +46,6 @@ def plot(energy_data, force_data, output_file):
     fig = plotly.subplots.make_subplots(
         rows=2,
         cols=1,
-        shared_xaxes=True,
         vertical_spacing=0.1
     )
 
@@ -101,7 +100,7 @@ def plot(energy_data, force_data, output_file):
     )
 
     fig.update_yaxes(
-        title_text="$\large{\\text{Average force} \, [\mathrm{ev}/\mathrm{Å}]}$",
+        title_text="$\large{\\text{Average Force} \, [\mathrm{eV}/\mathrm{Å}]}$",
         showgrid=False,
         linewidth=1,
         linecolor="black",

@@ -35,7 +35,7 @@ def main():
 
 
 def plot_l_cuves(data, output_file, savgol_window=40):
-    x = data[:,0]
+    x = data[:,0] / 1e6
 
     subplots = {
         "energy": {
@@ -59,7 +59,6 @@ def plot_l_cuves(data, output_file, savgol_window=40):
     fig = plotly.subplots.make_subplots(
         rows=2,
         cols=1,
-        shared_xaxes=True,
         vertical_spacing=0.1
     )
 
@@ -118,7 +117,7 @@ def plot_l_cuves(data, output_file, savgol_window=40):
     )
 
     fig.update_xaxes(
-        title_text="$\large{\\text{Step}$}",
+        title_text="$\large{\\text{Step } [10^6]}$",
         col=1,
         row=2
     )

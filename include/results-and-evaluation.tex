@@ -3,21 +3,30 @@
 
 \section{DFT Data Convergence}
 
-The DFT data was generated using 100 atoms on [3, 3, 3] K-Grid (27 K-points)
-and energy cutoff of $250 \, \mathrm{eV}$. We can clearly see from the energy
-cutoff convergence plot (figure \ref{fig:dft_energy_cutoff_convergence}) that
-the energy errors due to numerical approximation are on the order of
-$100 \, \mathrm{meV}$, dividing by the number of atoms, we get an error of
-an order of $1 \, \mathrm{meV}$. The force errors due to numerical
-approximation are on the order of $10^{-5} \, \mathrm{eV}/\text{\AA}$. The
-K-Point convergence plot (figure \ref{fig:dft_kpoint_convergence}) shows that
-the energy errors due to numerical approximation are on the order of
-$1 \, \mathrm{meV}$, dividing by the number of atoms, we get an error of an
-order of $10^{-2} \, \mathrm{meV}$. The force errors due to numerical
-approximation are on the order of $10^{-4} \, \mathrm{eV}/\text{\AA}$. This
-means that our DNN model should ideally give energy predictions with an error
-of order $10^{-1} \, \mathrm{meV}$ and force predictions with an error of
-order $10^{-4} \, \mathrm{eV}/\text{\AA}$. Errors above these magnitudes are
+The quality of the DFT training data depends on the underlying approximations
+and numerical details. While the overall accuracy depends mostly on the used
+exchange-correlation functional, in this case the standard PBE, the precision
+depends on multiple numerical parameters. If those are not converged, the
+results can suffer from a significant numerical noise or other undesired
+effects, e.g., Pulay forces originating in the incompleteness of the basis
+set. Therefore a thorough check of the convergence of the relevant quantities
+with respect to the crucial numerical parameters such as the $k$-point grid or
+the energy cutoff is required.
+
+We can clearly see from the energy cutoff convergence plot
+(figure \ref{fig:dft_energy_cutoff_convergence}) that the energy errors due
+to numerical approximations are on the order of $100 \, \mathrm{meV}$,
+dividing by the number of atoms, we get an error of an order of
+$1 \, \mathrm{meV}$. The force errors due to numerical approximations are on
+the order of $10^{-5} \, \mathrm{eV}/\text{\AA}$. The $k$-point convergence
+plot (figure \ref{fig:dft_kpoint_convergence}) shows that the energy errors
+due to numerical approximation are on the order of $1 \, \mathrm{meV}$,
+dividing by the number of atoms, we get an error of an order of
+$10^{-2} \, \mathrm{meV}$. The force errors due to numerical approximation are
+on the order of $10^{-4} \, \mathrm{eV}/\text{\AA}$. This means that our DNN
+model should ideally give energy predictions with an error of order
+$10^{-1} \, \mathrm{meV}$ and force predictions with an error of order
+$10^{-4} \, \mathrm{eV}/\text{\AA}$. Errors above these magnitudes are
 most likely not caused by the numerical approximations of the DFT data and the
 accuracy of the simulation algorithms chosen. It's also very important to note
 that the average forces are very close to zero.
@@ -38,7 +47,7 @@ that the average forces are very close to zero.
       asset/kpoint_convergence.jpg
     }
   \end{center}
-  \caption{K-Point convergence test for the DFT training data.}
+  \caption{$k$-point convergence test for the DFT training data.}
   \label{fig:dft_kpoint_convergence}
 \end{figure}
 
@@ -71,27 +80,33 @@ observe a very slight divergence of training error and validation error with
 increasing training step. We can see from the error evaluation plot for
 descriptor neurons (figure \ref{fig:descriptor_energy_error_evaluation}) that
 the energy error slightly decreases with increasing number of descriptor
-neurons, although this effect is negligible. The effect of increasing energy
-error with increasing number of fitting neurons can also be observed in the
-error evaluation plot for fitting neurons (figure
+neurons, although this effect is negligible. This is expected, i.e., larger
+number of parameters in general leads to a better fit. The effect of
+increasing energy error with increasing number of fitting neurons can also be
+observed in the error evaluation plot for fitting neurons (figure
 \ref{fig:fitting_energy_error_evaluation}). Both of these effects are much
 more pronounced for the crystalline dataset, where data scarcity is a
 significant concern. Although, the crystalline system should be the simplest
 to model, the shortage of data plays a major role here, which can be observed
-in the learning curves and in the energy error evaluation plots.
-The predictions for the crystalline system get outstandingly better when
-increasing the number of descriptor neurons from $[5, 10, 20]$ (figure
+in the learning curves and in the energy error evaluation plots. Too large
+fitting network architectures for the crystalline set lead to overfitting,
+i.e., there are too many free parameters for the available data and the
+training begins to fit the random noise in the data. In fact, this is the
+reason why an independent validation dataset is used as the large divergence
+between the training and validation signals the overfitting.
+The predictions for the crystalline system get outstandingly better for both
+the training and validation data when increasing the number of descriptor
+neurons from $[5, 10, 20]$ (figure
 \ref{fig:crystalline_5,10,20d_20,20,20f_260222622s-learning-curves}) to
 $[25, 50, 100]$ (figure
-\ref{fig:crystalline_25,50,100d_20,20,20f_260222622s-learning-curves}). This
-might have several reasons. First, the higher number of descriptor neurons
-make the model more flexible and more unlikely to underfit on low data
-volumes. The second reason might be that the higher number of descriptor
+\ref{fig:crystalline_25,50,100d_20,20,20f_260222622s-learning-curves}) for
+both validation and training datasets. The higher number of descriptor
 neurons allows the model to better capture the underlying structure of the
 sillicon system, since this effect is observable for the amorphous and
-combined systems as well. While the number of descriptor neurons correlates
-positively with inference quality, the opposite is true for the number of
-fitting neurons. When increasing fitting neurons from $[10, 10, 10]$
+combined systems as well. While the number of descriptor neurons in the tested
+range correlates positively with inference quality, the opposite is true for
+the number of fitting neurons. When increasing fitting neurons from
+$[10, 10, 10]$
 (figure \ref{fig:crystalline_10,20,40d_10,10,10f_260222622s-learning-curves})
 to $[75, 75, 75]$
 (figure \ref{fig:crystalline_10,20,40d_75,75,75f_260222622s-learning-curves})
@@ -220,15 +235,15 @@ The models \texttt{crystalline\_10,20,40d\_20,20,20f\_260222622s},\linebreak
 \texttt{crystalline\_10,20,40d\_20,20,20f\_537693349s},\linebreak and
 \texttt{crystalline\_10,20,40d\_20,20,20f\_836424474s} were used to calculate
 relaxation volume and bulk modulus for the Si diamond crystalline structure
-(cubic $\mathrm{F}\bar{\mathrm{d}}\mathrm{3m}$ space group). The inference
-data with the fitted EOS models are shown below (figure
+at 0 K (cubic $\mathrm{F}\bar{\mathrm{d}}\mathrm{3m}$ space group). The
+inference data with the fitted EOS models are shown below (figure
 \ref{fig:crystalline_inference}). The calculated value for the relaxation
 volume was $V_0 = 20.52 \pm 0.03$ \AA$^3$ and the calculated value for the
 bulk modulus was
-$B_{T_0} = 0.72 \pm 0.08 \, \mathrm{eV} \cdot \text{\AA}^{-3}$. Reference
+$B_{T_0} = 115 \pm 13 \, \mathrm{eV} \cdot \text{\AA}^{-3}$. Reference
 materials for quantum mechanical calculations of the same structure give
-values of $V_0 = 20.45617$ \AA$^3$ and
-$B_{T_0} = 0.6121 \, \mathrm{eV} \cdot \text{\AA}^{-3}$\cite{osti_1190959}.
+values of $V_0 = 20.46$ \AA$^3$ and
+$B_{T_0} = 98 \, \mathrm{GPa} \cdot \text{\AA}^{-3}$\cite{osti_1190959}.
 Although the calculated values are not exactly in concordance with the
 reference values, they are very close and their relative errors are
 only $\sim 0.3\%$ for the relaxation volume and $\sim 17 \%$ for the bulk
@@ -237,7 +252,10 @@ configuration used for the qunatum mechanical calculations of the reference
 and secondly due to the fact that the used models did not have enough training
 data to converge exactly. Nonetheless, the results are very promising and show
 that the models are able to predict the properties of the crystalline silicon
-structure. This indicates a proper choice of the DNN hyperparameters.
+structure. This indicates a proper choice of the DNN hyperparameters. It is
+also worth noting that the models were able to predict the properties of the
+crystalline Si structure at 0 K even though they were only trained on data at
+1500 K.
 
 Comparing the inference results of the three models, it can be seen from the
 figure \ref{fig:crystalline_inference} that the models give very similar
@@ -253,17 +271,38 @@ most.
       asset/crystalline_ev_curves.jpg
     }
   \end{center}
-  \caption{Inference results for the Si diamond crystalline structure.}
+  \caption{Inference results for the Si diamond crystalline structure. The EV
+  curves were shifted to have zero energy at the equilibrium volume for better
+  comparison.}
   \label{fig:crystalline_inference}
 \end{figure}
 
 Next, the model \texttt{amorphous\_10,20,40d\_50,50,50f\_260222622s} was used
 to calculate bulk modulus $B_0$ and volume thermal expansion coefficient
 $\alpha_{V}$ for an amorphous silicon structure composed of 100 atoms with
-density $\rho = 2.329002 \, \mathrm{g} \cdot \mathrm{cm}^{-3}$ at
-$T = 0 \, \mathrm{K}$. These material properties were computed by fitting
-the Birch--Murnaghan EOS model to EV curves calculated by the DNN at various
-temperatures. The results are shown in figure \ref{fig:amorphous_inference}.
+density $\rho = 2.329 \, \mathrm{g} \cdot \mathrm{cm}^{-3}$. These material
+properties were computed by fitting the Birch--Murnaghan EOS model to EV
+curves calculated by the DNN at various temperatures. The results are shown in
+figure \ref{fig:amorphous_inference}. The model seems to behave quite well to
+temperatures up to 800 K. Above that temperature, the results start produce a
+significant noise. Molecular dynamics at higher temperatures is more complex
+and requires higher-quality predictions from the DNN to produce consistent
+results. In most likelyhood, our model is not able to produce such predictions
+due to the low volume of the training data. Another reason could be that since
+we only simulate 100 atoms in the amorphous structure, the statistical nature
+of the simulation breaks down. These two problems could be solved by adding
+more training data and simulating a larger number of atoms in the amorphous
+structure. Another effects at play could be the fact that the amorphous Si
+structure is not properly relaxed during the generation phase, as that would
+require many more simulations steps. The structure is also being generated
+using a different potential than the one used for the inference, which could
+mean that even if the structure was properly relaxed, the relaxation state is
+simply not compatible with the potential used for the inference. This could be
+solved by using the same potential for both the generation and inference and
+by relaxing the structure for a longer time. Another problem could be that the
+integration time used in the simulation is too large, which is also easily
+solvable, but would require more computational resources, which were not
+available for this work.
 
 \begin{figure}
   \begin{center}
@@ -288,17 +327,17 @@ temperatures. The results are shown in figure \ref{fig:amorphous_inference}.
   \label{fig:amorphous_properties}
 \end{figure}
 
-Experimental values of the Young modulus $E$ and the Poisson's ratio $\nu$ for
-polysilicon material are $\sim 170 \, \mathrm{GPa}$ and $\sim 0.22$, 
-respectively \cite{Freund_Suresh_2003}. The relation between the bulk
-modulus $B_0$, the Young modulus $E$, and the Poisson's ratio $\nu$ for an
-isotropic material is
+Experimental values of the Young modulus $\mathcal{E}$ and the Poisson's ratio
+$\nu$ for polycrystalline silicon material are $\sim 170 \, \mathrm{GPa}$ and
+$\sim 0.22$, respectively \cite{Freund_Suresh_2003}. The relation between the
+bulk modulus $B_0$, the Young modulus $\mathcal{E}$, and the Poisson's ratio
+$\nu$ for an isotropic material is
 \begin{equation}
-  B_0 = \frac{E}{3(1 - \nu)}.
+  B_0 = \frac{\mathcal{E}}{3(1 - 2\nu)}.
 \end{equation}
 Using this formula, we can calculate the bulk modulus of polysilicon $B_0$ to
-be $\sim 73 \, \mathrm{GPa}$. The modeled bulk modulus $B_0$ for the amorphous
-silicon used in this work is
+be $\sim 101 \, \mathrm{GPa}$. The modeled bulk modulus $B_0$ for the
+amorphous silicon used in this work is
 $\sim 94 \, \mathrm{GPa}$ at $T = 200 \, \mathrm{K}$,
 $\sim 91 \, \mathrm{GPa}$ at $T = 300 \, \mathrm{K}$,
 $\sim 94 \, \mathrm{GPa}$ at $T = 400 \, \mathrm{K}$,
