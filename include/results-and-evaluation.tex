@@ -7,9 +7,9 @@ The quality of the DFT training data depends on the underlying approximations
 and numerical details. While the overall accuracy depends mostly on the used
 exchange-correlation functional, in this case the standard PBE, the precision
 depends on multiple numerical parameters. If those are not converged, the
-results can suffer from a significant numerical noise or other undesired
+results can suffer from significant numerical noise or other undesired
 effects, e.g., Pulay forces originating in the incompleteness of the basis
-set. Therefore a thorough check of the convergence of the relevant quantities
+set. Therefore, a thorough check of the convergence of the relevant quantities
 with respect to the crucial numerical parameters such as the $k$-point grid or
 the energy cutoff is required.
 
@@ -27,7 +27,7 @@ on the order of $10^{-4} \, \mathrm{eV}/\text{\AA}$. This means that our DNN
 model should ideally give energy predictions with an error of order
 $10^{-1} \, \mathrm{meV}$ and force predictions with an error of order
 $10^{-4} \, \mathrm{eV}/\text{\AA}$. Errors above these magnitudes are
-most likely not caused by the numerical approximations of the DFT data and the
+most likely not caused by the numerical approximations of the DFT data or the
 accuracy of the simulation algorithms chosen. It's also very important to note
 that the average forces are very close to zero.
 
@@ -53,11 +53,11 @@ that the average forces are very close to zero.
 
 \section{Training Results}
 
-All models were trained on dual AMD EPYC 7H12 64-Core processor machine.
+All models were trained on a dual AMD EPYC 7H12 64-Core processor machine.
 Although such specs look impressive, the underlying training algorithms used
-by DeepMD-kit seemd to not be optimized for CPU training and the whole process
+by DeepMD-kit seem to not be optimized for CPU training, and the whole process
 could probably be greatly accelerated by training on GPUs. DeepMD-kit allows
-to fine-tune the training process by adjusting the runtime parameters
+you to fine-tune the training process by adjusting the runtime parameters
 \texttt{OMP\_NUM\_THREADS}, \texttt{TF\_INTRA\_OP\_PARALLELISM\_THREADS},
 and \texttt{TF\_INTER\_OP\_PARALLELISM\_\allowbreak{}THREADS}. Despite running
 many empirical tests to arrive at the optimal values for these parameters, the
@@ -77,23 +77,23 @@ increasing the number of fitting neurons from $[10, 10, 10]$
 $[75, 75, 75]$ (figure
 \ref{fig:amorphous_10,20,40d_75,75,75f_260222622s-learning-curves}) we can
 observe a very slight divergence of training error and validation error with
-increasing training step. We can see from the error evaluation plot for
+increasing training steps. We can see from the error evaluation plot for
 descriptor neurons (figure \ref{fig:descriptor_energy_error_evaluation}) that
 the energy error slightly decreases with increasing number of descriptor
-neurons, although this effect is negligible. This is expected, i.e., larger
+neurons, although this effect is negligible. This is expected, i.e., a larger
 number of parameters in general leads to a better fit. The effect of
 increasing energy error with increasing number of fitting neurons can also be
 observed in the error evaluation plot for fitting neurons (figure
 \ref{fig:fitting_energy_error_evaluation}). Both of these effects are much
 more pronounced for the crystalline dataset, where data scarcity is a
-significant concern. Although, the crystalline system should be the simplest
+significant concern. Although the crystalline system should be the simplest
 to model, the shortage of data plays a major role here, which can be observed
 in the learning curves and in the energy error evaluation plots. Too large
 fitting network architectures for the crystalline set lead to overfitting,
-i.e., there are too many free parameters for the available data and the
+i.e., there are too many free parameters for the available data and, the
 training begins to fit the random noise in the data. In fact, this is the
-reason why an independent validation dataset is used as the large divergence
-between the training and validation signals the overfitting.
+reason why an independent validation dataset is used, as the large divergence
+between the training and validation signals overfitting.
 The predictions for the crystalline system get outstandingly better for both
 the training and validation data when increasing the number of descriptor
 neurons from $[5, 10, 20]$ (figure
@@ -110,11 +110,12 @@ $[10, 10, 10]$
 (figure \ref{fig:crystalline_10,20,40d_10,10,10f_260222622s-learning-curves})
 to $[75, 75, 75]$
 (figure \ref{fig:crystalline_10,20,40d_75,75,75f_260222622s-learning-curves})
-we observe the energy error increases, and the dissonance of training error
-and validation error broadens. In this case, the model architecute is too
-complex and overfits on the small sample of training data. We can also see
-the discussed effects in the error evaluation plots for descriptor neurons
-and fitting neurons (figures \ref{fig:descriptor_energy_error_evaluation} and
+we observe that the energy error increases and the dissonance between
+training error and validation error broadens. In this case, the model
+architecture is too complex and overfits on the small sample of training data.
+We can also see the discussed effects in the error evaluation plots for
+descriptor neurons and fitting neurons (figures
+\ref{fig:descriptor_energy_error_evaluation} and
 \ref{fig:fitting_energy_error_evaluation} respectively).
 
 The force errors in all of the learning curves seem to converge relatively
@@ -245,7 +246,7 @@ materials for quantum mechanical calculations of the same structure give
 values of $V_0 = 20.46$ \AA$^3$ and
 $B_{T_0} = 98 \, \mathrm{GPa} \cdot \text{\AA}^{-3}$\cite{osti_1190959}.
 Although the calculated values are not exactly in concordance with the
-reference values, they are very close and their relative errors are
+reference values, they are very close, and their relative errors are
 only $\sim 0.3\%$ for the relaxation volume and $\sim 17 \%$ for the bulk
 modulus. The values may differ firstly due to the different methodology and
 configuration used for the qunatum mechanical calculations of the reference
@@ -283,25 +284,25 @@ $\alpha_{V}$ for an amorphous silicon structure composed of 100 atoms with
 density $\rho = 2.329 \, \mathrm{g} \cdot \mathrm{cm}^{-3}$. These material
 properties were computed by fitting the Birch--Murnaghan EOS model to EV
 curves calculated by the DNN at various temperatures. The results are shown in
-figure \ref{fig:amorphous_inference}. The model seems to behave quite well to
-temperatures up to 800 K. Above that temperature, the results start produce a
+figure \ref{fig:amorphous_inference}. The model seems to behave quite well at
+temperatures up to 800 K. Above that temperature, the results start to produce
 significant noise. Molecular dynamics at higher temperatures is more complex
 and requires higher-quality predictions from the DNN to produce consistent
-results. In most likelyhood, our model is not able to produce such predictions
+results. Most likely, our model is not able to produce such predictions
 due to the low volume of the training data. Another reason could be that since
 we only simulate 100 atoms in the amorphous structure, the statistical nature
 of the simulation breaks down. These two problems could be solved by adding
 more training data and simulating a larger number of atoms in the amorphous
-structure. Another effects at play could be the fact that the amorphous Si
+structure. Another effect at play could be the fact that the amorphous Si
 structure is not properly relaxed during the generation phase, as that would
-require many more simulations steps. The structure is also being generated
+require many more simulation steps. The structure is also being generated
 using a different potential than the one used for the inference, which could
 mean that even if the structure was properly relaxed, the relaxation state is
 simply not compatible with the potential used for the inference. This could be
-solved by using the same potential for both the generation and inference and
+solved by using the same potential for both generation and inference and
 by relaxing the structure for a longer time. Another problem could be that the
 integration time used in the simulation is too large, which is also easily
-solvable, but would require more computational resources, which were not
+solvable but would require more computational resources, which were not
 available for this work.
 
 \begin{figure}
@@ -352,17 +353,17 @@ $\alpha_V$ is
 \begin{equation}
   \alpha_V = 3 \cdot \beta.
 \end{equation}
-Converting these values of linear expansion coefficient $\beta$ to the
+Converting these values of the linear expansion coefficient $\beta$ to the
 volumetric expansion coefficient $\alpha_V$ we get
 $\sim 1.1 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at $T = 318.15 \, \mathrm{K}$ and
 $\sim 0.9 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at $T = 418.15 \, \mathrm{K}$.
 Our models arrived at values for $\alpha_V$ to be
 $\sim 4.3 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at
 $T = 350 \, \mathrm{K}$, $\sim 2.8 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at
-$T = 450 \, \mathrm{K}$. The the inference results for the bulk modulus $B_0$ had
+$T = 450 \, \mathrm{K}$. The inference results for the bulk modulus $B_0$ had
 relative errors of $\sim 10 \%$ and their quality was on par with the quality
 of the inference results for the crystalline silicon except for outliers
-except for outliers ($T = 700 \, \mathrm{K}$) and for too high temperatures
+($T = 700 \, \mathrm{K}$) and for too high temperatures
 ($T > 800 \, \mathrm{K}$). The results for the volumetric thermal expansion
 coefficient unfortunately ended with significant relative errors of
 $\sim 290 \%$. The very high relative errors for the volumetric
@@ -370,24 +371,24 @@ thermal expansion coefficient $\alpha_V$ are most likely caused by the fact
 that the calculations depend mostly on correct predictions of the relaxation
 volume $V_0$ of the amorphous structure at various temperatures. Even though
 the DNN models were able to predict the volume $V_0$ of the crystalline
-structure very well, the predictions for the amorphous structure are in nature
+structure very well, the predictions for the amorphous structure are by nature
 more uncertain as they depend on proper relaxation of the generated structure
 and are thus sensitive to the choice of the potentials used in the
 various steps of the computation process (OpenMX pseudopotentials used for
 the training data generation, OpenKIM potentials used for the amorphous
 structure generation and relaxation, and the DeepMD potential itself used for
 the MD simulation). Furthermore, as has already been mentioned, the size of
-the amorphous structure used in the inference is relatively small and this
+the amorphous structure used in the inference is relatively small, which
 breaks the statistical nature of the system and causes the results to be noisy
 at higher temperatures. It's also obvious that the results for the $\alpha_V$
 are much more error-prone than the results for the $B_0$ as the former is
 calculated from just one value (the volume $V_0$) while the latter is given by
 the slope of the EV curve, which is much more resilient to noise. These errors
-are however just a rough estimate as the experimental values for the amorphous
-silicon are obtained for vastly different conditions (the material is not
-completely amorphous but polycrystalline, the temperatures and pressures are
-different, the measurement methods are different, etc.) than the ones
-calculated in this work. The calculated values are the more uncertain the
+are, however, just a rough estimate, as the experimental values for the
+amorphous silicon are obtained for vastly different conditions (the material
+is not completely amorphous but polycrystalline, the temperatures and
+pressures are different, the measurement methods are different, etc.) than the
+ones calculated in this work. The calculated values are more uncertain the
 higher the temperature is, as can be clearly seen from the noise in the EV
 curves for higher temperatures in figure \ref{fig:amorphous_inference}. This
 is expected, as the molecular dynamics is more complicated at higher
