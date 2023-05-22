@@ -95,7 +95,7 @@ def main():
             bordercolor="#000",
             borderwidth=1
         ),
-        xaxis_title=r"$\large{V \, [\mathrm{Å}^3/\mathrm{atom}]}$",
+        xaxis_title=r"$\Large{V \, [\mathrm{Å}^3/\mathrm{atom}]}$",
         yaxis_title=r"$\large{E \, [\mathrm{eV}/\mathrm{atom}]}$",
         margin=dict(l=1, r=1, b=1, t=1)
     )

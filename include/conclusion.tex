@@ -7,17 +7,24 @@ materials. We've trained wide variety of DNN models to show how the
 hyperparameter selection affects the inference accuracy and computational
 efficiency. We then used the best performing models to perform molecular
 dynamics simulations of crystalline and amorphous silicon. Subsequently, we
-used the data from the molecular dynamics simulations to compute various
-material properties of silicon. The results from the machine learning models
-were very promising and show that we can get quite accurate results with
-relative errors $\sim 30 \%$ for the material properties even with very small
-training data sets. We note that the accuracy of the results can be improved
-drastically by using larger training data sets and that the quality and size
-of the training data set is the most important factor limiting the model
-prediction accuracy. We also note that this may be quite problematic as
-quality training data can only be obtained with computationally expensive
-quantum mechanical simulations and thus is the main bottleneck for the DeepMD
-methodology.
+used the data from the molecular dynamics simulations to compute the
+relaxation volume $V_0$, the bulk modulus $B_0$ and the volumetric thermal
+expansion coefficient $\alpha_V$ of silicon. The results from the machine
+learning models were very promising and showed that we can get quite accurate
+results with relative errors of $\sim 0.3\%$ for the relaxation volume $V_0$
+of crystalline silicon, $\sim 17 \%$ for the bulk modulus $B_0$ of crystalline
+silicon, $\sim 10 \%$ for the bulk modulus $B_0$ of amorphous silicon. The
+models had some trouble with the volumetric thermal expansion coefficient
+$\alpha_V$ whose relative error was $\sim 290 \%$ but we believe that this was
+largerly due to the shortcomings of our methodology caused mostly by the lack
+of computational resources and time and not by the inherent conceptual flaws
+in the DNN modeling approach. We note that the accuracy of the results
+can be improved drastically by using larger training data sets and that the
+quality and size of the training data set is the most important factor
+limiting the model prediction accuracy. We also note that this may be quite
+problematic as quality training data can only be obtained with computationally
+expensive quantum mechanical simulations and thus is the main bottleneck for
+the DeepMD methodology.
 
 Future work should focus on improving the quality of the training data sets,
 coming up with methodologies to generate training data on the fly (e.g. by

@@ -359,19 +359,38 @@ $\sim 0.9 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at $T = 418.15 \, \mathrm{K}$.
 Our models arrived at values for $\alpha_V$ to be
 $\sim 4.3 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at
 $T = 350 \, \mathrm{K}$, $\sim 2.8 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at
-$T = 450 \, \mathrm{K}$.
-
-The inference results for the bulk modulus $B_0$ and the volumetric thermal
-expansion coefficient $\alpha_V$ are slightly worse than the results for the
-crystalline silicon structure as their highest relative errors are
-$\sim 29 \%$ and $\sim 30 \%$, respectively. This error is however just a
-ballpark estimate as the experimental values for the amorphous silicon are
-obtained for vastly different conditions than the ones calculated in this
-work and even the materials used in the experiments are not exactly the same.
-The calculated values are the more uncertain the higher the temperature is,
-as can be clearly seen from the noise in the EV curves for higher temperatures
-in figure \ref{fig:amorphous_inference}. This is expected, as the molecular
-dynamics is more complicated at higher temperatures and the DNN models are
-forced to extrapolate more. The results are nonetheless very promising and
-show that the models are able to predict the properties of the amorphous
-silicon structure.
+$T = 450 \, \mathrm{K}$. The the inference results for the bulk modulus $B_0$ had
+relative errors of $\sim 10 \%$ and their quality was on par with the quality
+of the inference results for the crystalline silicon except for outliers
+except for outliers ($T = 700 \, \mathrm{K}$) and for too high temperatures
+($T > 800 \, \mathrm{K}$). The results for the volumetric thermal expansion
+coefficient unfortunately ended with significant relative errors of
+$\sim 290 \%$. The very high relative errors for the volumetric
+thermal expansion coefficient $\alpha_V$ are most likely caused by the fact
+that the calculations depend mostly on correct predictions of the relaxation
+volume $V_0$ of the amorphous structure at various temperatures. Even though
+the DNN models were able to predict the volume $V_0$ of the crystalline
+structure very well, the predictions for the amorphous structure are in nature
+more uncertain as they depend on proper relaxation of the generated structure
+and are thus sensitive to the choice of the potentials used in the
+various steps of the computation process (OpenMX pseudopotentials used for
+the training data generation, OpenKIM potentials used for the amorphous
+structure generation and relaxation, and the DeepMD potential itself used for
+the MD simulation). Furthermore, as has already been mentioned, the size of
+the amorphous structure used in the inference is relatively small and this
+breaks the statistical nature of the system and causes the results to be noisy
+at higher temperatures. It's also obvious that the results for the $\alpha_V$
+are much more error-prone than the results for the $B_0$ as the former is
+calculated from just one value (the volume $V_0$) while the latter is given by
+the slope of the EV curve, which is much more resilient to noise. These errors
+are however just a rough estimate as the experimental values for the amorphous
+silicon are obtained for vastly different conditions (the material is not
+completely amorphous but polycrystalline, the temperatures and pressures are
+different, the measurement methods are different, etc.) than the ones
+calculated in this work. The calculated values are the more uncertain the
+higher the temperature is, as can be clearly seen from the noise in the EV
+curves for higher temperatures in figure \ref{fig:amorphous_inference}. This
+is expected, as the molecular dynamics is more complicated at higher
+temperatures and the DNN models are forced to extrapolate more. The results
+are nonetheless very promising and show that the models are able to predict
+the properties of the amorphous silicon structure.
