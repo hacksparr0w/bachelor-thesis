@@ -59,7 +59,7 @@ by DeepMD-kit seemd to not be optimized for CPU training and the whole process
 could probably be greatly accelerated by training on GPUs. DeepMD-kit allows
 to fine-tune the training process by adjusting the runtime parameters
 \texttt{OMP\_NUM\_THREADS}, \texttt{TF\_INTRA\_OP\_PARALLELISM\_THREADS},
-\linebreak and \texttt{TF\_INTER\_OP\_PARALLELISM\_THREADS}. Despite running
+and \texttt{TF\_INTER\_OP\_PARALLELISM\_\allowbreak{}THREADS}. Despite running
 many empirical tests to arrive at the optimal values for these parameters, the
 training process did not speed up significantly. The training sessions took
 about $12 \, \mathrm{h}$ for the larger models and about $8 \, \mathrm{h}$ for
@@ -134,7 +134,7 @@ discussed.
       asset/amorphous_5,10,20d_20,20,20f_260222622s_energy_force_l_curve.jpg
     }
   \end{center}
-  \caption{Learning curves for model \texttt{amorphous\_5,10,20d\_20,20,20f\_260222622s}.}
+  \caption{Learning curves for model \texttt{amorphous\_5,10,20d\_20,20,\allowbreak{}20f\_260222622s}.}
   \label{fig:amorphous_5,10,20d_20,20,20f_260222622s-learning-curves}
 \end{figure}
 
@@ -144,7 +144,7 @@ discussed.
       asset/amorphous_25,50,100d_20,20,20f_260222622s_energy_force_l_curve.jpg
     }
   \end{center}
-  \caption{Learning curves for model \texttt{amorphous\_25,50,100d\_20,20,20f\_260222622s}.}
+  \caption{Learning curves for model \texttt{amorphous\_25,50,100d\_20,20,\allowbreak{}20f\_260222622s}.}
   \label{fig:amorphous_25,50,100d_20,20,20f_260222622s-learning-curves}
 \end{figure}
 
@@ -155,7 +155,7 @@ discussed.
       asset/amorphous_10,20,40d_10,10,10f_260222622s_energy_force_l_curve.jpg
     }
   \end{center}
-  \caption{Learning curves for model \texttt{amorphous\_10,20,40d\_10,10,10f\_260222622s}.}
+  \caption{Learning curves for model \texttt{amorphous\_10,20,40d\_10,10,\allowbreak{}10f\_260222622s}.}
   \label{fig:amorphous_10,20,40d_10,10,10f_260222622s-learning-curves}
 \end{figure}
 
@@ -165,7 +165,7 @@ discussed.
       asset/amorphous_10,20,40d_75,75,75f_260222622s_energy_force_l_curve.jpg
     }
   \end{center}
-  \caption{Learning curves for model \texttt{amorphous\_10,20,40d\_75,75,75f\_260222622s}.}
+  \caption{Learning curves for model \texttt{amorphous\_10,20,40d\_75,75,\allowbreak{}75f\_260222622s}.}
   \label{fig:amorphous_10,20,40d_75,75,75f_260222622s-learning-curves}
 \end{figure}
 
@@ -175,7 +175,7 @@ discussed.
       asset/crystalline_5,10,20d_20,20,20f_260222622s_energy_force_l_curve.jpg
     }
   \end{center}
-  \caption{Learning curves for model \texttt{crystalline\_5,10,20d\_20,20,20f\_260222622s}.}
+  \caption{Learning curves for model \texttt{crystalline\_5,10,20d\_20,20,\allowbreak{}20f\_260222622s}.}
   \label{fig:crystalline_5,10,20d_20,20,20f_260222622s-learning-curves}
 \end{figure}
 
@@ -185,7 +185,7 @@ discussed.
       asset/crystalline_25,50,100d_20,20,20f_260222622s_energy_force_l_curve.jpg
     }
   \end{center}
-  \caption{Learning curves for model \texttt{crystalline\_25,50,100d\_20,20,20f\_260222622s}.}
+  \caption{Learning curves for model \texttt{crystalline\_25,50,100d\_20,20,\allowbreak{}20f\_260222622s}.}
   \label{fig:crystalline_25,50,100d_20,20,20f_260222622s-learning-curves}
 \end{figure}
 
@@ -195,7 +195,7 @@ discussed.
       asset/crystalline_10,20,40d_10,10,10f_260222622s_energy_force_l_curve.jpg
     }
   \end{center}
-  \caption{Learning curves for model \texttt{crystalline\_10,20,40d\_10,10,10f\_260222622s}.}
+  \caption{Learning curves for model \texttt{crystalline\_10,20,40d\_10,10,\allowbreak{}10f\_260222622s}.}
   \label{fig:crystalline_10,20,40d_10,10,10f_260222622s-learning-curves}
 \end{figure}
 
@@ -205,7 +205,7 @@ discussed.
       asset/crystalline_10,20,40d_75,75,75f_260222622s_energy_force_l_curve.jpg
     }
   \end{center}
-  \caption{Learning curves for model \texttt{crystalline\_10,20,40d\_75,75,75f\_260222622s}.}
+  \caption{Learning curves for model \texttt{crystalline\_10,20,40d\_75,75,\allowbreak{}75f\_260222622s}.}
   \label{fig:crystalline_10,20,40d_75,75,75f_260222622s-learning-curves}
 \end{figure}
 
@@ -231,9 +231,9 @@ discussed.
 
 \section{Inference Results}
 
-The models \texttt{crystalline\_10,20,40d\_20,20,20f\_260222622s},\linebreak
-\texttt{crystalline\_10,20,40d\_20,20,20f\_537693349s},\linebreak and
-\texttt{crystalline\_10,20,40d\_20,20,20f\_836424474s} were used to calculate
+The models \texttt{crystalline\_10,20,40d\_20,20,20f\_260222622s},
+\texttt{cryst\-alline\_10,20,40d\_20,20,20f\_537693349s}, and
+\texttt{crystalline\_10,20,\linebreak{}40d\_20,20,20f\_836424474s} were used to calculate
 relaxation volume and bulk modulus for the Si diamond crystalline structure
 at 0 K (cubic $\mathrm{F}\bar{\mathrm{d}}\mathrm{3m}$ space group). The
 inference data with the fitted EOS models are shown below (figure
