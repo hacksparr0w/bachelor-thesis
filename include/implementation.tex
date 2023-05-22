@@ -7,13 +7,13 @@ flexible toolkit for utilizing the DeepMD scheme. DeepMD-kit comes with an
 interface to the LAMMPS classical molecular dynamics code \cite{LAMMPS},
 which was used in this work for computing all the material properties with the
 trained machine learning models. The models were trained on MD data generated
-with OpenMX, DFT pseudo-potential code with numerical atomic basis set.
+with OpenMX, DFT pseudo-potential code with a numerical atomic basis set.
 \footnote{
     See \url{https://www.openmx-square.org/}
-}. The Python programming language
+}. The Python programming language,
 \footnote{
     See \url{https://www.python.org/}
-} alongside with its multitude of scientific computation packages was used for
+} along with its multitude of scientific computation packages, was used for
 building the training and evaluation infrastructure. All of the code needed to
 reproduce the results presented in this thesis is available online
 \footnote{
@@ -24,24 +24,20 @@ reproduce the results presented in this thesis is available online
 
 As already stated, all AIMD trajectories were calculated using OpenMX. Since
 the computation resources available for this work were quite limited, we
-choose to only work with simple systems of pure silicon, as they do not
+chose to only work with simple systems of pure silicon, as they do not
 exhibit any complicated quantum mechanical effects and thus should be easier to model and
-train on. To see how well the models perform on wide variety of learning data,
-three distinct datasets were prepared -- an amorphous silicon dataset, a
+train on. To see how well the models perform on a wide variety of learning
+data, three distinct datasets were prepared: an amorphous silicon dataset, a
 crystalline silicon dataset, and a mixed dataset containing both the amorphous
 and the crystalline frames. Each dataset contains a selection of frames taken
 from OpenMX simulations of silicon systems with different volumes. After the
-simulation frames were generated, they were further distilled down as to not
-include frames that were too similar to each other. This was done simply by
+simulation frames were generated, they were further distilled down so as not
+to include frames that were too similar to each other. This was done simply by
 removing frames that were too close to each other in terms of their time step
 (every 10th frame was selected). The detailed parameters for each used dataset
 are listed in table \ref{tab:datasets}. The DFT training data consisted of
-100 atoms generated on 3x3x3 $k$-grid (27 $k$-points) with energy cutoff of
-$250 \, \mathrm{Ry}$.
-
-%
-% TODO: other parameters, combined ev curves?
-%
+systems made of 100 atoms generated on a 3x3x3 $k$-grid (27 $k$-points) with
+an energy cutoff of $250 \, \mathrm{Ry}$.
 
 \begin{table}
   \begin{tabularx}{\textwidth}{lllll}
@@ -75,8 +71,8 @@ $250 \, \mathrm{Ry}$.
 
 \section{Choosing the DNN Hyperparameters}
 
-DeepMD provides a bright pallete of hyperparameters that can be used to
-fine-tune the behavior of a DNN. The following is an exceprt from a sample DNN
+DeepMD provides a bright palette of hyperparameters that can be used to
+fine-tune the behavior of a DNN. The following is an excerpt from a sample DNN
 training input:
 
 \shorthandoff{-}
@@ -133,21 +129,21 @@ training input:
 ```
 \end{markdown*}
 \shorthandon{-}
-\noindent Let's briefly discuss the most import configuration parameters and
-their effect on the training and inference processes.
+\noindent Let's briefly discuss the most important configuration parameters
+and their effect on the training and inference processes.
 
 The \texttt{model} configuration section defines the architecture details of
 a DNN. As per the definition in \eqref{eq:dnn}, the neural network is simply a
 function of descriptors that predicts an energy value. The DeepMD
 protocol implements this function as two separate neural networks,
 where one is called the descriptor network and is defined by the
-\texttt{model.descriptor} configuration section and the other is called the
+\texttt{model.descriptor} configuration section, and the other is called the
 fitting network and is defined by the \texttt{model.fitting\_net}
 configuration section. The descriptor network is fed with the descriptor data
 as specified by the \texttt{model.descriptor.type} option, which makes it
 possible to control whether the network uses the full radial and angular
 information as per \eqref{eq:descriptor}. All of the models trained in this
-work use the full radial and angular information, so the
+work use full radial and angular information, so the
 \texttt{model.descriptor.type} option is always set to \texttt{se\_e2\_a}.
 The \texttt{model.descriptor.sel} option determines how many neighboring atoms
 for a given atom type (indices correspond to the indices of the
@@ -157,24 +153,24 @@ for this option can be determined empirically from the training data using the
 This value was kept constant for all models in this work. The cutoff radius
 specified by the \texttt{model.descriptor.rcut} and
 \texttt{model.descriptor.rcut\_smth} options limits the radius of the local
-environment constructed for each atom. The neighbours filtered with the
+environment constructed for each atom. The neighbors filtered with the
 \texttt{model.descriptor.sel} option must be within the cutoff radius, which
-is measured in \AA. One of the most important hyperparameters that have
-perhaps the most significant effect on the quality of the model inference are
+is measured in \AA. The most important hyperparameters that have perhaps the
+most significant effect on the quality of the model inference are
 the \texttt{model.descriptor.neuron} and \texttt{model.fitting\_net.neuron}
-options. These options specify the number of layers and number of neurons in
-each layer of the neural network. One of the difficulties of using deep neural
-networks is coming up with a good heuristics for driving the decisions on the
-apropriate network atchitectures. A great portion of
+options. These options specify the number of layers and the number of neurons
+in each layer of the neural network. One of the difficulties of using deep neural
+networks is coming up with good heuristics for driving the decisions on the
+appropriate network architectures. A great portion of
 \autoref{chap:results-and-evaluation} focuses on choosing and evaluating
 various network architectures. When training the models, it is important to
 choose a random seed that is used by the internal pseudo-random number
 generator to initialize the weights and biases of the neural network. This is
-very important for two reasons. Firstly, we can ensure reproducibility of
+very important for two reasons. Firstly, we can ensure the reproducibility of
 training results by using the same seeds. Secondly, we can use multiple
 models with different seeds and calculate inference uncertainties based on
-their inference results, which will differ the more the uncertain the models
-are. Comparison of models with different seeds is also discussed in later
+their inference results, which will differ the more uncertain the models
+are. A comparison of models with different seeds is also discussed in later
 chapters.
 
 Another important configuration section is the \texttt{learning\_rate}
@@ -193,7 +189,8 @@ predictions.
 
 The whole training matrix of models used in this work is available in table
 \ref{tab:models}. All of the trained models were evaluated using the
-\texttt{dp test} utility ran on one of the systems from validation dataset.
+\texttt{dp test} utility ran on one of the systems from the validation
+dataset.
 
 \begin{table}
   \begin{tabularx}{\textwidth}{llll}
@@ -229,8 +226,8 @@ The whole training matrix of models used in this work is available in table
 
 \section{Computing Material Properties}
 
-This work focuses not only on the training of the DNN models, but also on
-evaluation of their inference performance. To evaluate the inference
+This work focuses not only on the training of the DNN models but also on
+the evaluation of their inference performance. To evaluate the inference
 performance, we chose to compute the relaxation volume $V_0$ and the bulk
 modulus $B_{T_0}$ \eqref{eqn:bulk-modulus} of both crystalline and amorphous
 Si structures. The volumetric thermal expansion coefficient $\alpha_V$ was
@@ -238,7 +235,7 @@ also computed in the case of amorphous Si. It is defined as
 \begin{equation}
   \alpha_V = \frac{1}{V} \left( \frac{\partial V}{\partial T} \right)_p,
 \end{equation}
-where $V$ is the volume of the system, $T$ is the temperature and $p$ is the
+where $V$ is the volume of the system, $T$ is the temperature, and $p$ is the
 pressure.
 
 To calculate these material properties, we use LAMMPS with the trained models
@@ -262,13 +259,13 @@ amorphous Si structures are generated using an OpenKIM interatomic potential
 and not any of the trained DeepMD potentials. To compute the material
 properties, we then perform a very similar simulation to the one used for
 crystalline Si, but we use the NVT ensemble instead of the NVE ensemble to get
-the system to a desired temperature. The LAMMPS input scripts used for the
+the system to the desired temperature. The LAMMPS input scripts used for the
 simulations are available in the mentioned repository.
 
 To estimate the measurement uncertainty of the computed material properties,
-we compute the properties using multiple models with same architectures but
-different seeds and then calculate the mean and standard deviation of the
+we compute the properties using multiple models with the same architecture
+but different seeds and then calculate the mean and standard deviation of the
 results. This was done only for the crystalline Si models, where the material
 properties were computed at $0 \, \mathrm{K}$. Material properties of
-amorphous Si were computed at various different temperatures and it would be
-too time consuming to compute them using multiple models.
+amorphous Si were computed at various different temperatures, and it would be
+too time-consuming to compute them using multiple models.
