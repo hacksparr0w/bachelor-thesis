@@ -26,23 +26,19 @@ are not very transferable.
 
 In recent years, there's been a steady surge of breakthrough applications of
 machine learning (ML) and neural networks. From beating human experts in
-games like chess and go to almost perfectly solving the problem of protein
-folding, artificial intelligence seems to be an ideal fit for finding
-stochastic heuristics and patterns in complicated problems, given a large
-dataset of learning data. This wave of transition toward machine
-learning-based algorithms has affected even MD software packages and given
-rise to a very successful class of machine learning potentials and force
-fields.
+games like chess \cite{silver2017mastering} and go \cite{Lee_2016} to almost
+perfectly solving the problem of protein folding \cite{Jumper2021}, artificial
+intelligence seems to be an ideal fit for finding stochastic heuristics and
+patterns in complicated problems, given a large dataset of learning data. This
+wave of transition toward machine learning-based algorithms has affected even
+MD software packages and given rise to a very successful class of machine
+learning potentials and force fields \cite{doi:10.1021/acs.chemrev.0c01111}.
 
 The goal of my thesis is to evaluate these machine learning potentials and
 demonstrate that they are capable of producing results that are on par with
 quantum mechanical methods while scaling in a linear manner with the size of a
 system. My application uses the DeePMD-kit code, which is an implementation of
-the Deep Potential Molecular Dynamics (DeePMD) protocol. Furthermore, the
-LAMMPS Molecular Dynamics Simulator was used to run the machine learning
-potentials on concrete molecular dynamics ensembles. Last but not least, the
-OpenMX \textit{ab initio} code was used to provide quantum mechanical data
-for training and evaluating the neural network models.
+the Deep Potential Molecular Dynamics (DeePMD) protocol.
 
 %
 % TODO: Briefly sum-up contents of individual chapters

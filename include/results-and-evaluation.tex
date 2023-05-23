@@ -11,25 +11,26 @@ results can suffer from significant numerical noise or other undesired
 effects, e.g., Pulay forces originating in the incompleteness of the basis
 set. Therefore, a thorough check of the convergence of the relevant quantities
 with respect to the crucial numerical parameters such as the $k$-point grid or
-the energy cutoff is required.
+the cutoff energy is required.
 
 We can clearly see from the energy cutoff convergence plot
 (figure \ref{fig:dft_energy_cutoff_convergence}) that the energy errors due
-to numerical approximations are on the order of $100 \, \mathrm{meV}$,
+to cutoff energy, which determines the grid size for the numerical
+integrations and the solution of Poisson's equation, are on the order of
+$100 \, \mathrm{meV}$, dividing by the number of atoms, we get an error of an
+order of $1 \, \mathrm{meV}/\mathrm{atom}$. The force errors due to selected
+cutoff energy are on the order of $10^{-5} \, \mathrm{eV}/\text{\AA}$. The
+$k$-point convergence plot (figure \ref{fig:dft_kpoint_convergence}) shows
+that the energy errors due to the selected $k$-point grid
+(reciprocal space discretization) are on the order of $1 \, \mathrm{meV}$,
 dividing by the number of atoms, we get an error of an order of
-$1 \, \mathrm{meV}$. The force errors due to numerical approximations are on
-the order of $10^{-5} \, \mathrm{eV}/\text{\AA}$. The $k$-point convergence
-plot (figure \ref{fig:dft_kpoint_convergence}) shows that the energy errors
-due to numerical approximation are on the order of $1 \, \mathrm{meV}$,
-dividing by the number of atoms, we get an error of an order of
-$10^{-2} \, \mathrm{meV}$. The force errors due to numerical approximation are
-on the order of $10^{-4} \, \mathrm{eV}/\text{\AA}$. This means that our DNN
-model should ideally give energy predictions with an error of order
-$10^{-1} \, \mathrm{meV}$ and force predictions with an error of order
+$10^{-2} \, \mathrm{meV}/\mathrm{atom}$. The force errors due to used
+$k$-point grid are on the order of $10^{-4} \, \mathrm{eV}/\text{\AA}$. This
+means that our DNN model should ideally give energy predictions with an error
+of order $0.1 \, \mathrm{meV}$ and force predictions with an error of order
 $10^{-4} \, \mathrm{eV}/\text{\AA}$. Errors above these magnitudes are
 most likely not caused by the numerical approximations of the DFT data or the
-accuracy of the simulation algorithms chosen. It's also very important to note
-that the average forces are very close to zero.
+accuracy of the simulation algorithms chosen.
 
 \begin{figure}
   \begin{center}
@@ -81,7 +82,7 @@ increasing training steps. We can see from the error evaluation plot for
 descriptor neurons (figure \ref{fig:descriptor_energy_error_evaluation}) that
 the energy error slightly decreases with increasing number of descriptor
 neurons, although this effect is negligible. This is expected, i.e., a larger
-number of parameters in general leads to a better fit. The effect of
+number of free parameters in general leads to a better fit. The effect of
 increasing energy error with increasing number of fitting neurons can also be
 observed in the error evaluation plot for fitting neurons (figure
 \ref{fig:fitting_energy_error_evaluation}). Both of these effects are much
@@ -103,7 +104,7 @@ $[25, 50, 100]$ (figure
 both validation and training datasets. The higher number of descriptor
 neurons allows the model to better capture the underlying structure of the
 sillicon system, since this effect is observable for the amorphous and
-combined systems as well. While the number of descriptor neurons in the tested
+combined datasets as well. While the number of descriptor neurons in the tested
 range correlates positively with inference quality, the opposite is true for
 the number of fitting neurons. When increasing fitting neurons from
 $[10, 10, 10]$
@@ -124,7 +125,7 @@ significantly improve the prediction quality and may even lead to worse
 predictions. This is most likely due to the fact that the forces are very
 close to zero for most of the training data, and the models are able to learn
 the small deviations from zero very quickly. The increase in force error over
-time is caused by the fact that the weights of the objective function are
+time is caused by the fact that the weights of the loss function are
 initially set to prioritize the force error over the energy error and then
 gradually shift towards prioritizing energy error over force error, as already
 discussed.
@@ -216,7 +217,8 @@ discussed.
       asset/descriptor_energy_error_evaluation.jpg
     }
   \end{center}
-  \caption{Evaluation of energy errors for different descriptor neuron numbers.}
+  \caption{Evaluation of energy errors for different descriptor neuron
+  architectures.}
   \label{fig:descriptor_energy_error_evaluation}
 \end{figure}
 
@@ -226,19 +228,27 @@ discussed.
       asset/fitting_energy_error_evaluation.jpg
     }
   \end{center}
-  \caption{Evaluation of energy errors for different fitting neuron numbers.}
+  \caption{Evaluation of energy errors for different fitting neuron
+  architectures.}
   \label{fig:fitting_energy_error_evaluation}
 \end{figure}
 
-\section{Inference Results}
+\section{DeepMD Prediction Results}
 
-The models \texttt{crystalline\_10,20,40d\_20,20,20f\_260222622s},
+The models \texttt{crystalline\_10,20,40d\_20,20,20f\_260222622s}\footnote{
+  We use the schema \texttt{\{dataset type\}\_\{descriptor neurons\}d\_\{fitting neurons\}f\_\{seed\}s}
+  to refer to the used models. For example, the codename
+  \texttt{crystalline\_10,20,40d\_20,20,20f\_260222622s} refers to model with
+  [10, 20, 40] descriptor neuron architecture, [20, 20, 20] fitting neuron
+  architecture, trained on crystalline dataset, and with random seed
+  260222622.
+},
 \texttt{cryst\-alline\_10,20,40d\_20,20,20f\_537693349s}, and
 \texttt{crystalline\_10,20,\linebreak{}40d\_20,20,20f\_836424474s} were used to calculate
-relaxation volume and bulk modulus for the Si diamond crystalline structure
+equilibrium volume and bulk modulus for the Si diamond crystalline structure
 at 0 K (cubic $\mathrm{F}\bar{\mathrm{d}}\mathrm{3m}$ space group). The
 inference data with the fitted EOS models are shown below (figure
-\ref{fig:crystalline_inference}). The calculated value for the relaxation
+\ref{fig:crystalline_inference}). The calculated value for the equilibrium
 volume was $V_0 = 20.52 \pm 0.03$ \AA$^3$ and the calculated value for the
 bulk modulus was
 $B_{T_0} = 115 \pm 13 \, \mathrm{eV} \cdot \text{\AA}^{-3}$. Reference
@@ -249,7 +259,7 @@ Although the calculated values are not exactly in concordance with the
 reference values, they are very close, and their relative errors are
 only $\sim 0.3\%$ for the relaxation volume and $\sim 17 \%$ for the bulk
 modulus. The values may differ firstly due to the different methodology and
-configuration used for the qunatum mechanical calculations of the reference
+configuration used for the quantum mechanical calculations of the reference
 and secondly due to the fact that the used models did not have enough training
 data to converge exactly. Nonetheless, the results are very promising and show
 that the models are able to predict the properties of the crystalline silicon

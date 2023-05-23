@@ -86,7 +86,7 @@ def plot(energy_data, force_data, output_file):
 
     fig.update_yaxes(
         title_text="$\large{\\text{Total Energy} \, [\mathrm{eV}]}$",
-        tickformat=".5f",
+        tickformat=".2f",
         showgrid=False,
         linewidth=1,
         linecolor="black",
