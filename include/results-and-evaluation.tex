@@ -396,36 +396,11 @@ calculation. When comparing the results for the bulk modulus $B_0$ with its
 experimentally measured counterpart, their relative error is $\sim 90 \%$.
 Statistical outliers ($T = 700 \, \mathrm{K}$) and values for too high
 temperatures ($T > 800 \, \mathrm{K}$) were removed from the comaprison data.
-Even though the DNN models were able to predict the properties of the
-crystalline structure very well, the predictions for the amorphous structure
-are by nature more uncertain as they depend on proper relaxation of the
-generated structure and are thus sensitive to the choice of the potentials used
-in the various steps of the computation process (OpenKIM potentials used for
-the amorphous structure generation and relaxation, and the DeepMD potential
-itself used for the MD simulation). Furthermore, as has already been mentioned,
-the size of the amorphous structure used in the inference is relatively small
-and the statistics over small number of atoms may not be precise enough for
-our calculations.
 The errors derived from the comparison with the experimental data are, however, just a rough estimate,
 as the experimental values for the amorphous silicon are obtained for vastly
 different conditions (the materials might not be completely comparable, the
 temperatures and pressures are different, the measurement methods are different, etc.) than the
-ones calculated in this work. The calculated values are more uncertain the
-higher the temperature is, as can be clearly seen from the noise in the EV
-curves for higher temperatures in figure \ref{fig:amorphous_inference}. This
-is expected, as the molecular dynamics is more complicated at higher
-temperatures and the DNN models are forced to extrapolate more. The results
-are nonetheless very promising and show that the models are able to generate
-plausible MD trajectories for the amorphous structure, simulate points on an
-EV curve, and predict some of the properties of the amorphous structure. To
-iterate on the possible solutions to the problems mentioned above, the first
-step would be to use a larger amorphous structure for the simulation. We could
-also try to relax the generated amorphous structure for greater number of
-steps, use smaller integration steps, or even use the DeepMD potential for the
-relaxation. The second step would be to try to train the models on a larger
-dataset, possibly using multiple models with different seeds to locate the
-areas of the configuration space where the models are not able to provide
-confident predictions and dynamicaly increase the number of training points in
-these areas. We could also try to use more complex model architectures. Most
-of these solutions, however, would require a lot of computational resources
-and time, both of which were quite lacking for this work.
+ones calculated in this work. The results are nonetheless very promising and
+show that the models are able to generate plausible MD trajectories for the
+amorphous structure, simulate points on an EV curve, and predict some of the
+properties of the amorphous structure.
