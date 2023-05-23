@@ -249,9 +249,9 @@ equilibrium volume and bulk modulus for the Si diamond crystalline structure
 at 0 K (cubic $\mathrm{F}\bar{\mathrm{d}}\mathrm{3m}$ space group). The
 inference data with the fitted EOS models are shown below (figure
 \ref{fig:crystalline_inference}). The calculated value for the equilibrium
-volume was $V_0 = 20.52 \pm 0.03$ \AA$^3$ and the calculated value for the
+volume was $V_0 = (20.52 \pm 0.03)$ \AA$^3$ and the calculated value for the
 bulk modulus was
-$B_{T_0} = 115 \pm 13 \, \mathrm{eV} \cdot \text{\AA}^{-3}$. Reference
+$B_{T_0} = (115 \pm 13) \, \mathrm{eV} \cdot \text{\AA}^{-3}$. Reference
 materials for quantum mechanical calculations of the same structure give
 values of $V_0 = 20.46$ \AA$^3$ and
 $B_{T_0} = 98 \, \mathrm{GPa} \cdot \text{\AA}^{-3}$\cite{osti_1190959}.
@@ -261,17 +261,20 @@ only $\sim 0.3\%$ for the relaxation volume and $\sim 17 \%$ for the bulk
 modulus. The values may differ firstly due to the different methodology and
 configuration used for the quantum mechanical calculations of the reference
 and secondly due to the fact that the used models did not have enough training
-data to converge exactly. Nonetheless, the results are very promising and show
+data to converge exactly. There might be also other factors besides the lack
+of training data, it could be also that the model is simply not good enough
+(i.e. interactions beyond $r_\mathrm{cut}$ can play a role), or maybe larger
+descriptor net is needed. Nonetheless, the results are very promising and show
 that the models are able to predict the properties of the crystalline silicon
 structure. This indicates a proper choice of the DNN hyperparameters. It is
 also worth noting that the models were able to predict the properties of the
 crystalline Si structure at 0 K even though they were only trained on data at
 1500 K.
 
-Comparing the inference results of the three models, it can be seen from the
-figure \ref{fig:crystalline_inference} that the models give very similar
-results near the equilibrium volume and start diverging significantly as more
-strain is applied and the models are forced to extrapolate for unknown
+Comparing the EV curves from the three models with different seeds, it can be
+seen from the figure \ref{fig:crystalline_inference} that the models give
+very similar results near the equilibrium volume and start diverging
+significantly as more strain is applied and the models are forced to extrapolate for unknown
 conditions not seen in the learning data. To enhance the inference results,
 more training data could be added for the volumes where the models diverge the
 most.
@@ -296,22 +299,24 @@ properties were computed by fitting the Birch--Murnaghan EOS model to EV
 curves calculated by the DNN at various temperatures. The results are shown in
 figure \ref{fig:amorphous_inference}. The model seems to behave quite well at
 temperatures up to 800 K. Above that temperature, the results start to produce
-significant noise. Molecular dynamics at higher temperatures is more complex
-and requires higher-quality predictions from the DNN to produce consistent
-results. Most likely, our model is not able to produce such predictions
-due to the low volume of the training data. Another reason could be that since
-we only simulate 100 atoms in the amorphous structure, the statistical nature
-of the simulation breaks down. These two problems could be solved by adding
-more training data and simulating a larger number of atoms in the amorphous
-structure. Another effect at play could be the fact that the amorphous Si
-structure is not properly relaxed during the generation phase, as that would
-require many more simulation steps. The structure is also being generated
-using a different potential than the one used for the inference, which could
-mean that even if the structure was properly relaxed, the relaxation state is
-simply not compatible with the potential used for the inference. This could be
+significant noise. Molecular dynamics at higher temperatures is sampling larger
+part of the configuration space and thus is more likely to include a local
+atomic configuration which was not part of the training set so is more likely
+the DNN models have to extrapolate. Most likely, our model is not able to
+produce such predictions due to the low volume of the training data. Another
+reason could be that since we only simulate 100 atoms in the amorphous
+structure, the statistical nature of the simulation breaks down. These two
+problems could be solved by adding more training data and simulating a larger
+number of atoms in the amorphous structure. Another effect at play could be
+the fact that the amorphous Si structure is not properly annealed during the
+generation phase, as that would require many more simulation steps.
+If the amorphous structure is not annealed enough, there is a higher possibility, that it will switch to some lower energy configuration when under pressure or at higher temperature, and thus this can result in non-smooth EV curve.
+The structure is also being generated using a different potential than the one
+used for the inference, which could mean that even if the structure was
+properly relaxed, the relaxation state is simply not compatible with the potential used for the inference. This could be
 solved by using the same potential for both generation and inference and
 by relaxing the structure for a longer time. Another problem could be that the
-integration time used in the simulation is too large, which is also easily
+integration time step used in the simulation is too large, which is also easily
 solvable but would require more computational resources, which were not
 available for this work.
 
@@ -321,7 +326,7 @@ available for this work.
       asset/amorphous_ev_curves.jpg
     }
   \end{center}
-  \caption{Inference results for the Si amorphous structure at various
+  \caption{EV curves for the Si amorphous structure at various
   temperatures.}
   \label{fig:amorphous_inference}
 \end{figure}
@@ -339,20 +344,28 @@ available for this work.
 \end{figure}
 
 Experimental values of the Young modulus $\mathcal{E}$ and the Poisson's ratio
-$\nu$ for polycrystalline silicon material are $\sim 170 \, \mathrm{GPa}$ and
-$\sim 0.22$, respectively \cite{Freund_Suresh_2003}. The relation between the
+$\nu$ for polycrystalline silicon material are $\mathcal{E} = 170 \pm 10 \mathrm{GPa}$ and
+$\nu = 0.22$, respectively. Experimental values of
+the Young modulus $\mathcal{E}$ and the Poisson's ratio $\nu$ for amorphous
+silicon material are $\mathcal{E} = 80 \pm 20 \, \mathrm{GPa}$ and $\nu = 0.22$
+\cite{Freund_Suresh_2003}. The relation between the
 bulk modulus $B_0$, the Young modulus $\mathcal{E}$, and the Poisson's ratio
 $\nu$ for an isotropic material is
 \begin{equation}
   B_0 = \frac{\mathcal{E}}{3(1 - 2\nu)}.
 \end{equation}
 Using this formula, we can calculate the bulk modulus of polysilicon $B_0$ to
-be $\sim 101 \, \mathrm{GPa}$. The modeled bulk modulus $B_0$ for the
+be $B_0 = (101 \pm 6) \, \mathrm{GPa}$ and the bulk modulus of amorphous silicon
+to be $B_0 = (48 \pm 12) \, \mathrm{GPa}$. The modeled bulk modulus $B_0$ for the
 amorphous silicon used in this work is
-$\sim 94 \, \mathrm{GPa}$ at $T = 200 \, \mathrm{K}$,
-$\sim 91 \, \mathrm{GPa}$ at $T = 300 \, \mathrm{K}$,
-$\sim 94 \, \mathrm{GPa}$ at $T = 400 \, \mathrm{K}$,
-and $\sim 78 \, \mathrm{GPa}$ at $T = 800 \, \mathrm{K}$.
+$B_0 = (94 \pm 4) \, \mathrm{GPa}$ at $T = 200 \, \mathrm{K}$,
+$B_0 = (91 \pm 6) \, \mathrm{GPa}$ at $T = 300 \, \mathrm{K}$,
+$B_0 = (94 \pm 6) \, \mathrm{GPa}$ at $T = 400 \, \mathrm{K}$,
+$B_0 = (97 \pm 5) \, \mathrm{GPa}$ at $T = 500 \, \mathrm{K}$,
+$B_0 = (93 \pm 8) \, \mathrm{GPa}$ at $T = 600 \, \mathrm{K}$,
+and $B_0 = (78 \pm 8) \, \mathrm{GPa}$ at $T = 800 \, \mathrm{K}$. The
+uncrtainties presented in these results are the standard deviations of the
+fitted parameters and are not calculated using models with different seeds.
 
 The linear expansion coefficient $\beta$ for an amorphous Si is experimentally
 measured to be $\sim 3.6 \cdot 10^{-6} \, \mathrm{K}^{-1}$ at
@@ -363,45 +376,56 @@ $\alpha_V$ is
 \begin{equation}
   \alpha_V = 3 \cdot \beta.
 \end{equation}
-Converting these values of the linear expansion coefficient $\beta$ to the
+Converting these experimental values of the linear expansion coefficient $\beta$ to the
 volumetric expansion coefficient $\alpha_V$ we get
 $\sim 1.1 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at $T = 318.15 \, \mathrm{K}$ and
 $\sim 0.9 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at $T = 418.15 \, \mathrm{K}$.
-Our models arrived at values for $\alpha_V$ to be
-$\sim 4.3 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at
-$T = 350 \, \mathrm{K}$, $\sim 2.8 \cdot 10^{-5} \, \mathrm{K}^{-1}$ at
-$T = 450 \, \mathrm{K}$. The inference results for the bulk modulus $B_0$ had
-relative errors of $\sim 10 \%$ and their quality was on par with the quality
-of the inference results for the crystalline silicon except for outliers
-($T = 700 \, \mathrm{K}$) and for too high temperatures
-($T > 800 \, \mathrm{K}$). The results for the volumetric thermal expansion
-coefficient unfortunately ended with significant relative errors of
-$\sim 290 \%$. The very high relative errors for the volumetric
-thermal expansion coefficient $\alpha_V$ are most likely caused by the fact
-that the calculations depend mostly on correct predictions of the relaxation
-volume $V_0$ of the amorphous structure at various temperatures. Even though
-the DNN models were able to predict the volume $V_0$ of the crystalline
-structure very well, the predictions for the amorphous structure are by nature
-more uncertain as they depend on proper relaxation of the generated structure
-and are thus sensitive to the choice of the potentials used in the
-various steps of the computation process (OpenMX pseudopotentials used for
-the training data generation, OpenKIM potentials used for the amorphous
-structure generation and relaxation, and the DeepMD potential itself used for
-the MD simulation). Furthermore, as has already been mentioned, the size of
-the amorphous structure used in the inference is relatively small, which
-breaks the statistical nature of the system and causes the results to be noisy
-at higher temperatures. It's also obvious that the results for the $\alpha_V$
-are much more error-prone than the results for the $B_0$ as the former is
-calculated from just one value (the volume $V_0$) while the latter is given by
-the slope of the EV curve, which is much more resilient to noise. These errors
-are, however, just a rough estimate, as the experimental values for the
-amorphous silicon are obtained for vastly different conditions (the material
-is not completely amorphous but polycrystalline, the temperatures and
-pressures are different, the measurement methods are different, etc.) than the
+Our model arrived at values for $\alpha_V$ to be
+$\alpha_V = (1.5 \pm 1.6) \cdot 10^{-5} \, \mathrm{K}^{-1}$ at $T = 250 \, \mathrm{K}$,
+$\alpha_V = (4.3 \pm 1.8) \cdot 10^{-5} \, \mathrm{K}^{-1}$ at $T = 350 \, \mathrm{K}$,
+$\alpha_V = (2.8 \pm 1.7) \cdot 10^{-5} \, \mathrm{K}^{-1}$ at $T = 450 \, \mathrm{K}$,
+$\alpha_V = (0.8 \pm 2.1) \cdot 10^{-5} \, \mathrm{K}^{-1}$ at $T = 550 \, \mathrm{K}$,
+and $\alpha_V = (0.1 \pm 1.3) \cdot 10^{-5} \, \mathrm{K}^{-1}$ at $T = 700 \, \mathrm{K}$.
+Even though the values for the modeled equillibrium volume $V_0$ of the
+amorphous structure have relative error of $\sim 0.1 \%$, which is quite good,
+the calculation of the volumetric expansion coefficient $\alpha_V$ depends on
+a difference between these values for different temperatures. Due to the error
+propagation law the relative error of the volumetric expansion coefficient is
+in some cases up to $\sim 107 \%$, meaning that our data is too noisy for this
+calculation. When comparing the results for the bulk modulus $B_0$ with its
+experimentally measured counterpart, their relative error is $\sim 90 \%$.
+Statistical outliers ($T = 700 \, \mathrm{K}$) and values for too high
+temperatures ($T > 800 \, \mathrm{K}$) were removed from the comaprison data.
+Even though the DNN models were able to predict the properties of the
+crystalline structure very well, the predictions for the amorphous structure
+are by nature more uncertain as they depend on proper relaxation of the
+generated structure and are thus sensitive to the choice of the potentials used
+in the various steps of the computation process (OpenKIM potentials used for
+the amorphous structure generation and relaxation, and the DeepMD potential
+itself used for the MD simulation). Furthermore, as has already been mentioned,
+the size of the amorphous structure used in the inference is relatively small
+and the statistics over small number of atoms may not be precise enough for
+our calculations.
+The errors derived from the comparison with the experimental data are, however, just a rough estimate,
+as the experimental values for the amorphous silicon are obtained for vastly
+different conditions (the materials might not be completely comparable, the
+temperatures and pressures are different, the measurement methods are different, etc.) than the
 ones calculated in this work. The calculated values are more uncertain the
 higher the temperature is, as can be clearly seen from the noise in the EV
 curves for higher temperatures in figure \ref{fig:amorphous_inference}. This
 is expected, as the molecular dynamics is more complicated at higher
 temperatures and the DNN models are forced to extrapolate more. The results
-are nonetheless very promising and show that the models are able to predict
-the properties of the amorphous silicon structure.
+are nonetheless very promising and show that the models are able to generate
+plausible MD trajectories for the amorphous structure, simulate points on an
+EV curve, and predict some of the properties of the amorphous structure. To
+iterate on the possible solutions to the problems mentioned above, the first
+step would be to use a larger amorphous structure for the simulation. We could
+also try to relax the generated amorphous structure for greater number of
+steps, use smaller integration steps, or even use the DeepMD potential for the
+relaxation. The second step would be to try to train the models on a larger
+dataset, possibly using multiple models with different seeds to locate the
+areas of the configuration space where the models are not able to provide
+confident predictions and dynamicaly increase the number of training points in
+these areas. We could also try to use more complex model architectures. Most
+of these solutions, however, would require a lot of computational resources
+and time, both of which were quite lacking for this work.

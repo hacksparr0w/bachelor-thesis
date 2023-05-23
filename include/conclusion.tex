@@ -3,32 +3,32 @@
 This work used the DeepMD methodology to demonstrate the viability and
 efficiency of machine learning potentials for performing molecular dynamics
 and calculating the material properties of both crystalline and amorphous
-materials. We've trained a wide variety of DNN models to show how
-hyperparameter selection affects inference accuracy and computational
-efficiency. We then used the best-performing models to perform molecular
-dynamics simulations of crystalline and amorphous silicon. Subsequently, we
+materials. We have trained a wide variety of DNN models to show how
+hyperparameter selection affects their inference accuracy. We then used the
+best-performing models to perform molecular dynamics simulations of crystalline and amorphous silicon. Subsequently, we
 used the data from the molecular dynamics simulations to compute the
-relaxation volume $V_0$, the bulk modulus $B_0$, and the volumetric thermal
+equilibrium volume $V_0$, the bulk modulus $B_0$, and the volumetric thermal
 expansion coefficient $\alpha_V$ of silicon. The results from the machine
 learning models were very promising and showed that we can get quite accurate
 results with relative errors of $\sim 0.3\%$ for the relaxation volume $V_0$
 of crystalline silicon, $\sim 17 \%$ for the bulk modulus $B_0$ of crystalline
-silicon, and $\sim 10 \%$ for the bulk modulus $B_0$ of amorphous silicon. The
-models had some trouble with the volumetric thermal expansion coefficient
-$\alpha_V$, whose relative error was $\sim 290 \%$, but we believe that this
-was mostly due to the shortcomings of our methodology caused by a lack of
-computational resources and time and not by the inherent conceptual flaws in
+silicon, compared to different third-party DFT calculations. A significantly
+worse performance was observed for amorphous silicon, where the relative error
+was compared to the experimental data, with $\sim 90 \%$ error for the bulk modulus.
+It was noted that our modeled data was too noisy for calculating the volumetric
+thermal expansion coefficient $\alpha_V$ of amorphous silicon, but we believe that this
+was mostly due to the shortcomings of the specific settings of our methodology
+caused by a lack of computational resources and time, not by the inherent conceptual flaws in
 the DNN modeling approach. We note that the accuracy of the results can be
-drastically improved by using larger training data sets and that the quality
-and size of the training data sets are the most important factors limiting the
+drastically improved by using larger atomic systems and bigger training data sets,
+and that the quality and size of the training data sets are the most important factors limiting the
 model prediction accuracy. We also note that this may be quite problematic as
 quality training data can only be obtained with computationally expensive
 quantum mechanical simulations, which is the main bottleneck for the DeepMD
 methodology.
 
 Future work should focus on improving the quality of the training data sets,
-coming up with methodologies to generate training data on the fly (e.g., by
+making use of methodologies for generating training data on the fly (e.g., by
 using the active learning approach), comparing the DeepMD methodology with
-alternative machine learning implementations, or enhancing the current DeepMD
-protocol presented in this work by moving to GPU-accelerated learning and
-inference.
+alternative machine learning implementations, or accelerating the current DeepMD
+protocol presented in this work by moving to GPU-based learning and inference.
